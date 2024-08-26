@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComplainResponseDto {
 
-    // 신고상세조회
+    // 고객센터 신고상세조회 (신고 내용 및 답변 정보를 포함)
     private UUID id;
     private String userName;
     private UUID reviewId;

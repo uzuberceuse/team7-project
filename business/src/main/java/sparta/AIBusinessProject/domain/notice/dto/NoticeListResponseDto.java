@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,5 +16,8 @@ import java.util.List;
 public class NoticeListResponseDto {
 
     // 목록조회
-    private List<NoticeResponseDto> noticeList;
+    private UUID id;
+    private String noticeTitle;
+    private Timestamp createAt;
+    private String createBy;
 }
