@@ -33,7 +33,4 @@ public class Complain {
     private String updatedBy;
     private Timestamp deletedAt;
     private String deletedBy;
-
-
-
 }
