@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAddressRequest {
+public class CreateAddressRequestDto {
     private String name;
     private String zipcode;
 }

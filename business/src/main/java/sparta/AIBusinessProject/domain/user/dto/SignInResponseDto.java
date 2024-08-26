@@ -7,10 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access = AccessLevel.PRIVATE)
-public class SignInResponse {
+public class SignInResponseDto {
     private String accessToken;
 
-    public static SignInResponse of(String accessToken) {
-        return SignInResponse.builder().accessToken(accessToken).build();
+    public static SignInResponseDto of(String accessToken) {
+        return SignInResponseDto.builder().accessToken(accessToken).build();
     }
 }

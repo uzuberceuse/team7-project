@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
-public class AddressResponse {
+public class AddressResponseDto {
     private String name;
     private String zipcode;
 }

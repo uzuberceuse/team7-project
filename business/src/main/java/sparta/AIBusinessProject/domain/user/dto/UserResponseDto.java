@@ -2,7 +2,6 @@ package sparta.AIBusinessProject.domain.user.dto;
 
 import lombok.*;
 import sparta.AIBusinessProject.domain.address.entity.Address;
-import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
-public class UserResponse {
+public class UserResponseDto {
     private String nickname;
     private String email;
     private String password;
