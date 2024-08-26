@@ -2,8 +2,11 @@ package sparta.AIBusinessProject.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name="p_user")
@@ -13,8 +16,11 @@ import java.sql.Timestamp;
 @Builder(access= AccessLevel.PRIVATE)
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @ColumnDefault("random_uuid()")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(unique=true, nullable = false)
     private String nickname;
