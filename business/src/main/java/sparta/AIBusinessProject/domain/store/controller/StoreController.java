@@ -1,4 +1,4 @@
 package sparta.AIBusinessProject.domain.store.controller;
 
-public class controller {
+public class StoreController {
 }
