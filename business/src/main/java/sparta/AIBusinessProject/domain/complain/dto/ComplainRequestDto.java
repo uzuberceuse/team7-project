@@ -1,0 +1,24 @@
+package sparta.AIBusinessProject.domain.complain.dto;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ComplainRequestDto {
+
+    // 신고 접수 요청
+    private String userName;
+    private UUID reviewId;
+    private String content;
+
+    // 신고 삭제 요청
+    private UUID id;
+    private String deleteBy;
+
+}
