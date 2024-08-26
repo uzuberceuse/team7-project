@@ -54,7 +54,7 @@ public class Store {
 
 
 
-    // 상품 생성 시 생성 일자를 현재 시간으로
+    // 가게 생성 시 생성 일자를 현재 시간으로
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
