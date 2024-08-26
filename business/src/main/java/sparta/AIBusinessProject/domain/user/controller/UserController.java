@@ -18,7 +18,8 @@ public class UserController {
 //    // 회원가입
 //    @PostMapping("/signUp")
 //    public ResponseEntity<UserResponse> createUser(@RequestBody SignUpRequest request){
-//        userService.createUser(request);
+//        //userService.createUser(request);
+//        return null;
 //    }
 //
 //    // 회원수정
@@ -33,6 +34,11 @@ public class UserController {
 //        UserResponse response=userService.createAccessToken(request);
 //        return ResponseEntity.ok(response);
 //    }
-
+//
+//    // 로그아웃
+//
+//    // 회원 단건조회
+//
+//    // 회원 목록조회
 
 }
