@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access = AccessLevel.PRIVATE)
-public class UserListResponse {
+public class UserListResponseDto {
     private String nickname;
     private String phone;
     private List<Address> address;
