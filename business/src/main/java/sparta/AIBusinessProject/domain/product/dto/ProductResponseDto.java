@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProductResponseDto {
 
-    private Long product_id;
+    private String product_id;
     private String productName;
     private String details;
     private Integer price;

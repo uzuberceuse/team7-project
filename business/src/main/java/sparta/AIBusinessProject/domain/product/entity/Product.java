@@ -8,29 +8,41 @@ import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Entity
-@Table(name="product")
+@Table(name="p_product")
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long product_id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ_GENERATOR")
+    @Column(nullable = false, unique = true)
+    private String product_id = UUID.randomUUID().toString();
+
+    @Column(nullable = false)
     private String productName;
+
+    @Column(nullable = false)
     private String details;
+
+    @Column(nullable = false)
     private Integer price;
+
+    @Column(nullable = false)
     private boolean status;
+
     private LocalDateTime created_at;
     private String created_by;
     private LocalDateTime deleted_at;
     private String deleted_by;
     private LocalDateTime updated_at;
     private String updated_by;
+
 
 
     // 상품 생성 시 생성 일자를 현재 시간으로
@@ -67,7 +79,8 @@ public class Product {
                 .build();
     }
 
-    // buildup 패턴으로 product 생성
+    // buildup 패턴으로 product 삭제
+    // ??????
     public static Product deleteProduct(ProductRequestDto requestDto, String user_id) {
         return Product.builder()
                 .productName(requestDto.getProductName())
@@ -98,7 +111,6 @@ public class Product {
         return new ProductListResponseDto(
                 this.product_id,
                 this.productName,
-                this.created_by,
                 this.status
         );
     }
