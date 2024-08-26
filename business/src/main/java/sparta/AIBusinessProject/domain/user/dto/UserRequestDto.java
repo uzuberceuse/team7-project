@@ -6,6 +6,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class UserRequestDto {
     private String id;
 }

@@ -7,11 +7,11 @@ import sparta.AIBusinessProject.domain.category.entity.Category;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
-public class CategoryResponse {
+public class CategoryResponseDto {
     private String name;
 
-    public static CategoryResponse of(final Category category) {
-        return CategoryResponse.builder()
+    public static CategoryResponseDto of(final Category category) {
+        return CategoryResponseDto.builder()
                 .name(category.getCategoryName())
                 .build();
     }

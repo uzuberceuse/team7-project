@@ -9,7 +9,7 @@ import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequest {
+public class SignUpRequestDto {
     private String nickname;
     private String email;
     private String password;
