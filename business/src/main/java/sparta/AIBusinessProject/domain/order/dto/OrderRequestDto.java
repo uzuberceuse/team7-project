@@ -1,5 +1,7 @@
 package sparta.AIBusinessProject.domain.order.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import sparta.AIBusinessProject.domain.order.entity.OrderTypeEnum;
 
 import java.util.UUID;
@@ -7,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class OrderRequestDto {
 
