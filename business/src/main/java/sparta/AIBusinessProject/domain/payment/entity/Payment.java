@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(access= AccessLevel.PRIVATE)
+@Builder(access= AccessLevel.PUBLIC)
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

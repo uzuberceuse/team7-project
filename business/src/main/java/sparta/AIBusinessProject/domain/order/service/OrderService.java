@@ -121,21 +121,20 @@ public class OrderService {
 }
 
 
-//createOrder 메서드:
-//
-//OrderRequestDto를 받아 Order 엔티티를 생성하고 저장한 후, 저장된 엔티티를 OrderResponseDto로 변환하여 반환합니다.
-//        필요한 User, Address, Payment 엔티티를 먼저 조회하여 주문 생성 시 사용합니다.
-//updateOrder 메서드:
-//
-//orderId를 기반으로 기존 주문을 조회한 후, 해당 주문을 업데이트합니다.
-//OrderRequestDto에서 새로운 값을 받아와 기존 주문의 필드를 업데이트하고, 이를 저장한 후 OrderResponseDto로 변환하여 반환합니다.
-//deleteOrder 메서드:
-//
-//orderId를 기반으로 주문을 조회하고, 해당 주문을 삭제합니다.
-//getAllOrders 메서드:
-//
-//모든 주문을 조회하여 OrderResponseDto의 리스트로 반환합니다.
-//Order 엔티티를 OrderResponseDto로 변환하여 클라이언트에게 전달합니다.
+// createOrder 메서드
+// OrderRequestDto를 받아 Order 엔티티를 생성하고 저장한 후, 저장된 엔티티를 OrderResponseDto로 변환하여 반환
+// 필요한 User, Address, Payment 엔티티를 먼저 조회하여 주문 생성 시 사용
+
+// updateOrder 메서드
+// orderId를 기반으로 기존 주문을 조회한 후, 해당 주문을 업데이트
+// OrderRequestDto에서 새로운 값을 받아와 기존 주문의 필드를 업데이트하고, 이를 저장한 후 OrderResponseDto로 변환하여 반환합니다.
+
+// deleteOrder 메서드
+// orderId를 기반으로 주문을 조회하고, 해당 주문을 삭제
+
+// getAllOrders 메서드
+// 모든 주문을 조회하여 OrderResponseDto의 리스트로 반환
+// Order 엔티티를 OrderResponseDto로 변환하여 클라이언트에게 전달
+
 //getOrderById 메서드:
-//
-//orderId로 특정 주문을 조회한 후, 이를 OrderResponseDto로 변환하여 반환합니다.
+//orderId로 특정 주문을 조회한 후, 이를 OrderResponseDto로 변환하여 반환

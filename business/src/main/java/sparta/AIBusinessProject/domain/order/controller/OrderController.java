@@ -22,7 +22,7 @@ public class OrderController {
     // 주문 등록
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto); // 생성된 주문 정보를 OrderResponseDTO 형태로 반환
+        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto); // 생성된 주문 정보를 OrderResponseDto 형태로 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
