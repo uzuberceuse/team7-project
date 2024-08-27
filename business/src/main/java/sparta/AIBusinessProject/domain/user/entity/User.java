@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.address.entity.Address;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
@@ -46,7 +47,12 @@ public class User {
     @OneToMany(mappedBy="user")
     private List<Address> address=new ArrayList<Address>();
 
+    private Boolean isPublic=true;
+
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private Timestamp created_at;
+
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;
