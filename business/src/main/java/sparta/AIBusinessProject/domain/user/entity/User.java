@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.address.entity.Address;
+import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,8 +23,8 @@ public class User {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(updatable = false, nullable = false)
+    private UUID user_id;
 
     @Column(unique=true, nullable = false)
     private String nickname;
@@ -39,12 +43,20 @@ public class User {
     @Enumerated(value=EnumType.STRING)
     private UserRoleEnum role;
 
+    @OneToMany(mappedBy="user")
+    private List<Address> address=new ArrayList<Address>();
+
     private Timestamp created_at;
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;
     private Timestamp deleted_at;
     private String deleted_by;
+
+    // 유저 생성 메서드
+    public static User create(final SignInRequestDto request){
+        return null;
+    }
 
 
 

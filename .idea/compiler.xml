@@ -11,5 +11,10 @@
         <module name="gateway.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="server" target="17" />
+      <module name="server.main" target="17" />
+      <module name="server.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
