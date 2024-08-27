@@ -1,4 +1,4 @@
 package sparta.AIBusinessProject.domain.payment.service;
 
-public class service {
+public class PaymentService {
 }

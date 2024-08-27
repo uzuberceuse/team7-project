@@ -27,4 +27,7 @@ public class CategoryService {
         categoryRepository.save(Category.create(request.getName()));
     }
 
+    public Boolean updateCategory(Long id, CreateCategoryRequestDto request) {
+        return null;
+    }
 }
