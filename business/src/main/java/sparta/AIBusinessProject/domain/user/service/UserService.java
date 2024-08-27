@@ -67,7 +67,11 @@ public class UserService {
         return null;
     }
 
-    public UserResponseDto updateProduct(Long id, SignUpRequestDto request) {
+    public UserResponseDto updateUser(UUID id, SignUpRequestDto request) {
         return null;
+    }
+
+
+    public void logout(User user) {
     }
 }
