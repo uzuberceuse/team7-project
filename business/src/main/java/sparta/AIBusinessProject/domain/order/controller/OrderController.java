@@ -19,14 +19,14 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 등록
+    // 1. 주문 등록
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto); // 생성된 주문 정보를 OrderResponseDTO 형태로 반환
+        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto); // 생성된 주문 정보를 OrderResponseDto 형태로 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
-    // 주문 수정
+    // 2. 주문 수정
     @PatchMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> updateOrder(
             @PathVariable UUID orderId,
@@ -35,14 +35,14 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
-    // 주문 삭제
+    // 3. 주문 취소
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable UUID orderId) {
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
-    // 주문 목록 조회
+    // 4. 주문 목록 조회
     @GetMapping
     public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
         List<OrderResponseDto> orders = orderService.getAllOrders();
