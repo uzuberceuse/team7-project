@@ -33,9 +33,9 @@ public class NoticeController {
     // 공지사항 수정
     @PatchMapping("/{notice_id}")
     public ResponseEntity<NoticeResponseDto> updateNotice(
-            @PathVariable UUID id,
+            @PathVariable UUID noticeId,
             @RequestBody NoticeRequestDto requestDto) { // 수정할 데이터를 가져온다.
-        NoticeResponseDto responseDto = noticeService.updateNotice(id, requestDto);
+        NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
         return ResponseEntity.ok(responseDto); // 수정된 공지사항 정보
 
     }
@@ -43,16 +43,16 @@ public class NoticeController {
     // 공지사항 삭제
     @DeleteMapping
     public ResponseEntity<Notice> deleteNotice(
-            @PathVariable UUID id,@RequestParam String deleteBy) {
-        noticeService.deleteNotice(id, deleteBy);
+            @PathVariable UUID noticeId, @RequestParam String deleteBy) {
+        noticeService.deleteNotice(noticeId, deleteBy);
         return ResponseEntity.noContent().build();
     }
 
 
     // 공지사항 상세조회
     @GetMapping("/{notice_id}")
-    public ResponseEntity<NoticeResponseDto> getNoticeDetail(@PathVariable UUID id) {
-        NoticeResponseDto responseDto = noticeService.getNoticeDetail(id);
+    public ResponseEntity<NoticeResponseDto> getNoticeDetail(@PathVariable UUID noticeId) {
+        NoticeResponseDto responseDto = noticeService.getNoticeDetail(noticeId);
         return ResponseEntity.ok(responseDto);
 
     }

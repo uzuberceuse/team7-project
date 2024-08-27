@@ -32,8 +32,16 @@ public class Notice {
     private Timestamp deletedAt;
     private String deletedBy;
 
-    public Notice(NoticeRequestDto requestDto) {
-
+    // NoticeRequestDto를 받아 빌더를 통해 Notice 객체를 생성
+    public static Notice from(NoticeRequestDto requestDto) {
+        return Notice.builder()
+                .noticeTitle(requestDto.getNoticeTitle())
+                .noticeContent(requestDto.getNoticeContent())
+                .createdBy(requestDto.getCreatedBy())
+                .updatedBy(requestDto.getUpdateBy())
+                .build();
     }
+
+
 }
 

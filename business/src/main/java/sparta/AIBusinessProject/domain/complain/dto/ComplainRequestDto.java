@@ -13,11 +13,11 @@ import java.util.UUID;
 public class ComplainRequestDto {
 
     // 신고접수 및 삭제
-    private UUID id;          // 신고 삭제 시 사용될 신고의 ID
+    private UUID id;
     private String userName;
     private UUID reviewId;
-    private String content;   // 신고 접수 시 사용
+    private String content;
     private String createdBy;
-    private String deletedBy; // 신고 삭제 시 사용될 삭제 요청자
+    private String deletedBy;
 
 }

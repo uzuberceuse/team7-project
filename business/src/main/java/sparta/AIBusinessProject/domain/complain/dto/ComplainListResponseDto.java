@@ -1,9 +1,9 @@
 package sparta.AIBusinessProject.domain.complain.dto;
 
 import lombok.*;
+import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -11,11 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComplainListResponseDto {
 
-    // 고객센터 신고목록조회
     private UUID id;
-    private String userName;
-    private UUID reviewId;
-    private Timestamp createAt;
+    private UUID userId;
     private String createdBy;
+    private Timestamp createAt;
 
 }

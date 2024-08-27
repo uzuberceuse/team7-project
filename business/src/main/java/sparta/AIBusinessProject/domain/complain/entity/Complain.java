@@ -2,6 +2,8 @@ package sparta.AIBusinessProject.domain.complain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
@@ -17,7 +19,9 @@ import java.util.UUID;
 public class Complain {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @ColumnDefault("random_uuid()")
     @Column(name = "complain_id", updatable = false, nullable = false)
     private UUID id;
 
@@ -28,7 +32,7 @@ public class Complain {
     @Column(nullable = false)
     private String userName;
 
-    private UUID reviewId;
+    // private UUID reviewId;
 
     private String content;
     private String answer;

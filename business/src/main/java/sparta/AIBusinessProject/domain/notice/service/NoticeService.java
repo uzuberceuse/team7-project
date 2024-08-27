@@ -24,22 +24,24 @@ public class NoticeService {
 
     // 공지사항 등록 (C)
     public NoticeResponseDto createNotice(NoticeRequestDto requestDto) {
-        Notice notice = noticeRepository.save(new Notice(requestDto));
+        Notice notice = Notice.from(requestDto);
         notice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        notice = noticeRepository.save(notice);
         return new NoticeResponseDto(notice);
     }
 
     // Notice_id로 조회 (R)
     public Notice getNoticeById(UUID id){
-        return noticeRepository.findById(id).orElseThrow(()-> new NullPointerException("해당 공지사항은 존재하지 않습니다."));
+        return noticeRepository.findById(id)
+                .orElseThrow(()-> new NullPointerException("해당 공지사항은 존재하지 않습니다."));
     }
 
     // 수정 공지사항 (U)
     @Transactional
-    public NoticeResponseDto updateNotice(UUID id, NoticeRequestDto requestDto){
+    public NoticeResponseDto updateNotice(UUID noticeId, NoticeRequestDto requestDto){
 
         // 공지사항id로 공지사항 유무 확인
-        Notice notice = noticeRepository.findById(id)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
         if(StringUtils.hasText(requestDto.getNoticeTitle())){
@@ -64,9 +66,9 @@ public class NoticeService {
     }
 
     // 공지사항 삭제
-    public ResponseEntity<Void> deleteNotice(UUID id, String deleteBy) {
+    public ResponseEntity<Void> deleteNotice(UUID noticeId, String deleteBy) {
 
-        Notice notice = noticeRepository.findById(id)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
         notice.setDeletedBy(deleteBy);
@@ -74,14 +76,12 @@ public class NoticeService {
         noticeRepository.save(notice);
 
         return ResponseEntity.noContent().build();
-
     }
 
     // 공지사항 상세조회
-    public NoticeResponseDto getNoticeDetail(UUID id) {
-        Notice notice = noticeRepository.findById(id)
+    public NoticeResponseDto getNoticeDetail(UUID noticeId) {
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
-
         return new NoticeResponseDto(notice);
     }
 
