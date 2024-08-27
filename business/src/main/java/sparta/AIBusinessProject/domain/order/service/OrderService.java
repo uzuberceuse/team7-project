@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.order.service;
 import lombok.*;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.AIBusinessProject.domain.address.entity.Address;
 import sparta.AIBusinessProject.domain.address.repository.AddressRepository;
 import sparta.AIBusinessProject.domain.order.dto.OrderRequestDto;
@@ -57,7 +58,7 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);   // 주문 저장
 
-        return OrderResponseDto.fromEntity(savedOrder);  // 반환할 OrderResponseDto 생성
+        return toResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
     }
 
     // 2. 주문 수정
@@ -88,35 +89,69 @@ public class OrderService {
         Order updatedOrder = orderRepository.save(existingOrder);
 
         // 반환할 OrderResponseDto 생성
-        return OrderResponseDto.fromEntity(updatedOrder);
+        return toResponseDto(updatedOrder);
     }
 
-    // 3. 주문 삭제
+    // 3. 주문 취소
     public void deleteOrder(UUID orderId) {
-        // 주문 존재 여부 확인 후 삭제
-        Order existingOrder = orderRepository.findById(orderId)
+        // 주문 존재 여부 확인 후 취소
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        orderRepository.delete(existingOrder);
+        // 주문이 생성된 후 5분 이내인지 확인
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        long timeDifference = currentTime.getTime() - order.getCreated_at().getTime();
+
+        // 5분(300,000 밀리초) 이내에만 취소 가능
+        // 5분 초과하면 취소 제한
+        if (timeDifference > 300000) {
+            throw new IllegalStateException("Order can only be canceled within 5 minutes of creation.");
+        }
+
+        // 취소 처리를 위한 로직 (예: 주문 상태 업데이트)
+        order.setDeleted_at(currentTime);
+        order.setDeleted_by("system");  // 취소 처리한 사용자를 기록할 수 있음
+
+        orderRepository.delete(order);
     }
 
     // 4. 주문 목록 조회
+    @Transactional(readOnly = true)
     public List<OrderResponseDto> getAllOrders() {
         // 모든 주문 조회
         List<Order> orders = orderRepository.findAll();
         return orders.stream()
-                .map(OrderResponseDto::fromEntity)
+                .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
 
     // 5. 주문 상세 조회
+    @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(UUID orderId) {
         // 주문 조회
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         // 반환할 OrderResponseDto 생성
-        return OrderResponseDto.fromEntity(order);
+        return toResponseDto(order);
+    }
+
+    // Response DTO 변환 메서드
+    private OrderResponseDto toResponseDto(Order order) {
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .userId(order.getUser().getUser_id())
+                .addressId(order.getAddress().getId())
+                .paymentId(order.getPayment().getId())
+                .productId(order.getProduct_id())
+                .quantity(order.getQuantity())
+                .amount(order.getAmount())
+                .type(order.getType())
+                .createdAt(order.getCreated_at())
+                .createdBy(order.getCreated_by())
+                .updatedAt(order.getUpdated_at())
+                .updatedBy(order.getUpdated_by())
+                .build();
     }
 }
 

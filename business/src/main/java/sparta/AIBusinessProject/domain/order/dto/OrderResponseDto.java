@@ -27,23 +27,7 @@ public class OrderResponseDto {
     private Timestamp deletedAt;
     private String deletedBy;
 
-    // Entity를 DTO로 변환하는 메서드
-    public static OrderResponseDto fromEntity(Order order) {
-        return OrderResponseDto.builder()
-                .orderId(order.getId())
-                .userId(order.getUser().getUser_id())
-                .addressId(order.getAddress().getId())
-                .paymentId(order.getPayment().getId())
-                .productId(order.getProduct_id())
-                .quantity(order.getQuantity())
-                .amount(order.getAmount())
-                .type(order.getType())
-                .createdAt(order.getCreated_at())
-                .createdBy(order.getCreated_by())
-                .updatedAt(order.getUpdated_at())
-                .updatedBy(order.getUpdated_by())
-                .build();
-    }
+
 }
 
 // 주문 생성, 수정, 조회 시 클라이언트에게 반환할 정보를 담고 있다.

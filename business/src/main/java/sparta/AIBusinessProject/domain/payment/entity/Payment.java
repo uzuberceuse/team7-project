@@ -25,6 +25,9 @@ public class Payment {
     // 1번의 결제에 여러번 주문이 가능한 상황
     // Order:Payment = 1 : N (일대다 관계)
 
+    @Column(nullable = false)
+    private UUID pg_id; // pg사 결제연동 id
+
     private Timestamp created_at;
     private String created_by;
     private Timestamp updated_at;

@@ -1,9 +1,10 @@
 package sparta.AIBusinessProject.domain.payment.service;
 
-import jakarta.transaction.Transactional;
+
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.AIBusinessProject.domain.order.dto.OrderSummaryDto;
 import sparta.AIBusinessProject.domain.order.repository.OrderRepository;
 import sparta.AIBusinessProject.domain.payment.dto.PaymentListResponseDto;
@@ -56,6 +57,7 @@ public class PaymentService {
     }
 
     // 3. 결제 개별 정보 조회
+    @Transactional(readOnly = true)
     public PaymentResponseDto getPayment(UUID paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
@@ -64,6 +66,7 @@ public class PaymentService {
     }
 
     // 4. 결제 목록 조회
+    @Transactional(readOnly = true)
     public List<PaymentListResponseDto> getAllPayments() {
         List<Payment> payments = paymentRepository.findAll();
         return payments.stream()
