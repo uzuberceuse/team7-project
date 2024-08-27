@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.address.entity.Address;
-import sparta.AIBusinessProject.domain.user.dto.SignInRequest;
+import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class User {
     private String deleted_by;
 
     // 유저 생성 메서드
-    public static User create(final SignInRequest request){
+    public static User create(final SignInRequestDto request){
         return null;
     }
 
