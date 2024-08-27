@@ -27,6 +27,7 @@ public class OrderResponseDto {
     private Timestamp deletedAt;
     private String deletedBy;
 
+<<<<<<< HEAD
     // Entity를 DTO로 변환하는 메서드
     public static OrderResponseDto fromEntity(Order order) {
         return OrderResponseDto.builder()
@@ -44,6 +45,9 @@ public class OrderResponseDto {
                 .updatedBy(order.getUpdated_by())
                 .build();
     }
+=======
+
+>>>>>>> aa623ae8e14dd897badf46e604842c642abc88b1
 }
 
 // 주문 생성, 수정, 조회 시 클라이언트에게 반환할 정보를 담고 있다.
