@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sparta.AIBusinessProject.domain.security.UserDetailsImpl;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
 import sparta.AIBusinessProject.domain.user.dto.SignInResponseDto;
 import sparta.AIBusinessProject.domain.user.dto.SignUpRequestDto;
@@ -12,6 +12,7 @@ import sparta.AIBusinessProject.domain.user.dto.UserResponseDto;
 import sparta.AIBusinessProject.domain.user.service.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/user")
@@ -58,14 +59,17 @@ public class UserController {
 
 
     // 회원 단건조회
-    @GetMapping("/{id}")
-    public UserResponseDto getUser(@PathVariable Long id,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.getUser(id,userDetails.getUser());
+    @GetMapping("/{userId}")
+    public UserResponseDto getUser(@PathVariable UUID userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.getUser(userId,userDetails.getUser());
     }
 
     // 회원 목록조회
-    @GetMapping("/")
+    @GetMapping
     public List<UserResponseDto> getUserList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return userService.getUserList(userDetails.getUser());
     }
+
+
+
 }
