@@ -28,11 +28,8 @@ public class Store {
     @Column(updatable = false, nullable = false)
     private UUID store_id;
 
-//  질문사항
-//  @JoinColumn(name="category_id")
-//  private Category category;
+    @JoinColumn(name="category_id")
     private UUID category_id;
-
 
     @Column(nullable = false, unique = true)
     private String storeName;

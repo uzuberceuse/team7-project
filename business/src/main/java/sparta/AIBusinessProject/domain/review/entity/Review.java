@@ -26,11 +26,14 @@ public class Review {
     @Column(updatable = false, nullable = false)
     private UUID review_id;
 
-    @JoinColumn()
+    @JoinColumn(name="user_id")
     private UUID user_id;
-    private UUID order_id;
-    private UUID store_id;
 
+    @JoinColumn(name="order_id")
+    private UUID order_id;
+
+    @JoinColumn(name="store_id")
+    private UUID store_id;
 
     // 글자 수 제한걸기
     @Column(nullable = false)
