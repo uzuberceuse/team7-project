@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreListResponseDto {
 
-    private String category_id;
+    private UUID category_id;
     private String StoreName;
     private String location;
 }

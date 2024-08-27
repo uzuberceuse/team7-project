@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductListResponseDto {
 
-    private String product_id;
+    private UUID product_id;
     private String productName;
     private boolean status;
 }
