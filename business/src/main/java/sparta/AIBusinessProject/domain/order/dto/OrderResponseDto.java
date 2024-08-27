@@ -31,7 +31,7 @@ public class OrderResponseDto {
     public static OrderResponseDto fromEntity(Order order) {
         return OrderResponseDto.builder()
                 .orderId(order.getId())
-                .userId(order.getUser().getId())
+                .userId(order.getUser().getUser_id())
                 .addressId(order.getAddress().getId())
                 .paymentId(order.getPayment().getId())
                 .productId(order.getProduct_id())
