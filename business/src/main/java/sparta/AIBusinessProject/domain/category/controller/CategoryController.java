@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.category.dto.CreateCategoryRequestDto;
 import sparta.AIBusinessProject.domain.category.dto.CategoryResponseDto;
 import sparta.AIBusinessProject.domain.category.service.CategoryService;
+import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.util.List;
 
@@ -30,5 +31,18 @@ public class CategoryController {
         categoryService.createCategory(request);
         return true;
     }
+
+    // 카테고리 수정
+    @PatchMapping("/{id}")
+    public Boolean updateCategory(@PathVariable Long id, @RequestBody CreateCategoryRequestDto request){
+        return categoryService.updateCategory(id,request);
+    }
+
+
+    // 카테고리 삭제
+//    @DeleteMapping("/{category_id}"){
+//
+//    }
+
 
 }
