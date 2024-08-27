@@ -1,4 +1,7 @@
 package sparta.AIBusinessProject.domain.order.entity;
 
-public class order {
+public enum OrderTypeEnum {
+    ONLINE, OFFLINE
 }
+
+
