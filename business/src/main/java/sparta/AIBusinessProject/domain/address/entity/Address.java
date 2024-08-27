@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.category.entity.Category;
+import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -25,6 +26,11 @@ public class Address {
 
     private String addressName;
     private String zipcode;
+
+    // user:address=1:N
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User uer;
 
     private Timestamp created_at;
     private String created_by;
