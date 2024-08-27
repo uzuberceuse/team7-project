@@ -2,6 +2,7 @@ package sparta.AIBusinessProject.domain.complain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -19,6 +20,10 @@ public class Complain {
     @GeneratedValue
     @Column(name = "complain_id", updatable = false, nullable = false)
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
+    private User user;
 
     @Column(nullable = false)
     private String userName;
