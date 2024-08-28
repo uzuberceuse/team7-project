@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.address.entity.Address;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
+import sparta.AIBusinessProject.domain.user.dto.SignUpRequestDto;
+import sparta.AIBusinessProject.domain.user.dto.UserRequestDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,13 +30,13 @@ public class User {
     private UUID user_id;
 
     @Column(unique=true, nullable = false)
-    private String nickname;
+    private String username;
 
     // unique 제약조건
     @Column(unique=true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(unique=true, nullable = false)
     private String phone;
 
     @Column(nullable = false)
@@ -44,24 +46,50 @@ public class User {
     @Enumerated(value=EnumType.STRING)
     private UserRoleEnum role;
 
-    @OneToMany(mappedBy="user")
-    private List<Address> address=new ArrayList<Address>();
+    @Builder.Default
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> address=new ArrayList<>();
 
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Timestamp created_at;
-
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;
     private Timestamp deleted_at;
     private String deleted_by;
 
-    // 유저 생성 메서드
-    public static User create(final SignInRequestDto request){
-        return null;
+    // user 객체 변환 메서드
+    public static User create(final SignUpRequestDto request){
+        return User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .phone(request.getPhone())
+                .role(request.getRole())
+                .build();
+    }
+
+    // 수정을 한 후 -> updated값을 수정하는 메서드
+    public void changeUpdated(UserRequestDto request, String updatedBy){
+        this.username=request.getUsername();
+        this.email=request.getEmail();
+        this.password=request.getPassword();
+        this.phone=request.getPhone();
+        this.address=request.getAddress();
+
+        this.updated_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
+        this.updated_by=updatedBy;
+        this.isPublic=false;
+    }
+
+    // 삭제 한 후 -> deleted 값을 수정하는 메서드
+    public void chanageDeleted(String deletedBy){
+        this.deleted_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
+        this.deleted_by=deletedBy;
+        this.isPublic=false;
     }
 
 

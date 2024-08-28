@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder(access = AccessLevel.PRIVATE)
 public class UserListResponseDto {
-    private String nickname;
+    private String username;
     private String phone;
     private List<Address> address;
 }

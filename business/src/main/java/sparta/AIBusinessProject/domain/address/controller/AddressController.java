@@ -20,9 +20,10 @@ public class AddressController {
     // 배송지 등록
     @PostMapping
     public ResponseEntity<AddressResponseDto> createAddress(
-            final @RequestBody CreateAddressRequestDto request
+            final @RequestBody CreateAddressRequestDto request,
+            @RequestParam String username
     ){
-        AddressResponseDto address=addressService.createAddress(request);
+        AddressResponseDto address=addressService.createAddress(request,username);
         return ResponseEntity.ok(address);
     }
     // 배송지 목록 조회
@@ -33,16 +34,20 @@ public class AddressController {
     }
 
     // 배송지 수정
-    @PutMapping("/{addressId}")
-    public ResponseEntity<Void> updateAddress(@PathVariable UUID addressId) {
-        addressService.updateCategory(addressId);
+    @PutMapping("/{address_id}")
+    public ResponseEntity<Void> updateAddress(
+            @PathVariable UUID address_id,
+            @RequestBody CreateAddressRequestDto request,
+            @RequestParam String username
+    ) {
+        addressService.updateCategory(address_id,request,username);
         return null;
     }
 
     // 배송지 삭제
-    @PutMapping("/{addressId}/delete")
-    public ResponseEntity<String> deleteAddress(@PathVariable UUID addressId){
-        addressService.deleteCategory(addressId);
+    @DeleteMapping("/{address_id}/delete")
+    public ResponseEntity<String> deleteAddress(@PathVariable UUID address_id,@RequestParam String username){
+        addressService.deleteCategory(address_id,username);
         return ResponseEntity.ok("Category deleted successfully.");
     }
 }
