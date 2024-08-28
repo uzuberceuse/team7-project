@@ -33,13 +33,13 @@ public class ComplainService {
         return null;
     }
 
-    @Transactional
-    public Page<ComplainListResponseDto> getComplainList(Pageable pageable) {
-        return complainRepository.findAll(pageable).map(complain -> new ComplainListResponseDto(
-                complain.getId(),
-                complain.getUser().getUser_id(),
-                complain.getCreatedAt(),
-                complain.getCreatedBy()
-        ));
-    }
+//    @Transactional
+//    public Page<ComplainListResponseDto> getComplainList(Pageable pageable) {
+//        return complainRepository.findAll(pageable).map(complain -> new ComplainListResponseDto(
+//                complain.getId(),
+//                complain.getUser().getUser_id(),
+//                complain.getCreatedAt(),
+//                complain.getCreatedBy()
+//        ));
+//    }
 }
