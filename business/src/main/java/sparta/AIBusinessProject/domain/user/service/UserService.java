@@ -42,10 +42,10 @@ public class UserService {
         return userRepository.findByUserEmail(email).isPresent();
     }
 
-    public User signUp(SignUpRequestDto request) throws Exception {
+    public User signUp(SignUpRequestDto request) {
         // username 중복확인
         if(userRepository.findByUsername(request.getUsername()).isPresent()){
-            throw new Exception("username 중복");
+            throw new IllegalArgumentException("username 중복");
         }
         // password 암호화
         String password=passwordEncoder.encode(request.getPassword());
@@ -53,9 +53,14 @@ public class UserService {
 
         // email 중복확인
         if(userRepository.findByUserEmail(request.getEmail()).isPresent()){
-            throw new Exception("email 중복");
+            throw new IllegalArgumentException("email 중복");
         }
-        return userRepository.save(User.create(request));
+
+        // 사용자 role 확인
+        UserRoleEnum role=UserRoleEnum.OWNER;
+        if(request.getRole().equals("OWNER")){
+
+        }
     }
 
 
