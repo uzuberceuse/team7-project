@@ -8,5 +8,5 @@ import sparta.AIBusinessProject.domain.review.entity.Review;
 import java.util.UUID;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, UUID> {
+public interface ReviewRepository extends JpaRepository<Review, UUID>, ReviewRepositoryCustom {
 }

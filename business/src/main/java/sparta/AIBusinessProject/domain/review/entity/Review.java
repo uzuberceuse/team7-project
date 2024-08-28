@@ -74,34 +74,15 @@ public class Review {
                 .build();
     }
 
-
     // buildup 패턴으로 review 수정
-    public static Review updateReview(ReviewDto requestDto, String user_id) {
-        return Review.builder()
-                .content(requestDto.getContent())
-                .rating(requestDto.getRating())
-                .updated_by(user_id)
-                .build();
+    public void updateReview(String content, ReviewRatingTypeEnum rating, String user_id) {
+                this.content = content;
+                this.rating = rating;
+                this.updated_by = user_id;
     }
-
 
     // buildup 패턴으로 review 삭제
-    public static Review deleteReview(ReviewDto requestDto, String user_id) {
-        return Review.builder()
-                .content(requestDto.getContent())
-                .rating(requestDto.getRating())
-                .deleted_by(user_id)
-                .build();
-    }
-
-
-    public ReviewDto toResponseDto(){
-        return new ReviewDto(
-                this.user_id,
-                this.order_id,
-                this.store_id,
-                this.content,
-                this.rating
-        );
+    public void deleteReview(String user_id) {
+        this.deleted_by=user_id;
     }
 }

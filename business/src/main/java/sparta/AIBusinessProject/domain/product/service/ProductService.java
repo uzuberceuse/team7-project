@@ -51,7 +51,7 @@ public class ProductService {
     // 실제로 DB에서 삭제하는 것이 아닌 삭제 필드에 데이터가 들어가면 삭제라고 판단
     // 조회 시 시간값이 있다면 삭제된 것으로 판단하겠음
     @Transactional
-    public boolean deleteProduct(UUID product_id, String user_id) {
+    public Boolean deleteProduct(UUID product_id, String user_id) {
         try {
             Product product = productRepository.findById(product_id)
                     .filter(p -> p.getDeleted_at() == null)
