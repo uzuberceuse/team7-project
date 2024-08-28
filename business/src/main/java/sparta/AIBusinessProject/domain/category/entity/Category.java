@@ -50,10 +50,10 @@ public class Category {
                 .build();
     }
 
-    // 수정을 한 후 0 -> updated값을 수정하는 메서드
+    // 수정을 한 후 -> updated값을 수정하는 메서드
     public void changeUpdated(String updatedBy){
-        this.deleted_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
-        this.deleted_by=updatedBy;
+        this.updated_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
+        this.updated_by=updatedBy;
         this.isPublic=false;
     }
 
