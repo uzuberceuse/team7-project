@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.address.entity.Address;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
+import sparta.AIBusinessProject.domain.user.dto.UserRequestDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -62,6 +63,26 @@ public class User {
     // 유저 생성 메서드
     public static User create(final SignInRequestDto request){
         return null;
+    }
+
+    // 수정을 한 후 -> updated값을 수정하는 메서드
+    public void changeUpdated(UserRequestDto request, String updatedBy){
+        this.username=request.getUsername();
+        this.email=request.getEmail();
+        this.password=request.getPassword();
+        this.phone=request.getPhone();
+        this.address=request.getAddress();
+
+        this.updated_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
+        this.updated_by=updatedBy;
+        this.isPublic=false;
+    }
+
+    // 삭제 한 후 -> deleted 값을 수정하는 메서드
+    public void chanageDeleted(String deletedBy){
+        this.deleted_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
+        this.deleted_by=deletedBy;
+        this.isPublic=false;
     }
 
 

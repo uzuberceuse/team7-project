@@ -5,11 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import sparta.AIBusinessProject.domain.user.dto.*;
 import sparta.AIBusinessProject.global.security.UserDetailsImpl;
-import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
-import sparta.AIBusinessProject.domain.user.dto.SignInResponseDto;
-import sparta.AIBusinessProject.domain.user.dto.SignUpRequestDto;
-import sparta.AIBusinessProject.domain.user.dto.UserResponseDto;
 import sparta.AIBusinessProject.domain.user.service.UserService;
 
 import java.util.List;
@@ -33,7 +30,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable UUID userId,
-            @RequestBody SignUpRequestDto request,
+            @RequestBody UserRequestDto request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
@@ -41,7 +38,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        UserResponseDto response = userService.updateUser(userId, request);
+        UserResponseDto response = userService.updateUser(userId,request,userDetails.getUser().getUsername());
         return ResponseEntity.ok(response);
     }
 
@@ -49,7 +46,7 @@ public class UserController {
     // 회원 탈퇴
     @DeleteMapping("/{user_id}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long user_id,
+            @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
@@ -92,7 +89,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
-        UserResponseDto user=userService.getUser(user_id,userDetails.getUser());
+        UserResponseDto user=userService.getUser(user_id);
         return ResponseEntity.ok(user);
     }
 
