@@ -2,6 +2,7 @@ package sparta.AIBusinessProject.domain.notice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import sparta.AIBusinessProject.domain.notice.dto.NoticeRequestDto;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -31,5 +32,8 @@ public class Notice {
     private Timestamp deletedAt;
     private String deletedBy;
 
+    public Notice(NoticeRequestDto requestDto) {
+
+    }
 }
 

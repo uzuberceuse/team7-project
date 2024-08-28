@@ -18,8 +18,8 @@ public class NoticeRequestDto {
     private String createdBy; // 작성자
     private String updateBy; // 수정자
     private String deleteBy; // 삭제자
-//    private Timestamp createdAt;
-//    private Timestamp updatedAt;
-//    private Timestamp deletedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp deletedAt;
 
 }

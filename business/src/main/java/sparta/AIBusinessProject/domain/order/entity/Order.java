@@ -27,7 +27,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
-    private User user;
+    private User user;         // Order는 단일 User 와 다대일 관계
 
     @OneToOne
     @JoinColumn(name = "address_id", nullable = false) // 외래 키 컬럼
@@ -35,8 +35,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "payment_id", nullable = false) // 외래 키 컬럼
-    private Payment payment;
-    // Order는 단일 Payment와 다대일 관계
+    private Payment payment;   // Order는 단일 Payment와 다대일 관계
 
     @Column(nullable = false)
     private UUID product_id;

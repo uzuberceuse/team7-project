@@ -2,3 +2,13 @@ spring:
   application:
     name: AIBusinessProject
 
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/delivery
+    username: delivery
+    password: 1234
+    driver-class-name: org.postgresql.Driver
