@@ -14,8 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sparta.AIBusinessProject.global.jwt.JwtAuthenticationFilter;
-import sparta.AIBusinessProject.global.jwt.JwtAuthorizationFilter;
+import sparta.AIBusinessProject.global.security.JwtAuthenticationFilter;
+import sparta.AIBusinessProject.global.security.JwtAuthorizationFilter;
 import sparta.AIBusinessProject.global.jwt.JwtUtil;
 import sparta.AIBusinessProject.global.security.UserDetailsServiceImpl;
 

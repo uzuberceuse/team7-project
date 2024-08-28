@@ -3,8 +3,8 @@ spring:
     name: AIBusinessProject
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 0000
+    username: ${POSTGRESQL_ID}
+    password: ${POSTGRESQL_PW}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -16,11 +16,6 @@ spring:
         '[format_sql]': true
         '[show_sql]': true
         '[use_sql_comments]': true
-
-
-jwt:
-  access-expiration: 3600000
-  secret-key: "36169d24b0c764b39af614c68c77e6f1aaaaf15c922bfc4152264418c703266e1061533461fb3b4e13b53873aa864e763859246bc67a4eb4f14c45b2582ec3d4"
 
 jwt:
   secret:

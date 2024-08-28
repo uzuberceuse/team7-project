@@ -1,4 +1,4 @@
-package sparta.AIBusinessProject.global.jwt;
+package sparta.AIBusinessProject.global.security;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sparta.AIBusinessProject.global.security.UserDetailsServiceImpl;
+import sparta.AIBusinessProject.global.jwt.JwtUtil;
 
 import java.io.IOException;
 
