@@ -12,7 +12,7 @@ import java.util.UUID;
 public class ComplainResponseDto {
 
     private UUID id;
-    private String userName;
+    private UUID userid;
     private UUID reviewId;
     private String content;
     private String answer;
@@ -31,7 +31,7 @@ public class ComplainResponseDto {
 
     public ComplainResponseDto(Complain complain) {
         this.id = complain.getId();
-        this.userName = complain.getUserName();
+        this.userid = complain.getUser().getUser_id();
         this.content = complain.getContent();
         this.answer = complain.getAnswer();
         this.createdAt = complain.getCreatedAt();

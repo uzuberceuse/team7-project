@@ -2,6 +2,8 @@ package sparta.AIBusinessProject.domain.notice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.notice.dto.NoticeRequestDto;
 
 import java.sql.Timestamp;
@@ -17,7 +19,9 @@ import java.util.UUID;
 public class Notice {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @ColumnDefault("random_uuid()")
     @Column(name = "notice_id", updatable = false, nullable = false)
     private UUID id;
 

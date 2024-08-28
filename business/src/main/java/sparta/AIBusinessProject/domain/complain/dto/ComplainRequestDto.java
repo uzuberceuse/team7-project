@@ -14,7 +14,7 @@ public class ComplainRequestDto {
 
     // 신고접수 및 삭제
     private UUID id;
-    private String userName;
+    private UUID userId;
     private UUID reviewId;
     private String content;
     private String createdBy;
