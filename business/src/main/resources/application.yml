@@ -1,14 +1,34 @@
 spring:
   application:
     name: AIBusinessProject
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${POSTGRESQL_ID}
+    password: ${POSTGRESQL_PW}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     database: postgresql
     hibernate:
       ddl-auto: update
+
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
+
+    properties:
+      hibernate:
+        '[format_sql]': true
+        '[show_sql]': true
+        '[use_sql_comments]': true
+
+jwt:
+  secret:
+    key: ${JWT_SECRETKEY}
+
+owner:
+  token: ${OWNER_TOKEN}
+

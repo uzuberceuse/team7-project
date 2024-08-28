@@ -27,18 +27,18 @@ public class OrderController {
     }
 
     // 2. 주문 수정
-    @PatchMapping("/{orderId}")
+    @PatchMapping("/{order_id}")
     public ResponseEntity<OrderResponseDto> updateOrder(
-            @PathVariable UUID orderId,
+            @PathVariable UUID order_id,
             @RequestBody OrderRequestDto orderRequestDto) {
-        OrderResponseDto updatedOrder = orderService.updateOrder(orderId, orderRequestDto);
+        OrderResponseDto updatedOrder = orderService.updateOrder(order_id, orderRequestDto);
         return ResponseEntity.ok(updatedOrder);
     }
 
     // 3. 주문 취소
-    @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable UUID orderId) {
-        orderService.deleteOrder(orderId);
+    @DeleteMapping("/{order_id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID order_id) {
+        orderService.deleteOrder(order_id);
         return ResponseEntity.noContent().build();
     }
 
@@ -50,19 +50,19 @@ public class OrderController {
     }
 
     // 5. 주문 상세 조회
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable UUID orderId) {
-        OrderResponseDto order = orderService.getOrderById(orderId);
+    @GetMapping("/{order_id}")
+    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable UUID order_id) {
+        OrderResponseDto order = orderService.getOrderById(order_id);
         return ResponseEntity.ok(order);
     }
 
 
 
 //    @GetMapping("/order")
-//    public List<OrderResponseDto> getOrdersByPaymentId(@PathVariable UUID paymentId) {
+//    public List<OrderResponseDto> getOrdersByPaymentId(@PathVariable UUID payment_id) {
 //        // 경로 변수로 전달된 paymentId에 해당하는 모든 주문을 조회
 //        // 조회된 주문 목록을 OrderResponseDTO 리스트 형태로 반환
-//        return orderService.getOrdersByPaymentId(paymentId);
+//        return orderService.getOrdersByPaymentId(payment_id);
 //    }
 
 }

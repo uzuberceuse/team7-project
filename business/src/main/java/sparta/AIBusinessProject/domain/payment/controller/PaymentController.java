@@ -26,16 +26,16 @@ public class PaymentController {
     }
 
     // 2. 결제 취소
-    @DeleteMapping("/{paymentId}")
-    public ResponseEntity<Void> cancelPayment(@PathVariable UUID paymentId) {
-        paymentService.cancelPayment(paymentId);
+    @DeleteMapping("/{payment_id}")
+    public ResponseEntity<Void> cancelPayment(@PathVariable UUID payment_id) {
+        paymentService.cancelPayment(payment_id);
         return ResponseEntity.noContent().build();
     }
 
     // 3. 결제 개별 정보 조회
-    @GetMapping("/{paymentId}")
-    public ResponseEntity<PaymentResponseDto> getPayment(@PathVariable UUID paymentId) {
-        PaymentResponseDto responseDto = paymentService.getPayment(paymentId);
+    @GetMapping("/{payment_id}")
+    public ResponseEntity<PaymentResponseDto> getPayment(@PathVariable UUID payment_id) {
+        PaymentResponseDto responseDto = paymentService.getPayment(payment_id);
         return ResponseEntity.ok(responseDto);
     }
 
