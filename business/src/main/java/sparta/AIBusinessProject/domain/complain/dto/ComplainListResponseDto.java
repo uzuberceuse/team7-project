@@ -15,5 +15,4 @@ public class ComplainListResponseDto {
     private Timestamp createAt;
     private String createdBy;
 
-
 }

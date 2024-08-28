@@ -14,6 +14,7 @@ import sparta.AIBusinessProject.domain.complain.repository.ComplainRepository;
 import sparta.AIBusinessProject.domain.user.entity.User;
 import sparta.AIBusinessProject.domain.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,7 +40,7 @@ public class ComplainService {
         // 신고를 저장
         complainRepository.save(complain);
 
-        // 저장된 Complain 객체반환
+        // 저장된 ComplainResponseDto 로반환
         return new ComplainResponseDto(complain);
     }
     

@@ -33,8 +33,8 @@ public class NoticeController {
     }
 
     // 공지사항 수정 (Role : 관리자)
-    @PatchMapping("/{notice_id}")
     @Secured({"ROLE_MANAGER"})
+    @PatchMapping("/{notice_id}")
     public ResponseEntity<NoticeResponseDto> updateNotice(
             @PathVariable UUID noticeId,
             @RequestBody NoticeRequestDto requestDto) { // 수정할 데이터를 가져온다.
@@ -44,8 +44,8 @@ public class NoticeController {
     }
 
     // 공지사항 삭제 (Role : 관리자)
-    @DeleteMapping
     @Secured({"ROLE_MANAGER"})
+    @DeleteMapping
     public ResponseEntity<Notice> deleteNotice(
             @PathVariable UUID noticeId, @RequestParam String deleteBy) {
         noticeService.deleteNotice(noticeId, deleteBy);

@@ -33,10 +33,10 @@ public class ReportService {
              User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 User를 찾을 수 없습니다."));
 
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 리뷰를 찾을 수 없습니다."));
+            Review review = reviewRepository.findById(reviewId)
+                    .orElseThrow(()-> new IllegalArgumentException("해당 리뷰를 찾을 수 없습니다."));
 
-        Report report = Report.from(requestDto, user, review);
+            Report report = Report.from(requestDto, user, review);
 
         return reportRepository.save(report);
     }
@@ -45,10 +45,11 @@ public class ReportService {
     // 신고 리스트 조회
     @Transactional
     public List<ReportListResponseDto> getReportList(UUID reviewId, UUID userId) {
+        // 특정 리뷰와 사용자에 해당하는 신고를 조회
         return reportRepository.findByReviewIdAndUserId(reviewId, userId).stream()
                 .map(report -> ReportListResponseDto.builder()
                         .id(report.getId())
-                        .reviewId(UUID.fromString(report.getReview().getReview_id()))
+                        .reviewId(report.getReview().getReview_id())
                         .userId(report.getUser().getUser_id())
                         .title(report.getTitle())
                         .createdAt(report.getCreatedAt())
@@ -56,9 +57,10 @@ public class ReportService {
                 .collect(Collectors.toList());
     }
         
-    //리뷰후기 삭제
+    //리뷰후기 신고 삭제
     @Transactional
     public void deleteReport(UUID reviewId, UUID userId) {
+        // 특정리뷰와 사용자에 해당하는 모든 신고를 조회하여 삭제
         List<Report> reports = reportRepository.findByReviewIdAndUserId(reviewId, userId);
         if (reports.isEmpty()) {
             throw new IllegalArgumentException("신고를 찾을 수 없습니다.");
@@ -70,4 +72,4 @@ public class ReportService {
     }
 
 
-}
+

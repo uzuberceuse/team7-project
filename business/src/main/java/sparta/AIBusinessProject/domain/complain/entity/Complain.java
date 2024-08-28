@@ -38,6 +38,4 @@ public class Complain {
     private Timestamp deletedAt;
     private String deletedBy;
 
-
-
 }

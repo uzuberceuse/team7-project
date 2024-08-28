@@ -44,6 +44,8 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
+        // StringUtils.hasText -> 문자열 유효성 검증 메소드
+        // 문자열이 유효 할 경우에만 수행 => 공백을 제외하고 길이가 1이상인 경우.
         if(StringUtils.hasText(requestDto.getNoticeTitle())){
             notice.setNoticeTitle(requestDto.getNoticeTitle());
         }
@@ -71,6 +73,7 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
+        // 삭제한 시간, 삭제한 사람 확인
         notice.setDeletedBy(deleteBy);
         notice.setDeletedAt(new Timestamp(System.currentTimeMillis()));
         noticeRepository.save(notice);
