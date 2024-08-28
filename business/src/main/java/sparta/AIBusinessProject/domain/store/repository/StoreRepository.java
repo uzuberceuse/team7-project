@@ -8,5 +8,5 @@ import sparta.AIBusinessProject.domain.store.entity.Store;
 import java.util.UUID;
 
 @Repository
-public interface StoreRepository extends JpaRepository<Store, UUID> {
+public interface StoreRepository extends JpaRepository<Store, UUID>, StoreRepositoryCustom {
 }
