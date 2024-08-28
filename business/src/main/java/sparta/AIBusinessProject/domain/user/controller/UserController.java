@@ -47,17 +47,17 @@ public class UserController {
 
 
     // 회원 탈퇴
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{user_id}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long id,
+            @PathVariable Long user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(id)) {
+        if (!userDetails.getUser().getUser_id().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        userService.deleteUser(id);
+        userService.deleteUser(user_id);
         return ResponseEntity.noContent().build();
     }
 
@@ -82,17 +82,17 @@ public class UserController {
     }
 
     // 회원 단건조회
-    @GetMapping("/{userId}")
+    @GetMapping("/{user_id}")
     public ResponseEntity<UserResponseDto> getUser(
-            @PathVariable UUID userId,
+            @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
         // 로그인한 사용자의 ID와 조회 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(userId)) {
+        if (!userDetails.getUser().getUser_id().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
-        UserResponseDto user=userService.getUser(userId,userDetails.getUser());
+        UserResponseDto user=userService.getUser(user_id,userDetails.getUser());
         return ResponseEntity.ok(user);
     }
 
