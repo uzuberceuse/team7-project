@@ -26,12 +26,11 @@ public class Address {
     @ColumnDefault("random_uuid()")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-
     private String addressName;
     private String zipcode;
 
     // user:address=1:N
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user_id;
 

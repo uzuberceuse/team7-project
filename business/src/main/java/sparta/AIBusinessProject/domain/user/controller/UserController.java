@@ -1,11 +1,14 @@
 package sparta.AIBusinessProject.domain.user.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.user.dto.*;
+import sparta.AIBusinessProject.domain.user.entity.User;
 import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 import sparta.AIBusinessProject.domain.user.service.UserService;
 
@@ -21,9 +24,9 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> createUser(@RequestBody SignUpRequestDto request){
-        Boolean response=userService.createUser(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> createUser(@RequestBody @Valid @NotNull SignUpRequestDto request) throws Exception {
+        User user=userService.signUp(request);
+        return ResponseEntity.ok("signUp Successfully");
     }
 
     // 회원수정
