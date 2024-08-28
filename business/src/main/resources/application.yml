@@ -2,6 +2,16 @@ spring:
   application:
     name: AIBusinessProject
 
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/delivery
+    username: delivery
+    password: 1234
+    driver-class-name: org.postgresql.Driver
 jwt:
   access-expiration: 3600000
   secret-key: "36169d24b0c764b39af614c68c77e6f1aaaaf15c922bfc4152264418c703266e1061533461fb3b4e13b53873aa864e763859246bc67a4eb4f14c45b2582ec3d4"
