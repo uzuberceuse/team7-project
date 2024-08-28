@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.order.service;
 import lombok.*;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.AIBusinessProject.domain.address.entity.Address;
 import sparta.AIBusinessProject.domain.address.repository.AddressRepository;
 import sparta.AIBusinessProject.domain.order.dto.OrderRequestDto;
@@ -57,7 +58,7 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);   // 주문 저장
 
-        return OrderResponseDto.fromEntity(savedOrder);  // 반환할 OrderResponseDto 생성
+        return toResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
     }
 
     // 2. 주문 수정
@@ -88,54 +89,87 @@ public class OrderService {
         Order updatedOrder = orderRepository.save(existingOrder);
 
         // 반환할 OrderResponseDto 생성
-        return OrderResponseDto.fromEntity(updatedOrder);
+        return toResponseDto(updatedOrder);
     }
 
-    // 3. 주문 삭제
+    // 3. 주문 취소
     public void deleteOrder(UUID orderId) {
-        // 주문 존재 여부 확인 후 삭제
-        Order existingOrder = orderRepository.findById(orderId)
+        // 주문 존재 여부 확인 후 취소
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        orderRepository.delete(existingOrder);
+        // 주문이 생성된 후 5분 이내인지 확인
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        long timeDifference = currentTime.getTime() - order.getCreated_at().getTime();
+
+        // 5분(300,000 밀리초) 이내에만 취소 가능
+        // 5분 초과하면 취소 제한
+        if (timeDifference > 300000) {
+            throw new IllegalStateException("Order can only be canceled within 5 minutes of creation.");
+        }
+
+        // 취소 처리를 위한 로직 (예: 주문 상태 업데이트)
+        order.setDeleted_at(currentTime);
+        order.setDeleted_by("system");  // 취소 처리한 사용자를 기록할 수 있음
+
+        orderRepository.delete(order);
     }
 
     // 4. 주문 목록 조회
+    @Transactional(readOnly = true)
     public List<OrderResponseDto> getAllOrders() {
         // 모든 주문 조회
         List<Order> orders = orderRepository.findAll();
         return orders.stream()
-                .map(OrderResponseDto::fromEntity)
+                .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
 
     // 5. 주문 상세 조회
+    @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(UUID orderId) {
         // 주문 조회
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         // 반환할 OrderResponseDto 생성
-        return OrderResponseDto.fromEntity(order);
+        return toResponseDto(order);
+    }
+
+    // Response DTO 변환 메서드
+    private OrderResponseDto toResponseDto(Order order) {
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .userId(order.getUser().getUser_id())
+                .addressId(order.getAddress().getId())
+                .paymentId(order.getPayment().getId())
+                .productId(order.getProduct_id())
+                .quantity(order.getQuantity())
+                .amount(order.getAmount())
+                .type(order.getType())
+                .createdAt(order.getCreated_at())
+                .createdBy(order.getCreated_by())
+                .updatedAt(order.getUpdated_at())
+                .updatedBy(order.getUpdated_by())
+                .build();
     }
 }
 
 
-//createOrder 메서드:
-//
-//OrderRequestDto를 받아 Order 엔티티를 생성하고 저장한 후, 저장된 엔티티를 OrderResponseDto로 변환하여 반환합니다.
-//        필요한 User, Address, Payment 엔티티를 먼저 조회하여 주문 생성 시 사용합니다.
-//updateOrder 메서드:
-//
-//orderId를 기반으로 기존 주문을 조회한 후, 해당 주문을 업데이트합니다.
-//OrderRequestDto에서 새로운 값을 받아와 기존 주문의 필드를 업데이트하고, 이를 저장한 후 OrderResponseDto로 변환하여 반환합니다.
-//deleteOrder 메서드:
-//
-//orderId를 기반으로 주문을 조회하고, 해당 주문을 삭제합니다.
-//getAllOrders 메서드:
-//
-//모든 주문을 조회하여 OrderResponseDto의 리스트로 반환합니다.
-//Order 엔티티를 OrderResponseDto로 변환하여 클라이언트에게 전달합니다.
+// createOrder 메서드
+// OrderRequestDto를 받아 Order 엔티티를 생성하고 저장한 후, 저장된 엔티티를 OrderResponseDto로 변환하여 반환
+// 필요한 User, Address, Payment 엔티티를 먼저 조회하여 주문 생성 시 사용
+
+// updateOrder 메서드
+// orderId를 기반으로 기존 주문을 조회한 후, 해당 주문을 업데이트
+// OrderRequestDto에서 새로운 값을 받아와 기존 주문의 필드를 업데이트하고, 이를 저장한 후 OrderResponseDto로 변환하여 반환합니다.
+
+// deleteOrder 메서드
+// orderId를 기반으로 주문을 조회하고, 해당 주문을 삭제
+
+// getAllOrders 메서드
+// 모든 주문을 조회하여 OrderResponseDto의 리스트로 반환
+// Order 엔티티를 OrderResponseDto로 변환하여 클라이언트에게 전달
+
 //getOrderById 메서드:
-//
-//orderId로 특정 주문을 조회한 후, 이를 OrderResponseDto로 변환하여 반환합니다.
+//orderId로 특정 주문을 조회한 후, 이를 OrderResponseDto로 변환하여 반환
