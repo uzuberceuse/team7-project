@@ -28,7 +28,7 @@ public class User {
     private UUID user_id;
 
     @Column(unique=true, nullable = false)
-    private String nickname;
+    private String username;
 
     // unique 제약조건
     @Column(unique=true, nullable = false)

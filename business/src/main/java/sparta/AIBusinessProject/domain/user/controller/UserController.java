@@ -1,10 +1,11 @@
 package sparta.AIBusinessProject.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sparta.AIBusinessProject.domain.security.UserDetailsImpl;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
 import sparta.AIBusinessProject.domain.user.dto.SignInResponseDto;
 import sparta.AIBusinessProject.domain.user.dto.SignUpRequestDto;
@@ -12,6 +13,7 @@ import sparta.AIBusinessProject.domain.user.dto.UserResponseDto;
 import sparta.AIBusinessProject.domain.user.service.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/user")
@@ -28,17 +30,36 @@ public class UserController {
     }
 
     // 회원수정
-    @PatchMapping("/{id}")
-    public UserResponseDto updateUser(
-            @PathVariable Long id,
-            @RequestBody SignUpRequestDto request){
-        return userService.updateProduct(id,request);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> updateUser(
+            @PathVariable UUID userId,
+            @RequestBody SignUpRequestDto request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
+        if (!userDetails.getUser().getUser_id().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        UserResponseDto response = userService.updateUser(userId, request);
+        return ResponseEntity.ok(response);
     }
 
 
     // 회원 탈퇴
-    @DeleteMapping("/{user_id}")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
+        // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
+        if (!userDetails.getUser().getUser_id().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 
     // 로그인
     @GetMapping("/signIn")
@@ -55,17 +76,39 @@ public class UserController {
     }
 
     // 로그아웃
-
+    public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.logout(userDetails.getUser());
+        return ResponseEntity.ok("Logout successfully.");
+    }
 
     // 회원 단건조회
-    @GetMapping("/{id}")
-    public UserResponseDto getUser(@PathVariable Long id,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.getUser(id,userDetails.getUser());
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> getUser(
+            @PathVariable UUID userId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        // 로그인한 사용자의 ID와 조회 요청한 ID가 일치하는지 확인
+        if (!userDetails.getUser().getUser_id().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+        }
+
+        UserResponseDto user=userService.getUser(userId,userDetails.getUser());
+        return ResponseEntity.ok(user);
     }
 
     // 회원 목록조회
-    @GetMapping("/")
-    public List<UserResponseDto> getUserList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.getUserList(userDetails.getUser());
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getUserList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        // 예시: 관리자 권한이 있을 때만 전체 목록 조회 허용
+        if (!userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("MANAGER")||auth.getAuthority().equals("MASTER"))){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        List<UserResponseDto> users=userService.getUserList(userDetails.getUser());
+        return ResponseEntity.ok(users);
     }
+
+
+
 }
