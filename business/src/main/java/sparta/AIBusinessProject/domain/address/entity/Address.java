@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name="p_address")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
@@ -45,12 +46,12 @@ public class Address {
     private Timestamp deleted_at;
     private String deleted_by;
 
-    public static Address create(String addressName,String zipcode,String user_id){
+    public static Address create(String addressName,String zipcode,String username){
         return Address.builder()
                 .addressName(addressName)
                 .zipcode(zipcode)
                 .created_at(Timestamp.from(Instant.now()))
-                .created_by(user_id)
+                .created_by(username)
                 .build();
     }
 

@@ -8,11 +8,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name="p_category")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
@@ -40,9 +42,11 @@ public class Category {
     private Timestamp deleted_at;
     private String deleted_by;
 
-    public static Category create(String name){
+    public static Category create(String categoryName,String username){
         return Category.builder()
-                .categoryName(name)
+                .categoryName(categoryName)
+                .created_at(Timestamp.from(Instant.now()))
+                .created_by(username)
                 .build();
     }
 

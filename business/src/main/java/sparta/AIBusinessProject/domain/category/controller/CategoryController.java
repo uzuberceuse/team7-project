@@ -26,25 +26,29 @@ public class CategoryController {
 
     // 카테고리 추가
     @PostMapping
-    public ResponseEntity<Void> createCategory(
-            final @RequestBody CreateCategoryRequestDto request
+    public ResponseEntity<CategoryResponseDto> createCategory(
+            final @RequestBody CreateCategoryRequestDto request,
+            @RequestParam String username
     ){
-        categoryService.createCategory(request);
-        return ResponseEntity.noContent().build();
+        CategoryResponseDto category=categoryService.createCategory(request,username);
+        return ResponseEntity.ok(category);
     }
 
     // 카테고리 수정
-    @PatchMapping("/{categoryId}")
-    public ResponseEntity<Void> updateCategory(@PathVariable Long categoryId, @RequestBody CreateCategoryRequestDto request){
-        categoryService.updateCategory(categoryId,request);
+    @PatchMapping("/{category_id}")
+    public ResponseEntity<Void> updateCategory(
+            @PathVariable UUID category_id,
+            @RequestBody CreateCategoryRequestDto request,
+            @RequestParam String username
+    ){
+        categoryService.updateCategory(category_id,request,username);
         return ResponseEntity.noContent().build();
     }
 
     // 카테고리 삭제
-    // put? delete?
-    @PutMapping("/{categoryId}/delete")
-    public ResponseEntity<String> deleteOrder(@PathVariable UUID categoryId, @RequestParam String userId) {
-        categoryService.deleteCategory(categoryId,userId);
+    @DeleteMapping("/{category_id}/delete")
+    public ResponseEntity<String> deleteOrder(@PathVariable UUID category_id, @RequestParam String username) {
+        categoryService.deleteCategory(category_id,username);
         return ResponseEntity.ok("Category deleted successfully.");
     }
 }

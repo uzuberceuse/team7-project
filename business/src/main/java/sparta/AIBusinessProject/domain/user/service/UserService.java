@@ -50,7 +50,6 @@ public class UserService {
         return null;
     }
 
-
     public SignInResponseDto createAccessToken(SignInRequestDto request) {
         return null;
     }
@@ -71,7 +70,7 @@ public class UserService {
         return null;
     }
 
-
     public void logout(User user) {
+
     }
 }
