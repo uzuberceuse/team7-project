@@ -3,7 +3,6 @@ package sparta.AIBusinessProject.domain.product.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
@@ -11,7 +10,6 @@ import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 import sparta.AIBusinessProject.domain.product.service.ProductService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +34,7 @@ public class ProductController {
                                                 @RequestHeader(value = "X-User-Id") String user_id,
                                                 @RequestHeader(value = "X-Role") String role){
                 // MANAGER, STORE 권한을 가져야만 create 가능
-                if(!"MANGER".equals(role) || !"STORE".equals(role)){
+                if(!"MANGER".equals(role) && !"STORE".equals(role)){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
@@ -51,9 +49,8 @@ public class ProductController {
                                                 @RequestHeader(value = "X-User-Id") String user_id,
                                                 @RequestHeader(value = "X-Role") String role,
                                                 @PathVariable UUID product_id){
-
                 // MANAGER, STORE 권한을 가져야만 update 가능
-                if(!"MANGER".equals(role) || !"STORE".equals(role)){
+                if(!"MANGER".equals(role) && !"STORE".equals(role)){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
@@ -64,12 +61,12 @@ public class ProductController {
            삭제 결과는 T/F
         */
         @DeleteMapping("/{product_id}")
-        public boolean deleteProduct(@RequestHeader(value = "X-User-Id") String user_id,
+        public Boolean deleteProduct(@RequestHeader(value = "X-User-Id") String user_id,
                                      @RequestHeader(value = "X-Role") String role,
                                      @PathVariable UUID product_id){
 
                 // MANAGER, STORE 권한을 가져야만 delete 가능
-                if(!"MANGER".equals(role) || !"STORE".equals(role)){
+                if(!"MANGER".equals(role) && !"STORE".equals(role)){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 

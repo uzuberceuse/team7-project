@@ -75,14 +75,14 @@ public class Product {
 
     // product 업데이트
     public void updateProduct(String productName, String details, Integer price, boolean status, String user_id ){
-        this.productName = productName;
-        this.details = details;
-        this.price = price;
-        this.status = status;
-        this.updated_by = user_id;
+            this.productName = productName;
+            this.details = details;
+            this.price = price;
+            this.status = status;
+            this.updated_by = user_id;
     }
 
     public void deleteProduct(String user_id){
-        this.deleted_by = user_id;
+            this.deleted_by = user_id;
     }
 }
