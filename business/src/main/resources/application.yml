@@ -11,6 +11,14 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: update
+
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
     properties:
       hibernate:
         '[format_sql]': true
@@ -23,3 +31,4 @@ jwt:
 
 owner:
   token: ${OWNER_TOKEN}
+
