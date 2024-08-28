@@ -1,20 +1,25 @@
 package sparta.AIBusinessProject.domain.user.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import sparta.AIBusinessProject.domain.user.dto.*;
+import sparta.AIBusinessProject.domain.user.entity.User;
 import sparta.AIBusinessProject.global.security.UserDetailsImpl;
-import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
-import sparta.AIBusinessProject.domain.user.dto.SignInResponseDto;
-import sparta.AIBusinessProject.domain.user.dto.SignUpRequestDto;
-import sparta.AIBusinessProject.domain.user.dto.UserResponseDto;
 import sparta.AIBusinessProject.domain.user.service.UserService;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("api/user")
 @RequiredArgsConstructor
@@ -24,16 +29,24 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> createUser(@RequestBody SignUpRequestDto request){
-        Boolean response=userService.createUser(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> signup(
+            @RequestBody @Valid SignUpRequestDto requestDto,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException("signUp error");
+        }
+        userService.signUp(requestDto);
+        return ResponseEntity.ok("signUp successfully");
     }
+
+
 
     // 회원수정
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable UUID userId,
-            @RequestBody SignUpRequestDto request,
+            @RequestBody UserRequestDto request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
@@ -41,23 +54,23 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        UserResponseDto response = userService.updateUser(userId, request);
+        UserResponseDto response = userService.updateUser(userId,request,userDetails.getUser().getUsername());
         return ResponseEntity.ok(response);
     }
 
 
     // 회원 탈퇴
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{user_id}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable Long id,
+            @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(id)) {
+        if (!userDetails.getUser().getUser_id().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        userService.deleteUser(id);
+        userService.deleteUser(user_id);
         return ResponseEntity.noContent().build();
     }
 
@@ -82,17 +95,17 @@ public class UserController {
     }
 
     // 회원 단건조회
-    @GetMapping("/{userId}")
+    @GetMapping("/{user_id}")
     public ResponseEntity<UserResponseDto> getUser(
-            @PathVariable UUID userId,
+            @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
         // 로그인한 사용자의 ID와 조회 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(userId)) {
+        if (!userDetails.getUser().getUser_id().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
-        UserResponseDto user=userService.getUser(userId,userDetails.getUser());
+        UserResponseDto user=userService.getUser(user_id);
         return ResponseEntity.ok(user);
     }
 
@@ -108,7 +121,4 @@ public class UserController {
         List<UserResponseDto> users=userService.getUserList(userDetails.getUser());
         return ResponseEntity.ok(users);
     }
-
-
-
 }
