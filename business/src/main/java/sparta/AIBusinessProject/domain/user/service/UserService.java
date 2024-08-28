@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sparta.AIBusinessProject.domain.user.dto.*;
 import sparta.AIBusinessProject.domain.user.entity.User;
+import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 import sparta.AIBusinessProject.domain.user.repository.UserRepository;
 import sparta.AIBusinessProject.global.config.PasswordConfig;
 import sparta.AIBusinessProject.global.jwt.JwtUtil;
@@ -22,20 +23,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,JwtUtil jwtUtil){
-        this.userRepository=userRepository;
-        this.passwordEncoder=passwordEncoder;
-        this.jwtUtil=jwtUtil;
-    }
-
-    // 회원 존재 여부 검증 비즈니스 로직
-    public Boolean verifyUser(final String email) {
-        // email 로 User 를 조회 후 isPresent() 로 존재유무를 리턴함
-        return userRepository.findByUserEmail(email).isPresent();
-    }
-
-    public Boolean createUser(SignUpRequestDto request) {
-        return null;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public SignInResponseDto createAccessToken(SignInRequestDto request) {
@@ -43,6 +34,30 @@ public class UserService {
     }
 
     public void logout(User user) {}
+
+
+    // 회원 존재 여부 검증 비즈니스 로직
+    public Boolean verifyUser(final String email) {
+        // email 로 User 를 조회 후 isPresent() 로 존재유무를 리턴함
+        return userRepository.findByUserEmail(email).isPresent();
+    }
+
+    public User signUp(SignUpRequestDto request) throws Exception {
+        // username 중복확인
+        if(userRepository.findByUsername(request.getUsername()).isPresent()){
+            throw new Exception("username 중복");
+        }
+        // password 암호화
+        String password=passwordEncoder.encode(request.getPassword());
+        request.setPassword(password);
+
+        // email 중복확인
+        if(userRepository.findByUserEmail(request.getEmail()).isPresent()){
+            throw new Exception("email 중복");
+        }
+        return userRepository.save(User.create(request));
+    }
+
 
     // 유저 탈퇴 비즈니스 로직
     public Boolean deleteUser(UUID userId) {

@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.report.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
+import sparta.AIBusinessProject.domain.review.entity.Review;
 import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
