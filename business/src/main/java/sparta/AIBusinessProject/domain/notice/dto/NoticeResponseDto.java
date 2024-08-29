@@ -11,33 +11,27 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NoticeResponseDto {
 
-    private UUID id;
+    private UUID notice_id;
     private String noticeTitle;
     private String noticeContent;
-    private Timestamp createdAt;
-    private String createdBy;
-    private Timestamp updatedAt;
-    private String updatedBy;
-    private Timestamp deletedAt;
-    private String deletedBy;
-
-    // 페이징 관련 필드 추가
-    private int page;           // 현재 페이지 번호
-    private int size;           // 페이지 크기
-    private int totalPages;      // 전체 페이지 수
-    private long totalElements;  // 전체 요소 수
+    private Timestamp created_at;
+    private String created_by;
+    private Timestamp updated_at;
+    private String updated_by;
+    private Timestamp deleted_at;
+    private String deleted_by;
 
 
     public NoticeResponseDto(Notice notice) {
-        this.id = notice.getId();
+        this.notice_id = notice.getNotice_id();
         this.noticeTitle = notice.getNoticeTitle();
         this.noticeContent = notice.getNoticeContent();
-        this.createdAt = notice.getCreatedAt();
-        this.createdBy = notice.getCreatedBy();
-        this.updatedAt = notice.getUpdatedAt();
-        this.updatedBy = notice.getUpdatedBy();
-        this.deletedAt = notice.getDeletedAt();
-        this.deletedBy = notice.getDeletedBy();
+        this.created_at = notice.getCreated_at();
+        this.created_by = notice.getCreated_by();
+        this.updated_at = notice.getUpdated_at();
+        this.updated_by = notice.getUpdated_by();
+        this.deleted_at = notice.getDeleted_at();
+        this.deleted_by = notice.getDeleted_by();
     }
 
 }

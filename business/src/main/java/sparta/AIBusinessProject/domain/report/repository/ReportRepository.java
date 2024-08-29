@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface ReportRepository extends JpaRepository<Report, UUID> {
 
-    List<Report> findByReviewIdAndUserId(@Param("review_id") UUID reviewId, @Param("user_id") UUID userId);
+    List<Report> findByReviewIdAndUserId(@Param("review_id") UUID review_id, @Param("user_id") UUID user_id);
 }
