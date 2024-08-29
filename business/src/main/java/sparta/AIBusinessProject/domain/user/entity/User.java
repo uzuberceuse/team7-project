@@ -72,13 +72,13 @@ public class User {
     private String deleted_by;
 
     // user 객체 변환 메서드
-    public static User create(final SignUpRequestDto request){
+    public static User create(String username,String email,String password,String phone,UserRoleEnum role){
         return User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .phone(request.getPhone())
-                .role(request.getRole())
+                .username(username)
+                .email(email)
+                .password(password)
+                .phone(phone)
+                .role(role)
                 .build();
     }
 

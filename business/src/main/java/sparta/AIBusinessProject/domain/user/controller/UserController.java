@@ -30,8 +30,12 @@ public class UserController {
     // 회원가입
     @PostMapping("/signUp")
     public ResponseEntity<String> signup(
-            @RequestBody @Valid SignUpRequestDto requestDto
+            @RequestBody @Valid SignUpRequestDto requestDto,
+            BindingResult bindingResult
     ) {
+        if(bindingResult.hasErrors()) {
+            log.error(bindingResult.getFieldError().getDefaultMessage());
+        }
         userService.signUp(requestDto);
         return ResponseEntity.ok("signUp successfully");
     }
@@ -71,11 +75,10 @@ public class UserController {
     }
 
     // 로그인
-//    @GetMapping("/signIn")
-//    public SignInResponseDto createAuthenticationToken(@RequestBody SignInRequestDto request){
-//        SignInResponseDto response=userService.createAccessToken(request);
-//        return response;
-//    }
+    @GetMapping("/signIn")
+    public SignInResponseDto createAuthenticationToken(@RequestBody SignInRequestDto request){
+        return null;
+    }
 
     // userId 존재여부 검증 API
     @GetMapping("/verify")
@@ -101,7 +104,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
-        UserResponseDto user=userService.getUser(user_id);
+        UserResponseDto user=userService.getUser(userDetails);
         return ResponseEntity.ok(user);
     }
 

@@ -1,6 +1,9 @@
 package sparta.AIBusinessProject.domain.address.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.AIBusinessProject.domain.address.dto.AddressResponseDto;
@@ -18,10 +21,11 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     // 주소 조회 비즈니스 로직
-    public List<AddressResponseDto> getAddresses() {
-        return addressRepository.findAll().stream()
-                .map(AddressResponseDto::of)
-                .collect(Collectors.toList());
+    public Page<AddressResponseDto> getAddresses(Pageable pageable) {
+        return addressRepository.findAll(pageable).map(address -> new AddressResponseDto(
+                address.getAddressName(),
+                address.getZipcode()
+        ));
     }
 
     // 주소 생성 비즈니스 로직
