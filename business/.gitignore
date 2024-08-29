@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# Ignore application.properties to allow each developer to use their own configuration
+/src/main/resources/application.yml
