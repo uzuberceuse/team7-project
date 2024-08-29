@@ -27,23 +27,11 @@ public class OrderResponseDto {
     private Timestamp deletedAt;
     private String deletedBy;
 
-    // Entity를 DTO로 변환하는 메서드
-    public static OrderResponseDto fromEntity(Order order) {
-        return OrderResponseDto.builder()
-                .orderId(order.getId())
-                //.userId(order.getUser().getId())
-                .addressId(order.getAddress().getId())
-                .paymentId(order.getPayment().getId())
-                .productId(order.getProduct_id())
-                .quantity(order.getQuantity())
-                .amount(order.getAmount())
-                .type(order.getType())
-                .createdAt(order.getCreated_at())
-                .createdBy(order.getCreated_by())
-                .updatedAt(order.getUpdated_at())
-                .updatedBy(order.getUpdated_by())
-                .build();
-    }
+    // 페이징 관련 필드 추가
+    private int page;           // 현재 페이지 번호
+    private int size;           // 페이지 크기
+    private int totalPages;      // 전체 페이지 수
+    private long totalElements;  // 전체 요소 수
 }
 
 // 주문 생성, 수정, 조회 시 클라이언트에게 반환할 정보를 담고 있다.
