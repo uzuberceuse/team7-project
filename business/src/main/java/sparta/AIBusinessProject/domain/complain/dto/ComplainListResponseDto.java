@@ -10,9 +10,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComplainListResponseDto {
 
-    private UUID id;
-    private UUID userId;
-    private Timestamp createAt;
-    private String createdBy;
+    private UUID complain_id;
+    private UUID user_id;
+    private Timestamp created_at;
+    private String created_by;
 
 }

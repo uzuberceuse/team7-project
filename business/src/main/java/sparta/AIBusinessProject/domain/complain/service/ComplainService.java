@@ -26,15 +26,15 @@ public class ComplainService {
 
     // 신고접수
     @Transactional
-    public ComplainResponseDto createComplain(UUID userId, ComplainRequestDto requestDto) {
-        User user = userRepository.findById(userId)
+    public ComplainResponseDto createComplain(UUID user_id, ComplainRequestDto requestDto) {
+        User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 user를 찾을 수 없습니다."));
 
         // 새로운 Complain 객체를 빌더 패턴으로 생성
         Complain complain = Complain.builder()
                 .user(user)
-                .content(requestDto.getContent())
-                .createdBy(requestDto.getCreatedBy())
+                .complainContent(requestDto.getComplainContent())
+                .created_by(requestDto.getCreated_by())
                 .build();
 
         // 신고를 저장
@@ -46,10 +46,10 @@ public class ComplainService {
     
     // 신고삭제
     @Transactional
-    public void deleteComplain(UUID userId) {
+    public void deleteComplain(UUID user_id) {
 
         // userId의 사용자의 신고를 조회
-        Complain complain = complainRepository.findByUserId(userId)
+        Complain complain = complainRepository.findByUserId(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저의 신고가 없습니다."));
 
         complainRepository.delete(complain);
@@ -59,10 +59,10 @@ public class ComplainService {
     @Transactional
     public Page<ComplainListResponseDto> getComplainList(Pageable pageable) {
         return complainRepository.findAll(pageable).map(complain -> new ComplainListResponseDto(
-                complain.getId(),
+                complain.getComplain_id(),
                 complain.getUser().getUser_id(),
-                complain.getCreatedAt(),
-                complain.getCreatedBy()
+                complain.getCreated_at(),
+                complain.getCreated_by()
         ));
     }
 
