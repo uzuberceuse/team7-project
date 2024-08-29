@@ -33,8 +33,8 @@ public class UserController {
             @RequestBody @Valid SignUpRequestDto requestDto,
             BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException("signUp error");
+        if(bindingResult.hasErrors()) {
+            log.error(bindingResult.getFieldError().getDefaultMessage());
         }
         userService.signUp(requestDto);
         return ResponseEntity.ok("signUp successfully");
@@ -77,8 +77,7 @@ public class UserController {
     // 로그인
     @GetMapping("/signIn")
     public SignInResponseDto createAuthenticationToken(@RequestBody SignInRequestDto request){
-        SignInResponseDto response=userService.createAccessToken(request);
-        return response;
+        return null;
     }
 
     // userId 존재여부 검증 API
@@ -105,7 +104,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
-        UserResponseDto user=userService.getUser(user_id);
+        UserResponseDto user=userService.getUser(userDetails);
         return ResponseEntity.ok(user);
     }
 
@@ -114,7 +113,7 @@ public class UserController {
     public ResponseEntity<List<UserResponseDto>> getUserList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         // 예시: 관리자 권한이 있을 때만 전체 목록 조회 허용
         if (!userDetails.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("MANAGER")||auth.getAuthority().equals("MASTER"))){
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_MANAGER")||auth.getAuthority().equals("ROLE_MASTER"))){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

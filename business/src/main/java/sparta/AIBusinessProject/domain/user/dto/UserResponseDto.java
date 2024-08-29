@@ -2,11 +2,10 @@ package sparta.AIBusinessProject.domain.user.dto;
 
 import lombok.*;
 import sparta.AIBusinessProject.domain.address.entity.Address;
-import sparta.AIBusinessProject.domain.category.dto.CategoryResponseDto;
-import sparta.AIBusinessProject.domain.category.entity.Category;
 import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 //회원정보 수정 후 반환 객체
 @Getter
@@ -28,4 +27,6 @@ public class UserResponseDto {
                 .phone(user.getPhone())
                 .build();
     }
+
+
 }

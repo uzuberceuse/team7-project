@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.order.entity.Order;
 import sparta.AIBusinessProject.domain.review.dto.ReviewDto;
+import sparta.AIBusinessProject.domain.store.entity.Store;
+import sparta.AIBusinessProject.domain.user.entity.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -26,20 +29,27 @@ public class Review {
     @Column(updatable = false, nullable = false)
     private UUID review_id;
 
+    //REVIEW:USER=N:1관계
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private UUID user_id;
+    private User user_id;
 
+    // REVEIW:ORDER = 1:1관계
+    @OneToOne
     @JoinColumn(name="order_id")
-    private UUID order_id;
+    private Order order_id;
 
+    // REVIEW:STORE = 1:1 관계
+    @OneToOne
     @JoinColumn(name="store_id")
-    private UUID store_id;
+    private Store store_id;
 
     // 글자 수 제한걸기
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ReviewRatingTypeEnum rating;
 
     private Timestamp created_at;
@@ -72,6 +82,7 @@ public class Review {
                 .rating(requestDto.getRating())
                 .created_by(user_id)
                 .build();
+        return null;
     }
 
     // buildup 패턴으로 review 수정

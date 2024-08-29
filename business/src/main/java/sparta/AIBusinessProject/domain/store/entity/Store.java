@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.category.entity.Category;
 import sparta.AIBusinessProject.domain.store.dto.StoreListResponseDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreRequestDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreResponseDto;
@@ -28,8 +29,10 @@ public class Store {
     @Column(updatable = false, nullable = false)
     private UUID store_id;
 
+    // STORE:CATEGORY=N:1 관계
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
-    private UUID category_id;
+    private Category category_id;
 
     @Column(nullable = false, unique = true)
     private String storeName;
