@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
-import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -17,8 +15,8 @@ import java.util.UUID;
 @Entity
 @Table(name="p_product")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PROTECTED) // 생성자 외부에서 생성 못하게
-@Builder(access = AccessLevel.PRIVATE) //builup패턴 외부에서 생성못하게
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 public class Product {
 
 
@@ -54,11 +52,18 @@ public class Product {
     @PrePersist
     protected void onCreate() {
         created_at = Timestamp.valueOf(LocalDateTime.now());
+        status = true;
     }
 
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
 
+    // ?????실제로 삭제하는 것이 아니라 어노테이션 사용이 헷갈림
+    @PreRemove
+    protected void onDelete() {
+        deleted_at = Timestamp.valueOf(LocalDateTime.now());
+        status = false;
+    }
 
     // buildup 패턴으로 product 생성
     public static Product createProduct(ProductRequestDto requestDto, String user_id) {
@@ -82,6 +87,5 @@ public class Product {
 
     public void deleteProduct(String user_id){
             this.deleted_by = user_id;
-            this.deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

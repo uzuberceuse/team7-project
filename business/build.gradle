@@ -43,8 +43,9 @@ dependencies {
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
 	// json
-	implementation 'org.json:json:20230227'
+	//implementation 'org.json:json:20230227'
 
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -52,11 +53,9 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	// dotenv
-	implementation("io.github.cdimascio:java-dotenv:5.2.2")
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
-
-
 
 tasks.named('test') {
 	useJUnitPlatform()

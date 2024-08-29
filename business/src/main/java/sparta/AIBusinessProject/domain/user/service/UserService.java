@@ -1,18 +1,19 @@
 package sparta.AIBusinessProject.domain.user.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sparta.AIBusinessProject.domain.user.dto.*;
 import sparta.AIBusinessProject.domain.user.entity.User;
 import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 import sparta.AIBusinessProject.domain.user.repository.UserRepository;
-import sparta.AIBusinessProject.global.config.PasswordConfig;
 import sparta.AIBusinessProject.global.jwt.JwtUtil;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
-import javax.crypto.SecretKey;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,8 +24,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    @Value("${owner.token}")
+    @Value("${token.owner}")
     private String ownerToken;
+    @Value("${token.manager}")
+    private String managerToken;
+    @Value("${token.maswer}")
+    private String masterToken;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -37,42 +42,54 @@ public class UserService {
     public void logout(User user) {}
 
 
-    public SignInResponseDto createAuthenticationToken(SignInRequestDto request){
-        return null;
-    }
-
-
     // 회원 존재 여부 검증 비즈니스 로직
-    public Boolean verifyUser(final String email) {
+    public Boolean verifyUser(final String username) {
         // email 로 User 를 조회 후 isPresent() 로 존재유무를 리턴함
-        return userRepository.findByUserEmail(email).isPresent();
+        return userRepository.findByUsername(username).isPresent();
     }
 
 
     // 회원가입
     public void signUp(SignUpRequestDto request) {
         // username 중복확인
-        if(userRepository.findByUsername(request.getUsername()).isPresent()){
-            throw new IllegalArgumentException("username 중복");
+        String username=request.getUsername();
+        Optional<Object> checkUsername = userRepository.findByUsername(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
         // password 암호화
         String password=passwordEncoder.encode(request.getPassword());
-        request.setPassword(password);
+
+        // phone
+        String phone=request.getPhone();
 
         // email 중복확인
-        if(userRepository.findByUserEmail(request.getEmail()).isPresent()){
+        String email=request.getEmail();
+        if(userRepository.findByUserEmail(email).isPresent()){
             throw new IllegalArgumentException("email 중복");
         }
 
         // 사용자 role 확인
         UserRoleEnum role = UserRoleEnum.CUSTOMER;
-        if (request.isOwner()) {
-            if (!ownerToken.equals(request.getOwnerToken())) {
+        if (request.getRole().equals("ROLE_OWNER")) {
+            if (!ownerToken.equals(request.getToken())) {
                 throw new IllegalArgumentException("not Owner");
             }
             role = UserRoleEnum.OWNER;
         }
-        User user=User.create(request);
+        if (request.getRole().equals("ROLE_MANAGER")) {
+            if (!managerToken.equals(request.getToken())) {
+                throw new IllegalArgumentException("not Manager");
+            }
+            role = UserRoleEnum.MANAGER;
+        }
+        if (request.getRole().equals("ROLE_MASTER")) {
+            if (!masterToken.equals(request.getToken())) {
+                throw new IllegalArgumentException("not MASTER");
+            }
+            role = UserRoleEnum.MASTER;
+        }
+        User user=User.create(username,email,password,phone,role);
         userRepository.save(user);
     }
 
@@ -87,10 +104,12 @@ public class UserService {
     }
 
     // 유저 단건 조회 비즈니스 로직
-    public UserResponseDto getUser(UUID userId) {
-        User user=userRepository.findById(userId)
-                .orElseThrow(()->new IllegalArgumentException("User not found"));
-        return UserResponseDto.of(user);
+    public UserResponseDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Object user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // UserResponseDto로 변환하여 반환
+        return UserResponseDto.of((User) user);
     }
 
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class NoticeRequestDto {
     private String noticeTitle;
     private String noticeContent;
-    private String createdBy; // 작성자
-    private String updateBy; // 수정자
-    private String deleteBy; // 삭제자
+    private String created_by; // 작성자
+    private String update_by; // 수정자
+    private String delete_by; // 삭제자
 }
