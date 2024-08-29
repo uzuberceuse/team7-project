@@ -25,23 +25,23 @@ public class NoticeService {
     // 공지사항 등록 (C)
     public NoticeResponseDto createNotice(NoticeRequestDto requestDto) {
         Notice notice = Notice.from(requestDto);
-        notice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        notice.setCreated_at(new Timestamp(System.currentTimeMillis()));
         notice = noticeRepository.save(notice);
         return new NoticeResponseDto(notice);
     }
 
     // Notice_id로 조회 (R)
-    public Notice getNoticeById(UUID id){
-        return noticeRepository.findById(id)
+    public Notice getNoticeById(UUID notice_id){
+        return noticeRepository.findById(notice_id)
                 .orElseThrow(()-> new NullPointerException("해당 공지사항은 존재하지 않습니다."));
     }
 
     // 수정 공지사항 (U)
     @Transactional
-    public NoticeResponseDto updateNotice(UUID noticeId, NoticeRequestDto requestDto){
+    public NoticeResponseDto updateNotice(UUID notice_id, NoticeRequestDto requestDto){
 
         // 공지사항id로 공지사항 유무 확인
-        Notice notice = noticeRepository.findById(noticeId)
+        Notice notice = noticeRepository.findById(notice_id)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
         // StringUtils.hasText -> 문자열 유효성 검증 메소드
@@ -54,12 +54,12 @@ public class NoticeService {
             notice.setNoticeContent(requestDto.getNoticeContent());
         }
 
-        if(StringUtils.hasText(requestDto.getUpdateBy())){
-            notice.setUpdatedBy(requestDto.getUpdateBy());
+        if(StringUtils.hasText(requestDto.getUpdate_by())){
+            notice.setUpdated_by(requestDto.getUpdate_by());
         }
 
         // 수정시간 변경
-         notice.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+         notice.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
         // 수정된 공지사항 정보 dto 반환
         return new NoticeResponseDto(notice);
@@ -68,22 +68,22 @@ public class NoticeService {
     }
 
     // 공지사항 삭제
-    public ResponseEntity<Void> deleteNotice(UUID noticeId, String deleteBy) {
+    public ResponseEntity<Void> deleteNotice(UUID notice_id, String deleteBy) {
 
-        Notice notice = noticeRepository.findById(noticeId)
+        Notice notice = noticeRepository.findById(notice_id)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
         // 삭제한 시간, 삭제한 사람 확인
-        notice.setDeletedBy(deleteBy);
-        notice.setDeletedAt(new Timestamp(System.currentTimeMillis()));
+        notice.setDeleted_by(deleteBy);
+        notice.setDeleted_at(new Timestamp(System.currentTimeMillis()));
         noticeRepository.save(notice);
 
         return ResponseEntity.noContent().build();
     }
 
     // 공지사항 상세조회
-    public NoticeResponseDto getNoticeDetail(UUID noticeId) {
-        Notice notice = noticeRepository.findById(noticeId)
+    public NoticeResponseDto getNoticeDetail(UUID notice_id) {
+        Notice notice = noticeRepository.findById(notice_id)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
         return new NoticeResponseDto(notice);
     }
@@ -92,10 +92,10 @@ public class NoticeService {
     @Transactional
     public Page<NoticeListResponseDto> getNoticeList(Pageable pageable) {
         return noticeRepository.findAll(pageable).map(notice -> new NoticeListResponseDto(
-                notice.getId(),
+                notice.getNotice_id(),
                 notice.getNoticeTitle(),
-                notice.getCreatedAt(),
-                notice.getCreatedBy()
+                notice.getCreated_at(),
+                notice.getCreated_by()
         ));
     }
 
