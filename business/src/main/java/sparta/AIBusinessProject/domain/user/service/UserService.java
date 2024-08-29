@@ -23,18 +23,21 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
+    @Value("${owner.token}")
+    private String ownerToken;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
 
-    public SignInResponseDto createAccessToken(SignInRequestDto request) {
-        return null;
-    }
-
+    // 로그아웃 - 구현안됨
     public void logout(User user) {}
 
+    public SignInResponseDto createAuthenticationToken(SignInRequestDto request){
+        return null;
+    }
 
     // 회원 존재 여부 검증 비즈니스 로직
     public Boolean verifyUser(final String email) {
@@ -42,10 +45,11 @@ public class UserService {
         return userRepository.findByUserEmail(email).isPresent();
     }
 
-    public User signUp(SignUpRequestDto request) throws Exception {
+
+    public void signUp(SignUpRequestDto request) {
         // username 중복확인
         if(userRepository.findByUsername(request.getUsername()).isPresent()){
-            throw new Exception("username 중복");
+            throw new IllegalArgumentException("username 중복");
         }
         // password 암호화
         String password=passwordEncoder.encode(request.getPassword());
@@ -53,9 +57,19 @@ public class UserService {
 
         // email 중복확인
         if(userRepository.findByUserEmail(request.getEmail()).isPresent()){
-            throw new Exception("email 중복");
+            throw new IllegalArgumentException("email 중복");
         }
-        return userRepository.save(User.create(request));
+
+        // 사용자 role 확인
+        UserRoleEnum role = UserRoleEnum.CUSTOMER;
+        if (request.isOwner()) {
+            if (!ownerToken.equals(request.getOwnerToken())) {
+                throw new IllegalArgumentException("not Owner");
+            }
+            role = UserRoleEnum.OWNER;
+        }
+        User user=User.create(request);
+        userRepository.save(user);
     }
 
 

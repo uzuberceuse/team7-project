@@ -21,5 +21,10 @@
         <module name="sparta.AIBusinessProject.main" />
       </profile>
     </annotationProcessing>
+
+    <bytecodeTargetLevel>
+      <module name="server" target="17" />
+    </bytecodeTargetLevel>
+
   </component>
 </project>

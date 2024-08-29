@@ -3,9 +3,13 @@ package sparta.AIBusinessProject.domain.user.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.user.dto.*;
 import sparta.AIBusinessProject.domain.user.entity.User;
@@ -15,6 +19,7 @@ import sparta.AIBusinessProject.domain.user.service.UserService;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("api/user")
 @RequiredArgsConstructor
@@ -24,10 +29,18 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public ResponseEntity<String> createUser(@RequestBody @Valid @NotNull SignUpRequestDto request) throws Exception {
-        User user=userService.signUp(request);
-        return ResponseEntity.ok("signUp Successfully");
+    public ResponseEntity<String> signup(
+            @RequestBody @Valid SignUpRequestDto requestDto,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException("signUp error");
+        }
+        userService.signUp(requestDto);
+        return ResponseEntity.ok("signUp successfully");
     }
+
+
 
     // 회원수정
     @DeleteMapping("/{userId}")
@@ -108,7 +121,4 @@ public class UserController {
         List<UserResponseDto> users=userService.getUserList(userDetails.getUser());
         return ResponseEntity.ok(users);
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package sparta.AIBusinessProject.global.jwt;
+package sparta.AIBusinessProject.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import sparta.AIBusinessProject.domain.user.dto.SignInRequestDto;
 import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
-import sparta.AIBusinessProject.global.security.UserDetailsImpl;
+import sparta.AIBusinessProject.global.jwt.JwtUtil;
 
 import java.io.IOException;
 

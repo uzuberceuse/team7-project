@@ -33,6 +33,9 @@ public class SignUpRequestDto {
 
     private UserRoleEnum role;
 
+    private boolean owner=false;
+    private String ownerToken="";
+
     public void setPassword(String password){
         this.password=password;
     }
