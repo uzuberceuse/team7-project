@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
-import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -54,13 +52,18 @@ public class Product {
     @PrePersist
     protected void onCreate() {
         created_at = Timestamp.valueOf(LocalDateTime.now());
+        status = true;
     }
 
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
 
+    // ?????실제로 삭제하는 것이 아니라 어노테이션 사용이 헷갈림
     @PreRemove
-    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now());}
+    protected void onDelete() {
+        deleted_at = Timestamp.valueOf(LocalDateTime.now());
+        status = false;
+    }
 
     // buildup 패턴으로 product 생성
     public static Product createProduct(ProductRequestDto requestDto, String user_id) {
