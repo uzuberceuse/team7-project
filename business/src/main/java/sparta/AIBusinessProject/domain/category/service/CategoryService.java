@@ -55,6 +55,6 @@ public class CategoryService {
                 .orElseThrow(()->new IllegalArgumentException("Category Not Found"));
 
         category.chanageDeleted(deletedBy);
-        categoryRepository.save(category);
+        categoryRepository.delete(category);
     }
 }

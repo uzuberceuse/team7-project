@@ -9,3 +9,5 @@ public interface ProductRepositoryCustom {
     // 상품 조회 시 페이징 적용
     Page<ProductListResponseDto> getProducts(ProductListResponseDto listResponseDto, Pageable pageable);
 }
+
+

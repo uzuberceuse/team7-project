@@ -1,13 +1,11 @@
-package sparta.AIBusinessProject.domain.report.cotroller;
+package sparta.AIBusinessProject.domain.report.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.report.dto.ReportListResponseDto;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
-import sparta.AIBusinessProject.domain.report.dto.ReportResponseDto;
 import sparta.AIBusinessProject.domain.report.entity.Report;
 import sparta.AIBusinessProject.domain.report.service.ReportService;
 

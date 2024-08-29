@@ -32,12 +32,15 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
+
     // 로그아웃 - 구현안됨
     public void logout(User user) {}
+
 
     public SignInResponseDto createAuthenticationToken(SignInRequestDto request){
         return null;
     }
+
 
     // 회원 존재 여부 검증 비즈니스 로직
     public Boolean verifyUser(final String email) {
@@ -46,6 +49,7 @@ public class UserService {
     }
 
 
+    // 회원가입
     public void signUp(SignUpRequestDto request) {
         // username 중복확인
         if(userRepository.findByUsername(request.getUsername()).isPresent()){
@@ -77,7 +81,7 @@ public class UserService {
     public Boolean deleteUser(UUID userId) {
         User user=userRepository.findById(userId)
                 .orElseThrow(()->new IllegalArgumentException("User not found"));
-        user.chanageDeleted(user.getUsername());
+        user.changeDeleted(user.getUsername());
         userRepository.save(user);
         return true;
     }
