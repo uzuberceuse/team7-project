@@ -26,6 +26,7 @@ public class Review {
     @Column(updatable = false, nullable = false)
     private UUID review_id;
 
+    @
     @JoinColumn(name="user_id")
     private UUID user_id;
 
@@ -59,9 +60,6 @@ public class Review {
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
 
-    @PreRemove
-    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now()); }
-
     // buildup 패턴으로 review 생성
     public static Review createReview(ReviewDto requestDto, String user_id) {
         return Review.builder()
@@ -74,15 +72,16 @@ public class Review {
                 .build();
     }
 
-    // buildup 패턴으로 review 수정
+    // review 수정
     public void updateReview(String content, ReviewRatingTypeEnum rating, String user_id) {
                 this.content = content;
                 this.rating = rating;
                 this.updated_by = user_id;
     }
 
-    // buildup 패턴으로 review 삭제
+    // review 삭제
     public void deleteReview(String user_id) {
         this.deleted_by=user_id;
+        this.deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

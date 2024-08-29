@@ -25,5 +25,8 @@ public class ProductListResponseDto implements Serializable {
                 .build();
     }
 }
-    // Serializable 직렬화 인터페이스를 사용하는 이유를 잘 모르겠다.
-    // 사용하지 않는다면?
+
+ /* 직렬화 사용 이유
+
+
+ */

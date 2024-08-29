@@ -17,8 +17,8 @@ import java.util.UUID;
 @Entity
 @Table(name="p_product")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED) // 생성자 외부에서 생성 못하게
+@Builder(access = AccessLevel.PRIVATE) //builup패턴 외부에서 생성못하게
 public class Product {
 
 
@@ -59,8 +59,6 @@ public class Product {
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
 
-    @PreRemove
-    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now());}
 
     // buildup 패턴으로 product 생성
     public static Product createProduct(ProductRequestDto requestDto, String user_id) {
@@ -84,5 +82,6 @@ public class Product {
 
     public void deleteProduct(String user_id){
             this.deleted_by = user_id;
+            this.deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

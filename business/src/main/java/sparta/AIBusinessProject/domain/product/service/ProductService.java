@@ -35,6 +35,7 @@ public class ProductService {
     }
 
     // 상품 수정
+    // 이미 null값인 것은 안나오도록
     @Transactional
     public ProductResponseDto updateProduct(ProductRequestDto requestDto, UUID product_id, String user_id){
         Product product = productRepository.findById(product_id)
