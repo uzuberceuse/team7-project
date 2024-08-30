@@ -39,7 +39,7 @@ public class StoreController {
         if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
-            return storeService.createStore(requestDto, String.valueOf(userDetails.getUser().getUserId()));
+            return storeService.createStore(requestDto, String.valueOf(userDetails.getId()));
     }
 
     /* 가게 수정
@@ -54,7 +54,7 @@ public class StoreController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-        return storeService.updateStore(requestDto, store_id, String.valueOf(userDetails.getUser().getUserId()));
+        return storeService.updateStore(requestDto, store_id, String.valueOf(userDetails.getId()));
 
     }
 
@@ -70,7 +70,7 @@ public class StoreController {
         }
 
 
-        return storeService.deleteStore(store_id, String.valueOf(userDetails.getUser().getUserId()));
+        return storeService.deleteStore(store_id, String.valueOf(userDetails.getId()));
 
     }
 
