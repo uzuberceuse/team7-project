@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import sparta.AIBusinessProject.domain.order.entity.Order;
-import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
-import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 public class Product {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
@@ -63,8 +61,6 @@ public class Product {
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
 
-    @PreRemove
-    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now());}
 
     // buildup 패턴으로 product 생성
     public static Product createProduct(ProductRequestDto requestDto, String user_id) {
@@ -78,15 +74,16 @@ public class Product {
     }
 
     // product 업데이트
-    public void updateProduct(String productName, String details, Integer price, boolean status, String user_id ){
+    public void updateProduct(String productName, String details, Integer price, boolean status, String userId ){
             this.productName = productName;
             this.details = details;
             this.price = price;
             this.status = status;
-            this.updated_by = user_id;
+            this.updated_by = userId;
     }
 
-    public void deleteProduct(String user_id){
-            this.deleted_by = user_id;
+    public void deleteProduct(String userId) {
+        this.deleted_by = userId;
+        deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

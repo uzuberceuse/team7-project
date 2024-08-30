@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.order.entity.Order;
-import sparta.AIBusinessProject.domain.review.dto.ReviewDto;
+import sparta.AIBusinessProject.domain.review.dto.ReviewRequestDto;
 import sparta.AIBusinessProject.domain.store.entity.Store;
 import sparta.AIBusinessProject.domain.user.entity.User;
 
@@ -24,25 +24,26 @@ public class Review {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
     @Column(updatable = false, nullable = false)
     private UUID review_id;
 
     //REVIEW:USER=N:1관계
+    // JPA ManyToOne USER타입 객체로 받아오는 부분이 이해를 온전히 못함.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user_id;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // REVEIW:ORDER = 1:1관계
     @OneToOne
-    @JoinColumn(name="order_id")
-    private Order order_id;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    // REVIEW:STORE = 1:1 관계
-    @OneToOne
-    @JoinColumn(name="store_id")
-    private Store store_id;
+    // REVIEW:STORE = N:1 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     // 글자 수 제한걸기
     @Column(nullable = false)
@@ -67,33 +68,33 @@ public class Review {
     }
 
     @PreUpdate
-    protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
+    protected void onUpdate() {
+        updated_at = Timestamp.valueOf(LocalDateTime.now());
+    }
 
-    @PreRemove
-    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 review 생성
-    public static Review createReview(ReviewDto requestDto, String user_id) {
+    public static Review createReview(ReviewRequestDto requestDto, User user, Order order, Store store) {
         return Review.builder()
-                .order_id(requestDto.getOrder_id())
-                .user_id(requestDto.getUser_id())
-                .store_id(requestDto.getStore_id())
+                .user(user)
+                .order(order)
+                .store(store)
                 .content(requestDto.getContent())
                 .rating(requestDto.getRating())
-                .created_by(user_id)
+                .created_by(String.valueOf(user.getUserId()))
                 .build();
-        return null;
     }
 
-    // buildup 패턴으로 review 수정
-    public void updateReview(String content, ReviewRatingTypeEnum rating, String user_id) {
-                this.content = content;
-                this.rating = rating;
-                this.updated_by = user_id;
+    // review 수정
+    public void updateReview(String content, ReviewRatingTypeEnum rating, String userId) {
+        this.content = content;
+        this.rating = rating;
+        this.updated_by = userId;
     }
 
-    // buildup 패턴으로 review 삭제
-    public void deleteReview(String user_id) {
-        this.deleted_by=user_id;
+    // review 삭제
+    public void deleteReview(String userId) {
+        this.deleted_by = userId;
+        deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

@@ -1,9 +1,8 @@
 package sparta.AIBusinessProject.domain.store.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import sparta.AIBusinessProject.domain.store.entity.Store;
 
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StoreRequestDto {
 
-    private UUID category_id;
+    private UUID categoryId;
     private String storeName;
     private String time;
     private String location;
