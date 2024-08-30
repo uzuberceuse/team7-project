@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.order.entity.Order;
 import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -20,14 +23,15 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 public class Product {
-
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
     @Column(updatable = false, nullable = false)
     private UUID product_id;
+
+    @OneToMany(mappedBy = "product")
+    private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)
     private String productName;

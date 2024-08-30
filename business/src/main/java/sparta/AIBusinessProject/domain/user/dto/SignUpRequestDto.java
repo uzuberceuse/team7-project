@@ -15,6 +15,8 @@ import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 @NoArgsConstructor
 public class SignUpRequestDto {
     @NotBlank
+    @Size(min=4,max=10)
+    @Pattern(regexp="^(?=.*[a-z])(?=.*\\d).{4,10}$")
     private String username;
 
     @NotBlank
@@ -33,10 +35,5 @@ public class SignUpRequestDto {
 
     private UserRoleEnum role;
 
-    private boolean owner=false;
-    private String ownerToken="";
-
-    public void setPassword(String password){
-        this.password=password;
-    }
+    private String token="";
 }

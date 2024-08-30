@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.notice.dto.NoticeListResponseDto;
 import sparta.AIBusinessProject.domain.notice.dto.NoticeRequestDto;
@@ -36,9 +37,9 @@ public class NoticeController {
     @Secured({"ROLE_MANAGER"})
     @PatchMapping("/{notice_id}")
     public ResponseEntity<NoticeResponseDto> updateNotice(
-            @PathVariable UUID noticeId,
+            @PathVariable UUID notice_id,
             @RequestBody NoticeRequestDto requestDto) { // 수정할 데이터를 가져온다.
-        NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
+        NoticeResponseDto responseDto = noticeService.updateNotice(notice_id, requestDto);
         return ResponseEntity.ok(responseDto); // 수정된 공지사항 정보
 
     }
@@ -47,23 +48,23 @@ public class NoticeController {
     @Secured({"ROLE_MANAGER"})
     @DeleteMapping
     public ResponseEntity<Notice> deleteNotice(
-            @PathVariable UUID noticeId, @RequestParam String deleteBy) {
-        noticeService.deleteNotice(noticeId, deleteBy);
+            @PathVariable UUID notice_id, @RequestParam String deleteBy) {
+        noticeService.deleteNotice(notice_id, deleteBy);
         return ResponseEntity.noContent().build();
     }
 
 
     // 공지사항 상세조회 (Role : 관리자 고객 가게주인)
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping("/{notice_id}")
-    public ResponseEntity<NoticeResponseDto> getNoticeDetail(@PathVariable UUID noticeId) {
-        NoticeResponseDto responseDto = noticeService.getNoticeDetail(noticeId);
+    public ResponseEntity<NoticeResponseDto> getNoticeDetail(@PathVariable UUID notice_id) {
+        NoticeResponseDto responseDto = noticeService.getNoticeDetail(notice_id);
         return ResponseEntity.ok(responseDto);
 
     }
 
     // 공지사항 List 조회 (Role : 관리자 고객 가게주인)
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping
     public ResponseEntity<Page<NoticeListResponseDto>> getNoticeList(
             @RequestParam(defaultValue = "0") int page,         // 기본 페이지 번호 0

@@ -3,11 +3,12 @@ package sparta.AIBusinessProject.domain.payment.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sparta.AIBusinessProject.domain.order.dto.OrderSummaryDto;
+import sparta.AIBusinessProject.domain.order.dto.OrderListResponseDto;
 import sparta.AIBusinessProject.domain.order.repository.OrderRepository;
-import sparta.AIBusinessProject.domain.payment.dto.PaymentListResponseDto;
 import sparta.AIBusinessProject.domain.payment.dto.PaymentRequestDto;
 import sparta.AIBusinessProject.domain.payment.dto.PaymentResponseDto;
 import sparta.AIBusinessProject.domain.payment.entity.Payment;
@@ -29,7 +30,7 @@ public class PaymentService {
     private final OrderRepository orderRepository;
 
     // 1. 결제 생성
-    public PaymentResponseDto createPayment(PaymentRequestDto requestDto) {
+    public PaymentResponseDto createPayment(PaymentRequestDto requestDto, UUID order_id) {
         Payment payment = Payment.builder()
                 .created_by(requestDto.getCreatedBy())
                 .created_at(new Timestamp(System.currentTimeMillis()))
@@ -67,11 +68,17 @@ public class PaymentService {
 
     // 4. 결제 목록 조회
     @Transactional(readOnly = true)
-    public List<PaymentListResponseDto> getAllPayments() {
-        List<Payment> payments = paymentRepository.findAll();
-        return payments.stream()
-                .map(this::toListResponseDto)
-                .collect(Collectors.toList());
+    public Page<PaymentResponseDto> getPaymentList(Pageable pageable) {
+
+        return paymentRepository.findAll(pageable).map(payment -> new PaymentResponseDto(
+                payment.getId(),
+                payment.getOrders().stream().map(this::toOrderListResponseDto).collect(Collectors.toList()),
+                payment.getTotalAmount(),
+                payment.getCreated_at(),
+                payment.getCreated_by(),
+                payment.getDeleted_at(),
+                payment.getDeleted_by()
+        ));
     }
 
     // DTO 변환 메서드들
@@ -79,30 +86,28 @@ public class PaymentService {
         return PaymentResponseDto.builder()
                 .id(payment.getId())
                 .orders(payment.getOrders().stream()
-                        .map(this::toOrderSummaryDto)
+                        .map(this::toOrderListResponseDto)
                         .collect(Collectors.toList()))
                 .createdAt(payment.getCreated_at())
                 .createdBy(payment.getCreated_by())
-                .updatedAt(payment.getUpdated_at())
-                .updatedBy(payment.getUpdated_by())
                 .deletedAt(payment.getDeleted_at())
                 .deletedBy(payment.getDeleted_by())
                 .build();
     }
 
-    private PaymentListResponseDto toListResponseDto(Payment payment) {
-        return PaymentListResponseDto.builder()
-                .id(payment.getId())
-                .createdAt(payment.getCreated_at())
-                .createdBy(payment.getCreated_by())
-                .totalAmount(payment.getOrders().stream()
-                        .mapToInt(Order::getAmount)
-                        .sum())
-                .build();
-    }
+//    private PaymentListResponseDto toListResponseDto(Payment payment) {
+//        return PaymentListResponseDto.builder()
+//                .id(payment.getId())
+//                .createdAt(payment.getCreated_at())
+//                .createdBy(payment.getCreated_by())
+//                .totalAmount(payment.getOrders().stream()
+//                        .mapToInt(Order::getAmount)
+//                        .sum())
+//                .build();
+//    }
 
-    private OrderSummaryDto toOrderSummaryDto(Order order) {
-        return OrderSummaryDto.builder()
+    private OrderListResponseDto toOrderListResponseDto(Order order) {
+        return OrderListResponseDto.builder()
                 .orderId(order.getId())
                 .productId(order.getProduct_id())
                 .quantity(order.getQuantity())

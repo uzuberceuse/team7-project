@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.report.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
 import sparta.AIBusinessProject.domain.review.entity.Review;
@@ -24,8 +25,8 @@ public class Report {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(name="report_id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(updatable = false, nullable = false)
+    private UUID report_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
@@ -36,35 +37,26 @@ public class Report {
     private Review review;
 
 
-    @Column(name = "created_by")
-    private String createdBy;
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private Timestamp created_at;
+    private String created_by;
+    private Timestamp updated_at;
+    private String updated_by;
+    private Timestamp deleted_at;
+    private String deleted_by;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "deleted_by")
-    private String deletedBy;
-
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
-
-    @Column(name = "deleted_at")
-    private Timestamp deletedAt;
-
-    private String title;
-    private String content;
+    private String reportTitle;
+    private String reportContent;
 
 
     public static Report createReport(ReportRequestDto requestDto, User user, Review review) {
         return Report.builder()
                 .user(user)
                 .review(review)
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .reportTitle(requestDto.getTitle())
+                .reportContent(requestDto.getContent())
+                .created_at(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 
@@ -72,9 +64,9 @@ public class Report {
         return Report.builder()
                 .user(user)
                 .review(review)
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .reportTitle(requestDto.getTitle())
+                .reportContent(requestDto.getContent())
+                .created_at(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 }

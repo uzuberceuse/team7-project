@@ -29,11 +29,11 @@ public class ReportService {
 
     // 리뷰후기 신고등록(작성)
     @Transactional
-    public Report createReport(UUID reviewId, UUID userId, ReportRequestDto requestDto) {
-             User user = userRepository.findById(userId)
+    public Report createReport(UUID review_id, UUID user_id, ReportRequestDto requestDto) {
+             User user = userRepository.findById(user_id)
                 .orElseThrow(()-> new IllegalArgumentException("해당 User를 찾을 수 없습니다."));
 
-            Review review = reviewRepository.findById(reviewId)
+            Review review = reviewRepository.findById(review_id)
                     .orElseThrow(()-> new IllegalArgumentException("해당 리뷰를 찾을 수 없습니다."));
 
             Report report = Report.from(requestDto, user, review);
@@ -44,24 +44,24 @@ public class ReportService {
 
     // 신고 리스트 조회
     @Transactional
-    public List<ReportListResponseDto> getReportList(UUID reviewId, UUID userId) {
+    public List<ReportListResponseDto> getReportList(UUID review_id, UUID user_id) {
         // 특정 리뷰와 사용자에 해당하는 신고를 조회
-        return reportRepository.findByReviewIdAndUserId(reviewId, userId).stream()
+        return reportRepository.findByReviewIdAndUserId(review_id, user_id).stream()
                 .map(report -> ReportListResponseDto.builder()
-                        .id(report.getId())
+                        .id(report.getReport_id())
                         .reviewId(report.getReview().getReview_id())
                         .userId(report.getUser().getUser_id())
-                        .title(report.getTitle())
-                        .createdAt(report.getCreatedAt())
+                        .title(report.getReportTitle())
+                        .createdAt(report.getCreated_at())
                         .build())
                 .collect(Collectors.toList());
     }
         
     //리뷰후기 신고 삭제
     @Transactional
-    public void deleteReport(UUID reviewId, UUID userId) {
+    public void deleteReport(UUID review_id, UUID user_id) {
         // 특정리뷰와 사용자에 해당하는 모든 신고를 조회하여 삭제
-        List<Report> reports = reportRepository.findByReviewIdAndUserId(reviewId, userId);
+        List<Report> reports = reportRepository.findByReviewIdAndUserId(review_id, user_id);
         if (reports.isEmpty()) {
             throw new IllegalArgumentException("신고를 찾을 수 없습니다.");
         }
