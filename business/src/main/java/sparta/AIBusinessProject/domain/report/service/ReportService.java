@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sparta.AIBusinessProject.domain.report.dto.ReportListResponseDto;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
+import sparta.AIBusinessProject.domain.report.dto.ReportResponseDto;
 import sparta.AIBusinessProject.domain.report.entity.Report;
 import sparta.AIBusinessProject.domain.report.repository.ReportRepository;
 import sparta.AIBusinessProject.domain.review.entity.Review;
@@ -28,8 +29,8 @@ public class ReportService {
 
     // 리뷰후기 신고등록(작성)
     @Transactional
-    public Report createReport(UUID review_id, UUID user_id, ReportRequestDto requestDto) {
-             User user = userRepository.findById(user_id)
+    public Report createReport(UUID review_id, UUID userId, ReportRequestDto requestDto) {
+             User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 User를 찾을 수 없습니다."));
 
             Review review = reviewRepository.findById(review_id)
@@ -43,13 +44,15 @@ public class ReportService {
 
     // 신고 리스트 조회
     @Transactional
-    public List<ReportListResponseDto> getReportList(UUID review_id, UUID user_id) {
+    public List<ReportListResponseDto> getReportList(UUID review_id, UUID userId) {
         // 특정 리뷰와 사용자에 해당하는 신고를 조회
-        return reportRepository.findByReviewAndUser(review_id, user_id).stream()
+        return reportRepository.findByReviewAndUser(review_id, userId).stream()
+
+
                 .map(report -> ReportListResponseDto.builder()
-                        .id(report.getReport_id())
+                        .id(report.getReportId())
                         .reviewId(report.getReview().getReview_id())
-                        .userId(report.getUser().getUser_id())
+                        .userId(report.getUser().getUserId())
                         .title(report.getReportTitle())
                         .createdAt(report.getCreated_at())
                         .build())
@@ -60,7 +63,7 @@ public class ReportService {
     @Transactional
     public void deleteReport(UUID review_id, UUID user_id) {
         // 특정리뷰와 사용자에 해당하는 모든 신고를 조회하여 삭제
-        List<Report> reports = reportRepository.findByReviewAndUser(review_id, user_id);
+        List<Report> reports = reportRepository.findByReviewIdAndUserId(review_id, user_id);
         if (reports.isEmpty()) {
             throw new IllegalArgumentException("신고를 찾을 수 없습니다.");
         }

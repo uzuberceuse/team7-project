@@ -11,9 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComplainResponseDto {
 
-    private UUID complain_id;
-    private UUID user_id;
-    private UUID review_id;
+    private UUID complainId;
+    private UUID userId;
+    private UUID reviewId;
     private String complainContent;
     private String answer;
     private Timestamp created_at;
@@ -25,8 +25,8 @@ public class ComplainResponseDto {
 
 
     public ComplainResponseDto(Complain complain) {
-        this.complain_id = complain.getComplain_id();
-        this.user_id = complain.getUser().getUser_id();
+        this.complainId = complain.getComplain_id();
+        this.userId = complain.getUser().getUserId();
         this.complainContent = complain.getComplainContent();
         this.answer = complain.getAnswer();
         this.created_at = complain.getCreated_at();

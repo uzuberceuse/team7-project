@@ -41,7 +41,7 @@ public class ProductController {
                 }
 
                 // UserDetailsImpl user_id 추가해야할 듯
-                return productService.createProduct(requestDto, userDetails.getUser().getUserId());
+                return productService.createProduct(requestDto, String.valueOf(userDetails.getId()));
         }
 
         /* 상품 수정
@@ -57,7 +57,8 @@ public class ProductController {
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.updateProduct(requestDto, product_id, userDetails.getUser().getUserId());
+                return productService.updateProduct(requestDto, product_id, String.valueOf(userDetails.getId()));
+
         }
 
         /* 상품 삭제
@@ -65,13 +66,16 @@ public class ProductController {
         */
         @DeleteMapping("/{product_id}")
         public Boolean deleteProduct( @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID product_id) {
+                                     @PathVariable UUID product_id){
+
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
                 if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.deleteProduct(product_id, userDetails.getUser().getUserId());
+
+                return productService.deleteProduct(product_id, String.valueOf(userDetails.getId()));
+
         }
 
         // 상품 목록 조회

@@ -60,7 +60,7 @@ public class ComplainService {
     public Page<ComplainListResponseDto> getComplainList(Pageable pageable) {
         return complainRepository.findAll(pageable).map(complain -> new ComplainListResponseDto(
                 complain.getComplain_id(),
-                complain.getUser().getUser_id(),
+                complain.getUser().getUserId(),
                 complain.getCreated_at(),
                 complain.getCreated_by()
         ));

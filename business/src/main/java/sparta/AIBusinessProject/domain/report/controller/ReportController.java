@@ -11,6 +11,7 @@ import sparta.AIBusinessProject.domain.report.dto.ReportListResponseDto;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
 import sparta.AIBusinessProject.domain.report.entity.Report;
 import sparta.AIBusinessProject.domain.report.service.ReportService;
+import sparta.AIBusinessProject.domain.user.service.UserService;
 import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ReportController {
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(user_id)) {
+        if (!userDetails.getUser().getUserId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -51,7 +52,7 @@ public class ReportController {
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(user_id)) {
+        if (!userDetails.getUser().getUserId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -68,7 +69,7 @@ public class ReportController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(user_id)) {
+        if (!userDetails.getUser().getUserId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         reportService.deleteReport(review_id, user_id);

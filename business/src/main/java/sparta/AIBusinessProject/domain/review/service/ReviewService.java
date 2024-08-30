@@ -62,7 +62,7 @@ public class ReviewService {
                     .filter(p -> p.getUpdated_at() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없거나 이미 삭제된 상태입니다."));
 
-            review.updateReview(review.getContent(), review.getRating(), review.getUser().getUserId());
+            review.updateReview(review.getContent(), review.getRating(), String.valueOf(review.getUser().getUser_id()));
 
             return ReviewResponseDto.toResponseDto(review);
 
