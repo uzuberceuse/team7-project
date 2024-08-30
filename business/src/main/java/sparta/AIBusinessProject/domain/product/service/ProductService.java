@@ -28,7 +28,7 @@ public class ProductService {
     // 상품 등록
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto, String userId){
-        Product product = Product.createProduct(requestDto,  userId);
+        Product product = Product.createProduct(requestDto, userId);
         return ProductResponseDto.toResponseDto(productRepository.save(product));
     }
 
