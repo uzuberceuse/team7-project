@@ -11,7 +11,6 @@ import sparta.AIBusinessProject.domain.report.dto.ReportListResponseDto;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
 import sparta.AIBusinessProject.domain.report.entity.Report;
 import sparta.AIBusinessProject.domain.report.service.ReportService;
-import sparta.AIBusinessProject.domain.user.service.UserService;
 import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
 import java.util.List;
