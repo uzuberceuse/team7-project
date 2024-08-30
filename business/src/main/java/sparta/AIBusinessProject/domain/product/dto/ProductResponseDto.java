@@ -3,7 +3,6 @@ package sparta.AIBusinessProject.domain.product.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.AIBusinessProject.domain.product.entity.Product;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -13,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductResponseDto {
 
-    private UUID productId;
+    private UUID product_id;
     private String productName;
     private String details;
     private Integer price;
@@ -24,21 +23,4 @@ public class ProductResponseDto {
     private String updated_by;
     private Timestamp deleted_at;
     private String deleted_by;
-
-    // ProductResponseDTO 변환 메서드
-    public static ProductResponseDto toResponseDto(Product product) {
-        return new ProductResponseDto(
-                product.getProductId(),
-                product.getProductName(),
-                product.getDetails(),
-                product.getPrice(),
-                product.isStatus(),
-                product.getCreated_at(),
-                product.getCreated_by(),
-                product.getUpdated_at(),
-                product.getUpdated_by(),
-                product.getDeleted_at(),
-                product.getDeleted_by()
-        );
-    }
 }

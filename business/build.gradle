@@ -60,10 +60,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-// queryDsl 설정부
-// gradle clean 시 QClass 디렉토리 삭제
-def querydslSrcDir = 'src/main/generated'
-clean {
-	delete file(querydslSrcDir)
-}
