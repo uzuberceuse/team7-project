@@ -23,8 +23,8 @@ public class Category {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(name = "category_id", updatable = false, nullable = false)
-    private UUID categoryId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(unique=true,nullable=false)
     private String categoryName;

@@ -24,8 +24,8 @@ public class Address {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(name = "address_id", updatable = false, nullable = false)
-    private UUID addressId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String addressName;
     private String zipcode;
 
