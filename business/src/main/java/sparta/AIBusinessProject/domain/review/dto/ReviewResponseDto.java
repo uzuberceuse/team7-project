@@ -20,7 +20,7 @@ public class ReviewResponseDto {
     private ReviewRatingTypeEnum rating;
 
     public static ReviewResponseDto toResponseDto(Review review) {
-        return new ReviewRequestDto(
+        return new ReviewResponseDto(
                 review.getUser().getUserId(),
                 review.getStore().getStoreId(),
                 review.getContent(),

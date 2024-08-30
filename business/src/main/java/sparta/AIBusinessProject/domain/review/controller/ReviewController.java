@@ -46,7 +46,7 @@ public class ReviewController {
         @PatchMapping("/{review_id}")
         public ReviewResponseDto updateReview(@RequestBody ReviewRequestDto requestDto,
                                              @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                             @PathVariable UUID review_id) {
+                                             @PathVariable UUID reviewId) {
 
             // MASTER, CUSTOMER 권한을 가져야만 update 가능
             if(!"ROLE_CUSTOMER".equals(userDetails.getUser().getRole()) &&
@@ -54,20 +54,20 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
             }
 
-            if(!userDetails.getUser().getUser_id().equals(requestDto.getUserId()) ||
+            if(!userDetails.getUser().getUserId().equals(requestDto.getUserId()) ||
                 "ROLE_MASTER".equals(userDetails.getUser().getRole()) ) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 수정 권한이 없습니다.");
             }
 
-            return reviewService.updateReview(requestDto, review_id);
+            return reviewService.updateReview(requestDto, reviewId);
         }
 
         /* 리뷰 삭제
            삭제 결과는 T/F
         */
-        @DeleteMapping("/{review_id}")
+        @DeleteMapping("/{review_id")
         public Boolean deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID review_id) {
+                                     @PathVariable UUID reviewId) {
 
             // MASTER, CUSTOMER 권한을 가져야만 delete 가능
             if(!"ROLE_CUSTOMER".equals(userDetails.getUser().getRole()) &&
@@ -75,12 +75,13 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
             }
 
-            if(!userDetails.getUser().getUser_id().equals(userDetails.getUser().getUserId()) ||
+            if(!userDetails.getUser().getUserId().equals(userDetails.getUser().getUserId()) ||
                     "ROLE_MASTER".equals(userDetails.getUser().getRole()) ) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 삭제 권한이 없습니다.");
             }
 
-            return reviewService.deleteReview(review_id, userDetails.getUser().getUserId());
+            return reviewService.deleteReview(review_id, String.valueOf(userDetails.getUser().getUserId()));
+
         }
 
         // 리뷰 목록 조회

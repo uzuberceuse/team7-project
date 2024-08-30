@@ -8,7 +8,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class NoticeListResponseDto {
 
     // 목록조회
