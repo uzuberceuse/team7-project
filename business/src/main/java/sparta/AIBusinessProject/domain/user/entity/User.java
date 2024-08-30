@@ -28,8 +28,8 @@ public class User {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(updatable = false, nullable = false)
-    private UUID user_id;
+    @Column(name="user_id", updatable = false, nullable = false)
+    private UUID userId;
 
     @Column(unique=true, nullable = false)
     private String username;
