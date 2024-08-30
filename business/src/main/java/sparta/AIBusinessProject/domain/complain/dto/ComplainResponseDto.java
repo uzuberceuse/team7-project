@@ -26,7 +26,7 @@ public class ComplainResponseDto {
 
     public ComplainResponseDto(Complain complain) {
         this.complainId = complain.getComplain_id();
-        this.userId = complain.getUser().getUserId();
+        this.userId = complain.getUser().getUser_id();
         this.complainContent = complain.getComplainContent();
         this.answer = complain.getAnswer();
         this.created_at = complain.getCreated_at();
