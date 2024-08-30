@@ -9,6 +9,8 @@ import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,13 +21,15 @@ import java.util.UUID;
 @Builder(access = AccessLevel.PRIVATE)
 public class Product {
 
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
     @Column(updatable = false, nullable = false)
-    private UUID product_id;
+    private UUID productId;
+
+    @OneToMany(mappedBy = "product")
+    private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)
     private String productName;
@@ -52,18 +56,11 @@ public class Product {
     @PrePersist
     protected void onCreate() {
         created_at = Timestamp.valueOf(LocalDateTime.now());
-        status = true;
     }
 
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
 
-    // ?????실제로 삭제하는 것이 아니라 어노테이션 사용이 헷갈림
-    @PreRemove
-    protected void onDelete() {
-        deleted_at = Timestamp.valueOf(LocalDateTime.now());
-        status = false;
-    }
 
     // buildup 패턴으로 product 생성
     public static Product createProduct(ProductRequestDto requestDto, String user_id) {
@@ -77,15 +74,16 @@ public class Product {
     }
 
     // product 업데이트
-    public void updateProduct(String productName, String details, Integer price, boolean status, String user_id ){
+    public void updateProduct(String productName, String details, Integer price, boolean status, String userId ){
             this.productName = productName;
             this.details = details;
             this.price = price;
             this.status = status;
-            this.updated_by = user_id;
+            this.updated_by = userId;
     }
 
-    public void deleteProduct(String user_id){
-            this.deleted_by = user_id;
+    public void deleteProduct(String userId) {
+        this.deleted_by = userId;
+        deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }

@@ -8,6 +8,7 @@ import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 
 public class UserDetailsImpl implements UserDetails {
@@ -21,6 +22,8 @@ public class UserDetailsImpl implements UserDetails {
     public User getUser() {
         return user;
     }
+
+    public UUID getId() {return user.getUser_id();}
 
     @Override
     public String getPassword() {

@@ -24,15 +24,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: 1234
+    password: 0000
     driver-class-name: org.postgresql.Driver
 
-
-jwt:
-  secret:
-    key: "01e972f1e51321d24bb3ec68a559eee2aafe9683f786fa9b2dc95b756a843f0d25dee6d7794e347418dae768328bd9fefd7dc0f12977a99fc0c8529bc691f2a8"
-
-token:
+key:
+  customer: "01e972f1e51321d24bb3ec68a559eee2aafe9683f786fa9b2dc95b756a843f0d25dee6d7794e347418dae768328bd9fefd7dc0f12977a99fc0c8529bc691f2a8"
   owner: "61f7907684e816a558c93c7503e6f5015c1a00de97a7c1c9011b417f43e1103ab33c59094397236ddbcb220356c6dce633551a4ed9fe5a34b4ab3d83e839cf63"
   manager: "d1ce1d403834025ff33a360cd3ec1664b2bc27e6c0e6bc5d65fa6600292262be36f6525034dbfe1d566dbaef65d8588fdf0735be948b7aa4bff4d0c34409342d"
   master: "36169d24b0c764b39af614c68c77e6f1aaaaf15c922bfc4152264418c703266e1061533461fb3b4e13b53873aa864e763859246bc67a4eb4f14c45b2582ec3d4"

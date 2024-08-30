@@ -4,15 +4,15 @@ package sparta.AIBusinessProject.domain.store.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sparta.AIBusinessProject.domain.store.dto.StoreListResponseDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreRequestDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreResponseDto;
 import sparta.AIBusinessProject.domain.store.service.StoreService;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,13 +34,12 @@ public class StoreController {
     */
     @PostMapping
     public StoreResponseDto createStore(@RequestBody StoreRequestDto requestDto,
-                                        @RequestHeader(value = "X-User-Id") String user_id,
-                                        @RequestHeader(value = "X-Role") String role){
-        // MANAGER, STORE 권한을 가져야만 create 가능
-        if(!"MANGER".equals(role) && !"STORE".equals(role)){
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
-            return storeService.createStore(requestDto, user_id);
+            return storeService.createStore(requestDto, userDetails.getUser().getUserId());
     }
 
     /* 가게 수정
@@ -48,35 +47,32 @@ public class StoreController {
     */
     @PatchMapping("/{store_id}")
     public StoreResponseDto updateStore(@RequestBody StoreRequestDto requestDto,
-                                        @RequestHeader(value = "X-User-Id") String user_id,
-                                        @RequestHeader(value = "X-Role") String role,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails,
                                         @PathVariable UUID store_id) {
 
-        // MANAGER, STORE 권한을 가져야만 update 가능
-        if(!"MANGER".equals(role) && !"STORE".equals(role)){
+        if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-        return storeService.updateStore(requestDto, store_id, user_id);
+        return storeService.updateStore(requestDto, store_id, userDetails.getUser().getUserId());
     }
 
     /* 가게 삭제
        삭제 결과는 T/F
     */
     @DeleteMapping("/{store_id}")
-    public Boolean deleteStore(@RequestHeader(value = "X-User-Id") String user_id,
-                               @RequestHeader(value = "X-Role") String role,
+    public Boolean deleteStore(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @PathVariable UUID store_id) {
 
-        // MANAGER, STORE 권한을 가져야만 delete 가능
-        if(!"MANGER".equals(role) && !"STORE".equals(role)){
+        if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-        return storeService.deleteStore(store_id, user_id);
+        return storeService.deleteStore(store_id, userDetails.getUser().getUserId());
     }
 
 
+    // 가게 목록 조회
     // 가게 목록 조회
     @GetMapping
     public Page<StoreListResponseDto> getStores(StoreListResponseDto listResponseDto, Pageable pageable) {

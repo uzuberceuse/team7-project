@@ -3,12 +3,14 @@ package sparta.AIBusinessProject.domain.product.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 import sparta.AIBusinessProject.domain.product.service.ProductService;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
 import java.util.UUID;
 
@@ -31,14 +33,15 @@ public class ProductController {
          */
         @PostMapping
         public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto,
-                                                @RequestHeader(value = "X-User-Id") String user_id,
-                                                @RequestHeader(value = "X-Role") String role){
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails){
+
                 // MANAGER, STORE 권한을 가져야만 create 가능
-                if(!"MANGER".equals(role) && !"STORE".equals(role)){
+                if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.createProduct(requestDto, user_id);
+                // UserDetailsImpl user_id 추가해야할 듯
+                return productService.createProduct(requestDto, userDetails.getUser().getUserId());
         }
 
         /* 상품 수정
@@ -46,31 +49,29 @@ public class ProductController {
         */
         @PatchMapping("/{product_id}")
         public ProductResponseDto updateProduct(@RequestBody ProductRequestDto requestDto,
-                                                @RequestHeader(value = "X-User-Id") String user_id,
-                                                @RequestHeader(value = "X-Role") String role,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                 @PathVariable UUID product_id){
-                // MANAGER, STORE 권한을 가져야만 update 가능
-                if(!"MANGER".equals(role) && !"STORE".equals(role)){
+
+                // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
+                if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.updateProduct(requestDto, product_id, user_id);
+                return productService.updateProduct(requestDto, product_id, userDetails.getUser().getUserId());
         }
 
         /* 상품 삭제
            삭제 결과는 T/F
         */
         @DeleteMapping("/{product_id}")
-        public Boolean deleteProduct(@RequestHeader(value = "X-User-Id") String user_id,
-                                     @RequestHeader(value = "X-Role") String role,
-                                     @PathVariable UUID product_id){
-
-                // MANAGER, STORE 권한을 가져야만 delete 가능
-                if(!"MANGER".equals(role) && !"STORE".equals(role)){
+        public Boolean deleteProduct( @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                     @PathVariable UUID product_id) {
+                // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
+                if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.deleteProduct(product_id, user_id);
+                return productService.deleteProduct(product_id, userDetails.getUser().getUserId());
         }
 
         // 상품 목록 조회
