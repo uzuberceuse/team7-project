@@ -27,38 +27,35 @@ public class ProductService {
 
     // 상품 등록
     @Transactional
-    public ProductResponseDto createProduct(ProductRequestDto requestDto, String user_id){
-        Product product = Product.createProduct(requestDto, user_id);
-        Product createdProduct = productRepository.save(product);
-
-        return toResponseDto(createdProduct);
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, String userId){
+        Product product = Product.createProduct(requestDto,  userId);
+        return ProductResponseDto.toResponseDto(productRepository.save(product));
     }
 
     // 상품 수정
+    // 이미 null값인 것은 안나오도록
     @Transactional
-    public ProductResponseDto updateProduct(ProductRequestDto requestDto, UUID product_id, String user_id){
-        Product product = productRepository.findById(product_id)
+    public ProductResponseDto updateProduct(ProductRequestDto requestDto, UUID productId, String  userId){
+        Product product = productRepository.findById(productId)
                 .filter(p -> p.getDeleted_at() == null)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
 
-        product.updateProduct(requestDto.getProductName(), requestDto.getDetails(), requestDto.getPrice(), requestDto.isStatus(), user_id);
-        Product updatedProduct = productRepository.save(product);
+        product.updateProduct(requestDto.getProductName(), requestDto.getDetails(), requestDto.getPrice(), requestDto.isStatus(), userId);
 
-        return toResponseDto(updatedProduct);
+        return ProductResponseDto.toResponseDto(product);
     }
 
     // 상품 삭제
     // 실제로 DB에서 삭제하는 것이 아닌 삭제 필드에 데이터가 들어가면 삭제라고 판단
     // 조회 시 시간값이 있다면 삭제된 것으로 판단하겠음
     @Transactional
-    public Boolean deleteProduct(UUID product_id, String user_id) {
+    public Boolean deleteProduct(UUID productId, String  userId) {
         try {
-            Product product = productRepository.findById(product_id)
+            Product product = productRepository.findById(productId)
                     .filter(p -> p.getDeleted_at() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
 
-            product.deleteProduct(user_id);
-            productRepository.save(product);
+            product.deleteProduct(userId);
             return true;
         } catch (Exception e) { return false; }
     }
@@ -71,28 +68,11 @@ public class ProductService {
 
     // 상품 상세 조회
     @Transactional(readOnly = true)
-    public ProductResponseDto getProductById(UUID product_id) {
-        Product product = productRepository.findById(product_id)
+    public ProductResponseDto getProductById(UUID productId) {
+        Product product = productRepository.findById(productId)
                 .filter(p -> p.getDeleted_at() == null)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
-        return toResponseDto(product);
+        return ProductResponseDto.toResponseDto(product);
     }
 
-
-    // ProductResponseDTO 변환 메서드
-    public ProductResponseDto toResponseDto(Product product) {
-        return new ProductResponseDto(
-                product.getProduct_id(),
-                product.getProductName(),
-                product.getDetails(),
-                product.getPrice(),
-                product.isStatus(),
-                product.getCreated_at(),
-                product.getCreated_by(),
-                product.getUpdated_at(),
-                product.getUpdated_by(),
-                product.getDeleted_at(),
-                product.getDeleted_by()
-        );
-    }
 }

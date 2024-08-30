@@ -4,16 +4,16 @@ package sparta.AIBusinessProject.domain.store.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.AIBusinessProject.domain.store.entity.Store;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreResponseDto {
 
-    private UUID category_id;
+    private String categoryName;
     private String StoreName;
     private String time;
     private String location;
@@ -25,4 +25,22 @@ public class StoreResponseDto {
     private String updated_by;
     private Timestamp deleted_at;
     private String deleted_by;
+
+
+    public static StoreResponseDto toResponseDto(Store store) {
+        return new StoreResponseDto(
+                store.getCategory().getCategoryName(),
+                store.getStoreName(),
+                store.getTime(),
+                store.getLocation(),
+                store.getPhone(),
+                store.getDetails(),
+                store.getCreated_at(),
+                store.getCreated_by(),
+                store.getUpdated_at(),
+                store.getUpdated_by(),
+                store.getDeleted_at(),
+                store.getDeleted_by()
+        );
+    }
 }

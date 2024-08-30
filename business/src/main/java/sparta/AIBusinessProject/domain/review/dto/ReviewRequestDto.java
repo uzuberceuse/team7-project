@@ -11,11 +11,12 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDto {
+public class ReviewRequestDto {
 
-    private UUID user_id;
-    private UUID order_id;
-    private UUID store_id;
+    private UUID userId;
+    private UUID orderId;
+    private UUID storeId;
     private String content;
     private ReviewRatingTypeEnum rating;
+
 }
