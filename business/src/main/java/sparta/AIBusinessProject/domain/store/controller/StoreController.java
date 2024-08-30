@@ -48,13 +48,13 @@ public class StoreController {
     @PatchMapping("/{store_id}")
     public StoreResponseDto updateStore(@RequestBody StoreRequestDto requestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                        @PathVariable UUID storeId) {
+                                        @PathVariable UUID store_id) {
 
         if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-        return storeService.updateStore(requestDto, storeId, userDetails.getUser().getUserId());
+        return storeService.updateStore(requestDto, store_id, userDetails.getUser().getUserId());
     }
 
     /* 가게 삭제
@@ -62,13 +62,13 @@ public class StoreController {
     */
     @DeleteMapping("/{store_id}")
     public Boolean deleteStore(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                               @PathVariable UUID storeId) {
+                               @PathVariable UUID store_id) {
 
         if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-        return storeService.deleteStore(storeId, userDetails.getUser().getUserId());
+        return storeService.deleteStore(store_id, userDetails.getUser().getUserId());
     }
 
 

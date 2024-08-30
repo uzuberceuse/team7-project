@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sparta.AIBusinessProject.domain.report.dto.ReportListResponseDto;
 import sparta.AIBusinessProject.domain.report.dto.ReportRequestDto;
-import sparta.AIBusinessProject.domain.report.dto.ReportResponseDto;
 import sparta.AIBusinessProject.domain.report.entity.Report;
 import sparta.AIBusinessProject.domain.report.repository.ReportRepository;
 import sparta.AIBusinessProject.domain.review.entity.Review;
@@ -46,7 +45,7 @@ public class ReportService {
     @Transactional
     public List<ReportListResponseDto> getReportList(UUID review_id, UUID user_id) {
         // 특정 리뷰와 사용자에 해당하는 신고를 조회
-        return reportRepository.findByReviewIdAndUserId(review_id, user_id).stream()
+        return reportRepository.findByReviewAndUser(review_id, user_id).stream()
                 .map(report -> ReportListResponseDto.builder()
                         .id(report.getReport_id())
                         .reviewId(report.getReview().getReview_id())
@@ -61,7 +60,7 @@ public class ReportService {
     @Transactional
     public void deleteReport(UUID review_id, UUID user_id) {
         // 특정리뷰와 사용자에 해당하는 모든 신고를 조회하여 삭제
-        List<Report> reports = reportRepository.findByReviewIdAndUserId(review_id, user_id);
+        List<Report> reports = reportRepository.findByReviewAndUser(review_id, user_id);
         if (reports.isEmpty()) {
             throw new IllegalArgumentException("신고를 찾을 수 없습니다.");
         }

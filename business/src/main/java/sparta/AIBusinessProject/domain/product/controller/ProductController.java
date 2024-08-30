@@ -50,14 +50,14 @@ public class ProductController {
         @PatchMapping("/{product_id}")
         public ProductResponseDto updateProduct(@RequestBody ProductRequestDto requestDto,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @PathVariable UUID productId){
+                                                @PathVariable UUID product_id){
 
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
                 if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.updateProduct(requestDto, productId, userDetails.getUser().getUserId());
+                return productService.updateProduct(requestDto, product_id, userDetails.getUser().getUserId());
         }
 
         /* 상품 삭제
@@ -65,14 +65,13 @@ public class ProductController {
         */
         @DeleteMapping("/{product_id}")
         public Boolean deleteProduct( @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID productId){
-
+                                     @PathVariable UUID product_id) {
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
                 if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-                return productService.deleteProduct(productId, userDetails.getUser().getUserId());
+                return productService.deleteProduct(product_id, userDetails.getUser().getUserId());
         }
 
         // 상품 목록 조회
@@ -84,8 +83,8 @@ public class ProductController {
 
         // 상품 상세 조회
         @GetMapping("/{product_id}")
-        public ProductResponseDto getProduct(@PathVariable UUID productId){
+        public ProductResponseDto getProduct(@PathVariable UUID product_id){
 
-                return productService.getProductById(productId);
+                return productService.getProductById(product_id);
         }
 }
