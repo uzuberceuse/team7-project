@@ -46,7 +46,7 @@ public class ReviewController {
         @PatchMapping("/{review_id}")
         public ReviewResponseDto updateReview(@RequestBody ReviewRequestDto requestDto,
                                              @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                             @PathVariable UUID reviewId) {
+                                             @PathVariable UUID review_id) {
 
             // MASTER, CUSTOMER 권한을 가져야만 update 가능
             if(!"ROLE_CUSTOMER".equals(userDetails.getUser().getRole()) &&
@@ -59,15 +59,15 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 수정 권한이 없습니다.");
             }
 
-            return reviewService.updateReview(requestDto, reviewId);
+            return reviewService.updateReview(requestDto, review_id);
         }
 
         /* 리뷰 삭제
            삭제 결과는 T/F
         */
-        @DeleteMapping("/{review_id")
+        @DeleteMapping("/{review_id}")
         public Boolean deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID reviewId) {
+                                     @PathVariable UUID review_id) {
 
             // MASTER, CUSTOMER 권한을 가져야만 delete 가능
             if(!"ROLE_CUSTOMER".equals(userDetails.getUser().getRole()) &&
@@ -80,7 +80,7 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 삭제 권한이 없습니다.");
             }
 
-            return reviewService.deleteReview(reviewId, userDetails.getUser().getUserId());
+            return reviewService.deleteReview(review_id, userDetails.getUser().getUserId());
         }
 
         // 리뷰 목록 조회
