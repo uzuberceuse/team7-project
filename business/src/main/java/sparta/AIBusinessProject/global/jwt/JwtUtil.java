@@ -34,9 +34,9 @@ public class JwtUtil {
     private String CUSTOMER_KEY;
     @Value("${key.owner}")
     private String OWNER_KEY;
-    @Value("${key.manager}")
+    @Value("${key.master}")
     private String MASTER_KEY;
-    @Value("{key.master}")
+    @Value("${key.manager}")
     private String MANAGER_KEY;
 
     private Key keyCustomer;
@@ -48,10 +48,11 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
+
         keyCustomer=Keys.hmacShaKeyFor(Base64.getDecoder().decode(CUSTOMER_KEY));
-        keyOwner = Keys.hmacShaKeyFor(Base64.getDecoder().decode(MASTER_KEY));
-        keyMaster=Keys.hmacShaKeyFor(Base64.getDecoder().decode(MANAGER_KEY));
-        keyManager=Keys.hmacShaKeyFor(Base64.getDecoder().decode(OWNER_KEY));
+        keyOwner = Keys.hmacShaKeyFor(Base64.getDecoder().decode(OWNER_KEY));
+        keyMaster=Keys.hmacShaKeyFor(Base64.getDecoder().decode(MASTER_KEY));
+        keyManager=Keys.hmacShaKeyFor(Base64.getDecoder().decode(MANAGER_KEY));
     }
 
     // 토큰 생성
