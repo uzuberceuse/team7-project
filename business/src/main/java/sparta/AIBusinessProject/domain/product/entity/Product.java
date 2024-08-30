@@ -25,7 +25,7 @@ public class Product {
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
     @Column(updatable = false, nullable = false)
-    private UUID product_id;
+    private UUID productId;
 
     @Column(nullable = false)
     private String productName;
