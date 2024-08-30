@@ -26,8 +26,8 @@ public class Review {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(updatable = false, nullable = false)
-    private UUID review_id;
+    @Column(name="review_id", updatable = false, nullable = false)
+    private UUID reviewId;
 
     //REVIEW:USER=N:1관계
     // JPA ManyToOne USER타입 객체로 받아오는 부분이 이해를 온전히 못함.

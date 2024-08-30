@@ -54,7 +54,7 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
             }
 
-            if(!userDetails.getUser().getUser_id().equals(requestDto.getUserId()) ||
+            if(!userDetails.getUser().getUserId().equals(requestDto.getUserId()) ||
                 "ROLE_MASTER".equals(userDetails.getUser().getRole()) ) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 수정 권한이 없습니다.");
             }
@@ -75,12 +75,13 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
             }
 
-            if(!userDetails.getUser().getUser_id().equals(userDetails.getUser().getUserId()) ||
+            if(!userDetails.getUser().getUserId().equals(userDetails.getUser().getUserId()) ||
                     "ROLE_MASTER".equals(userDetails.getUser().getRole()) ) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 리뷰 삭제 권한이 없습니다.");
             }
 
-            return reviewService.deleteReview(reviewId, userDetails.getUser().getUserId());
+            return reviewService.deleteReview(review_id, String.valueOf(userDetails.getUser().getUserId()));
+
         }
 
         // 리뷰 목록 조회
