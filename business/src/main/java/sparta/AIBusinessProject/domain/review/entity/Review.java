@@ -81,7 +81,7 @@ public class Review {
                 .store(store)
                 .content(requestDto.getContent())
                 .rating(requestDto.getRating())
-                .created_by(String.valueOf(user.getUserId()))
+                .created_by(String.valueOf(user.getUser_id()))
                 .build();
     }
 
