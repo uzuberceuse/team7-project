@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.order.entity.Order;
 import sparta.AIBusinessProject.domain.product.dto.ProductListResponseDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -20,14 +23,15 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 public class Product {
-
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
     @Column(updatable = false, nullable = false)
     private UUID product_id;
+
+    @OneToMany(mappedBy = "product")
+    private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)
     private String productName;
@@ -73,50 +77,16 @@ public class Product {
                 .build();
     }
 
-    // buildup 패턴으로 product 수정
-    public static Product updateProduct(ProductRequestDto requestDto, String user_id) {
-        return Product.builder()
-                .productName(requestDto.getProductName())
-                .price(requestDto.getPrice())
-                .details(requestDto.getDetails())
-                .status(requestDto.isStatus())
-                .updated_by(user_id)
-                .build();
+    // product 업데이트
+    public void updateProduct(String productName, String details, Integer price, boolean status, String user_id ){
+            this.productName = productName;
+            this.details = details;
+            this.price = price;
+            this.status = status;
+            this.updated_by = user_id;
     }
 
-    // buildup 패턴으로 product 삭제
-    // ??????
-    public static Product deleteProduct(ProductRequestDto requestDto, String user_id) {
-        return Product.builder()
-                .productName(requestDto.getProductName())
-                .status(requestDto.isStatus())
-                .deleted_by(user_id)
-                .build();
-    }
-
-    // ProductResponseDTO 변환 메서드
-    public ProductResponseDto toResponseDto() {
-        return new ProductResponseDto(
-                this.product_id,
-                this.productName,
-                this.details,
-                this.price,
-                this.status,
-                this.created_at,
-                this.created_by,
-                this.updated_at,
-                this.updated_by,
-                this.deleted_at,
-                this.deleted_by
-        );
-    }
-
-    // ProductListResponseDTO 변환 메서드
-    public ProductListResponseDto toListResponseDto() {
-        return new ProductListResponseDto(
-                this.product_id,
-                this.productName,
-                this.status
-        );
+    public void deleteProduct(String user_id){
+            this.deleted_by = user_id;
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import sparta.AIBusinessProject.domain.category.entity.Category;
 import sparta.AIBusinessProject.domain.store.dto.StoreListResponseDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreRequestDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreResponseDto;
@@ -28,8 +29,10 @@ public class Store {
     @Column(updatable = false, nullable = false)
     private UUID store_id;
 
+    // STORE:CATEGORY=N:1 관계
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
-    private UUID category_id;
+    private Category category_id;
 
     @Column(nullable = false, unique = true)
     private String storeName;
@@ -70,7 +73,7 @@ public class Store {
 
     // buildup 패턴으로 store 생성
     public static Store createStore(StoreRequestDto requestDto, String user_id){
-        return Store.builder()
+        return sparta.AIBusinessProject.domain.store.entity.Store.builder()
                 .storeName(requestDto.getStoreName())
                 .location(requestDto.getLocation())
                 .phone(requestDto.getPhone())
@@ -80,49 +83,18 @@ public class Store {
                 .build();
     }
 
-    // buildup 패턴으로 store 수정
-    public static Store updateStore(StoreRequestDto requestDto, String user_id){
-        return Store.builder()
-                .storeName(requestDto.getStoreName())
-                .location(requestDto.getLocation())
-                .phone(requestDto.getPhone())
-                .time(requestDto.getTime())
-                .details(requestDto.getDetails())
-                .updated_by(user_id)
-                .build();
+    // store 수정
+    public void updateStore(String storeName, String location, String phone, String time, String details, String user_id){
+
+                this.storeName = storeName;
+                this.location = location;
+                this.phone = phone;
+                this.time = time;
+                this.details = details;
+                this.updated_by = user_id;
     }
 
-    // buildup 패턴으로 store 삭제
-    public static Store deleteStore(StoreRequestDto requestDto, String user_id){
-        return Store.builder()
-                .storeName(requestDto.getStoreName())
-                .deleted_by(user_id)
-                .build();
-    }
-
-
-    public StoreResponseDto toResponseDto() {
-        return new StoreResponseDto(
-                this.category_id,
-                this.storeName,
-                this.time,
-                this.location,
-                this.phone,
-                this.details,
-                this.created_at,
-                this.created_by,
-                this.updated_at,
-                this.updated_by,
-                this.deleted_at,
-                this.deleted_by
-        );
-    }
-
-    public StoreListResponseDto toListResponseDto() {
-        return new StoreListResponseDto(
-                this.category_id,
-                this.storeName,
-                this.location
-        );
+    public void deleteStore(String user_id){
+        this.deleted_by = user_id;
     }
 }

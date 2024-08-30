@@ -1,4 +1,4 @@
-package sparta.AIBusinessProject.domain.security;
+package sparta.AIBusinessProject.global.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +8,8 @@ import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
+
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -21,6 +23,8 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
+    public UUID getId() {return user.getUser_id();}
+
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -28,7 +32,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getNickname();
+        return user.getUsername();
     }
 
     @Override

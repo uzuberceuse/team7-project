@@ -3,6 +3,7 @@ package sparta.AIBusinessProject.domain.category.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.AIBusinessProject.domain.category.dto.CategoryResponseDto;
 import sparta.AIBusinessProject.domain.category.dto.CreateCategoryRequestDto;
 import sparta.AIBusinessProject.domain.category.repository.CategoryRepository;
@@ -25,12 +26,27 @@ public class CategoryService {
     }
 
     // 카테고리 생성 비즈니스 로직
-    public void createCategory(CreateCategoryRequestDto request) {
-
+    public CategoryResponseDto createCategory(CreateCategoryRequestDto request,String username) {
+        Category category=categoryRepository.save(Category.create(request.getName(), username));
+        return CategoryResponseDto.of(category);
     }
 
     // 카테고리 수정 비즈니스 로직
-    public void updateCategory(Long categoryId, CreateCategoryRequestDto request) {
+    @Transactional
+    public void updateCategory(
+            UUID categoryId,
+            CreateCategoryRequestDto request,
+            String updatedBy
+            ) {
+
+        // 기존 카테고리 조회
+        Category category= (Category) categoryRepository.findById(categoryId)
+                .orElseThrow(()->new IllegalArgumentException("category not found"));
+        // 업데이트
+        category.setCategoryName(request.getName());
+        category.changeUpdated(updatedBy);
+        // 변경사항 저장
+        categoryRepository.save(category);
     }
 
     // 카테고리 삭제 비즈니스 로직
@@ -39,6 +55,6 @@ public class CategoryService {
                 .orElseThrow(()->new IllegalArgumentException("Category Not Found"));
 
         category.chanageDeleted(deletedBy);
-        categoryRepository.save(category);
+        categoryRepository.delete(category);
     }
 }

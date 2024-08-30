@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(access= AccessLevel.PRIVATE)
+@Builder(access= AccessLevel.PUBLIC)
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,11 @@ public class Payment {
     private List<Order> orders = new ArrayList<>();
     // 1번의 결제에 여러번 주문이 가능한 상황
     // Order:Payment = 1 : N (일대다 관계)
+
+    private Integer totalAmount;
+
+    @Column(nullable = false)
+    private UUID pg_id; // pg사 결제연동 id
 
     private Timestamp created_at;
     private String created_by;
