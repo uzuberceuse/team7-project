@@ -50,7 +50,7 @@ public class ProductController {
         @PatchMapping("/{product_id}")
         public ProductResponseDto updateProduct(@RequestBody ProductRequestDto requestDto,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @PathVariable UUID productId){
+                                                @PathVariable UUID product_id){
 
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
                 if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
@@ -66,7 +66,7 @@ public class ProductController {
         */
         @DeleteMapping("/{product_id}")
         public Boolean deleteProduct( @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID productId){
+                                     @PathVariable UUID product_id){
 
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
                 if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
@@ -87,8 +87,8 @@ public class ProductController {
 
         // 상품 상세 조회
         @GetMapping("/{product_id}")
-        public ProductResponseDto getProduct(@PathVariable UUID productId){
+        public ProductResponseDto getProduct(@PathVariable UUID product_id){
 
-                return productService.getProductById(productId);
+                return productService.getProductById(product_id);
         }
 }

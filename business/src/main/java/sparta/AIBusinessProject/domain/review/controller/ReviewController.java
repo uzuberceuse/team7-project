@@ -65,9 +65,9 @@ public class ReviewController {
         /* 리뷰 삭제
            삭제 결과는 T/F
         */
-        @DeleteMapping("/{review_id")
+        @DeleteMapping("/{review_id}")
         public Boolean deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @PathVariable UUID reviewId) {
+                                     @PathVariable UUID review_id) {
 
             // MASTER, CUSTOMER 권한을 가져야만 delete 가능
             if(!"ROLE_CUSTOMER".equals(userDetails.getUser().getRole()) &&
