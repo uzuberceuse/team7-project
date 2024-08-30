@@ -26,20 +26,38 @@ public class JwtUtil {
     // Token 만료시간
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
 
-    @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
-    private String secretKey;
-    private Key key;
+//    @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
+//    private String secretKey;
+
+    // role별 secretKey
+    @Value("${key.customer}")
+    private String CUSTOMER_KEY;
+    @Value("${key.owner}")
+    private String OWNER_KEY;
+    @Value("${key.manager}")
+    private String MASTER_KEY;
+    @Value("{key.master}")
+    private String MANAGER_KEY;
+
+    private Key keyCustomer;
+    private Key keyOwner;
+    private Key keyMaster;
+    private Key keyManager;
+
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     @PostConstruct
     public void init() {
-        byte[] bytes = Base64.getDecoder().decode(secretKey);
-        key = Keys.hmacShaKeyFor(bytes);
+        keyCustomer=Keys.hmacShaKeyFor(Base64.getDecoder().decode(CUSTOMER_KEY));
+        keyOwner = Keys.hmacShaKeyFor(Base64.getDecoder().decode(MASTER_KEY));
+        keyMaster=Keys.hmacShaKeyFor(Base64.getDecoder().decode(MANAGER_KEY));
+        keyManager=Keys.hmacShaKeyFor(Base64.getDecoder().decode(OWNER_KEY));
     }
 
     // 토큰 생성
     public String createToken(String username, UserRoleEnum role) {
         Date date = new Date();
+        Key key=getKeyByRole(role);
 
         return BEARER_PREFIX +
                 Jwts.builder()
@@ -49,6 +67,22 @@ public class JwtUtil {
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘
                         .compact();
+    }
+
+    // role에 따라 key 반환하는 메서드
+    private Key getKeyByRole(UserRoleEnum role) {
+        switch(role){
+            case CUSTOMER:
+                return keyCustomer;
+            case OWNER:
+                return keyOwner;
+            case MASTER:
+                return keyMaster;
+            case MANAGER:
+                return keyManager;
+            default:
+                throw new IllegalArgumentException("Invalid user role: " + role);
+        }
     }
 
     // header 에서 JWT 가져오기
@@ -61,8 +95,9 @@ public class JwtUtil {
     }
 
     // 토큰 검증
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token,UserRoleEnum role) {
         try {
+            Key key=getKeyByRole(role);
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
@@ -78,7 +113,8 @@ public class JwtUtil {
     }
 
     // 토큰에서 사용자 정보 가져오기
-    public Claims getUserInfoFromToken(String token) {
+    public Claims getUserInfoFromToken(String token,UserRoleEnum role) {
+        Key key=getKeyByRole(role);
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sparta.AIBusinessProject.domain.user.entity.UserRoleEnum;
 import sparta.AIBusinessProject.global.jwt.JwtUtil;
 
 import java.io.IOException;
@@ -36,12 +37,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(tokenValue)) {
 
-            if (!jwtUtil.validateToken(tokenValue)) {
+            UserRoleEnum role=UserRoleEnum.valueOf(req.getHeader("auth"));
+            if (!jwtUtil.validateToken(tokenValue,role)) {
                 log.error("Token Error");
                 return;
             }
 
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+            Claims info = jwtUtil.getUserInfoFromToken(tokenValue,role);
 
             try {
                 setAuthentication(info.getSubject());
