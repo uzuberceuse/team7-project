@@ -25,7 +25,7 @@ public class Product {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(updatable = false, nullable = false)
+    @Column(name="product_id",updatable = false, nullable = false)
     private UUID productId;
 
     @OneToMany(mappedBy = "product")
