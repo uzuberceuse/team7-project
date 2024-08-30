@@ -68,6 +68,8 @@ public class Store {
     @PreUpdate
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
 
+    @PreRemove
+    protected void onDelete() { deleted_at = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 store 생성
     public static Store createStore(StoreRequestDto requestDto, String user_id){
@@ -94,6 +96,5 @@ public class Store {
 
     public void deleteStore(String user_id){
         this.deleted_by = user_id;
-        this.deleted_at = Timestamp.valueOf(LocalDateTime.now());
     }
 }
