@@ -34,7 +34,7 @@ public class ComplainController {
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUserId().equals(user_id)) {
+        if (!userDetails.getId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -50,7 +50,7 @@ public class ComplainController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUserId().equals(user_id)) {
+        if (!userDetails.getId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -70,7 +70,7 @@ public class ComplainController {
               ) {
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUserId().equals(userDetails.getUser().getUserId())) {
+        if (!userDetails.getId().equals(userDetails.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         // 페이지 요청 생성
@@ -89,7 +89,7 @@ public class ComplainController {
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUserId().equals(user_id)) {
+        if (!userDetails.getId().equals(user_id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

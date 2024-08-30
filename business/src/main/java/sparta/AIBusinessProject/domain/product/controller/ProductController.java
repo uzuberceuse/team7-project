@@ -74,7 +74,7 @@ public class ProductController {
                 }
 
 
-                return productService.deleteProduct(product_id, String.valueOf(userDetails.getUser().getUserId()));
+                return productService.deleteProduct(product_id, String.valueOf(userDetails.getId()));
 
         }
 
