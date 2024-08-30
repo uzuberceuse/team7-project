@@ -39,9 +39,9 @@ public class OrderService {
     // 이 메서드는 OrderRequestDto를 받아 Order 엔티티를 생성하고 저장
     // User, Address, Payment 엔티티를 각 Repository에서 조회하여 Order 엔티티와 연관시킴
     // 생성된 Order 엔티티를 저장한 후, OrderResponseDto로 변환하여 반환
-    public OrderResponseDto createOrder(OrderRequestDto requestDto, UUID user_id) {
+    public OrderResponseDto createOrder(OrderRequestDto requestDto,User user) {
         // User와 Address, Payment를 조회하여 엔티티 객체로 변환
-        User user = userRepository.findById(requestDto.getUserId())
+        User orderUser = userRepository.findById(user.getUser_id())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Address address = addressRepository.findById(requestDto.getAddressId())
@@ -55,7 +55,7 @@ public class OrderService {
 
         // Order 엔티티 생성
         Order order = Order.builder()
-                .user(user)
+                .user(orderUser)
                 .address(address)
                 .payment(payment)
                 .store(store)
@@ -69,7 +69,7 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);   // 주문 저장
 
-        return toResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
+        return OrderResponseDto.toResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
     }
 
     // 2. 주문 수정
@@ -103,7 +103,7 @@ public class OrderService {
         Order updatedOrder = orderRepository.save(existingOrder);
 
         // 반환할 OrderResponseDto 생성
-        return toResponseDto(updatedOrder);
+        return OrderResponseDto.toResponseDto(updatedOrder);
     }
 
     // 3. 주문 취소
@@ -150,26 +150,28 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         // 반환할 OrderResponseDto 생성
-        return toResponseDto(order);
+        return OrderResponseDto.toResponseDto(order);
     }
 
     // Response DTO 변환 메서드
-    private OrderResponseDto toResponseDto(Order order) {
-        return OrderResponseDto.builder()
-                .orderId(order.getId())
-                .userId(order.getUser().getUser_id())
-                .addressId(order.getAddress().getId())
-                .paymentId(order.getPayment().getId())
-                .productId(order.getProduct_id())
-                .quantity(order.getQuantity())
-                .amount(order.getAmount())
-                .type(order.getType())
-                .createdAt(order.getCreated_at())
-                .createdBy(order.getCreated_by())
-                .updatedAt(order.getUpdated_at())
-                .updatedBy(order.getUpdated_by())
-                .build();
-    }
+    //  application 의 private 메서드보다 Dto 에서 static method 로 처리하는 것이
+    //  어떠한 ResponseDto로 치환되는지 확인할 수 있기 때문에 직관성이 좋다.
+//    private OrderResponseDto toResponseDto(Order order) {
+//        return OrderResponseDto.builder()
+//                .orderId(order.getId())
+//                .userId(order.getUser().getUser_id())
+//                .addressId(order.getAddress().getId())
+//                .paymentId(order.getPayment().getId())
+//                .productId(order.getProduct_id())
+//                .quantity(order.getQuantity())
+//                .amount(order.getAmount())
+//                .type(order.getType())
+//                .createdAt(order.getCreated_at())
+//                .createdBy(order.getCreated_by())
+//                .updatedAt(order.getUpdated_at())
+//                .updatedBy(order.getUpdated_by())
+//                .build();
+//    }
 }
 
 

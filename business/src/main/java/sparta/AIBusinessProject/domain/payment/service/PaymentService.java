@@ -42,7 +42,7 @@ public class PaymentService {
         List<Order> orders = orderRepository.findAllById(requestDto.getOrderIds());
         orders.forEach(order -> order.setPayment(Payment.builder().build()));
 
-        return toResponseDto(payment);
+        return PaymentResponseDto.toResponseDto(payment);
     }
 
     // 2. 결제 취소
@@ -63,7 +63,7 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
 
-        return toResponseDto(payment);
+        return PaymentResponseDto.toResponseDto(payment);
     }
 
     // 4. 결제 목록 조회
@@ -72,7 +72,7 @@ public class PaymentService {
 
         return paymentRepository.findAll(pageable).map(payment -> new PaymentResponseDto(
                 payment.getId(),
-                payment.getOrders().stream().map(this::toOrderListResponseDto).collect(Collectors.toList()),
+                payment.getOrders().stream().map(PaymentResponseDto::toOrderListResponseDto).collect(Collectors.toList()),
                 payment.getTotalAmount(),
                 payment.getCreated_at(),
                 payment.getCreated_by(),
@@ -82,18 +82,20 @@ public class PaymentService {
     }
 
     // DTO 변환 메서드들
-    private PaymentResponseDto toResponseDto(Payment payment) {
-        return PaymentResponseDto.builder()
-                .id(payment.getId())
-                .orders(payment.getOrders().stream()
-                        .map(this::toOrderListResponseDto)
-                        .collect(Collectors.toList()))
-                .createdAt(payment.getCreated_at())
-                .createdBy(payment.getCreated_by())
-                .deletedAt(payment.getDeleted_at())
-                .deletedBy(payment.getDeleted_by())
-                .build();
-    }
+    //  application 의 private 메서드보다 Dto 에서 static method 로 처리하는 것이
+    //  어떠한 ResponseDto로 치환되는지 확인할 수 있기 때문에 직관성이 좋다.
+//    private PaymentResponseDto toResponseDto(Payment payment) {
+//        return PaymentResponseDto.builder()
+//                .id(payment.getId())
+//                .orders(payment.getOrders().stream()
+//                        .map(this::toOrderListResponseDto)
+//                        .collect(Collectors.toList()))
+//                .createdAt(payment.getCreated_at())
+//                .createdBy(payment.getCreated_by())
+//                .deletedAt(payment.getDeleted_at())
+//                .deletedBy(payment.getDeleted_by())
+//                .build();
+//    }
 
 //    private PaymentListResponseDto toListResponseDto(Payment payment) {
 //        return PaymentListResponseDto.builder()
@@ -106,12 +108,12 @@ public class PaymentService {
 //                .build();
 //    }
 
-    private OrderListResponseDto toOrderListResponseDto(Order order) {
-        return OrderListResponseDto.builder()
-                .orderId(order.getId())
-                .productId(order.getProduct_id())
-                .quantity(order.getQuantity())
-                .amount(order.getAmount())
-                .build();
-    }
+//    private OrderListResponseDto toOrderListResponseDto(Order order) {
+//        return OrderListResponseDto.builder()
+//                .orderId(order.getId())
+//                .productId(order.getProduct_id())
+//                .quantity(order.getQuantity())
+//                .amount(order.getAmount())
+//                .build();
+//    }
 }
