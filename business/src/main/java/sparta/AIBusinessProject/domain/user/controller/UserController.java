@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,16 +47,15 @@ public class UserController {
     // 회원수정
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserResponseDto> updateUser(
-            @PathVariable UUID userId,
             @RequestBody UserRequestDto request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(userId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+//        if (!userDetails.getUser().getUser_id().equals(userId)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
 
-        UserResponseDto response = userService.updateUser(userId,request,userDetails.getUser().getUsername());
+        UserResponseDto response = userService.updateUser(userDetails,request);
         return ResponseEntity.ok(response);
     }
 
@@ -62,15 +63,14 @@ public class UserController {
     // 회원 탈퇴
     @DeleteMapping("/{user_id}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
-        if (!userDetails.getUser().getUser_id().equals(user_id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+//        if (!userDetails.getUser().getUser_id().equals(user_id)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
 
-        userService.deleteUser(user_id);
+        userService.deleteUser(userDetails);
         return ResponseEntity.noContent().build();
     }
 
@@ -110,14 +110,14 @@ public class UserController {
 
     // 회원 목록조회
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> getUserList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<Page<UserResponseDto>> getUserList(PageRequest pageable,@AuthenticationPrincipal UserDetailsImpl userDetails){
         // 예시: 관리자 권한이 있을 때만 전체 목록 조회 허용
         if (!userDetails.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_MANAGER")||auth.getAuthority().equals("ROLE_MASTER"))){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        List<UserResponseDto> users=userService.getUserList(userDetails.getUser());
-        return ResponseEntity.ok(users);
+        Page<UserResponseDto> response = userService.getUserList(pageable);
+        return ResponseEntity.ok(response);
     }
 }

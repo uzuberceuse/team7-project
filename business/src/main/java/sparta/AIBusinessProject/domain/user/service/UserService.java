@@ -2,6 +2,9 @@ package sparta.AIBusinessProject.domain.user.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,25 +25,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-
-    @Value("${token.owner}")
-    private String ownerToken;
-    @Value("${token.manager}")
-    private String managerToken;
-    @Value("${token.maswer}")
-    private String masterToken;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
-
-
-    // 로그아웃 - 구현안됨
-    public void logout(User user) {}
-
 
     // 회원 존재 여부 검증 비즈니스 로직
     public Boolean verifyUser(final String username) {
@@ -69,34 +58,14 @@ public class UserService {
             throw new IllegalArgumentException("email 중복");
         }
 
-        // 사용자 role 확인
-        UserRoleEnum role = UserRoleEnum.CUSTOMER;
-        if (request.getRole().equals("ROLE_OWNER")) {
-            if (!ownerToken.equals(request.getToken())) {
-                throw new IllegalArgumentException("not Owner");
-            }
-            role = UserRoleEnum.OWNER;
-        }
-        if (request.getRole().equals("ROLE_MANAGER")) {
-            if (!managerToken.equals(request.getToken())) {
-                throw new IllegalArgumentException("not Manager");
-            }
-            role = UserRoleEnum.MANAGER;
-        }
-        if (request.getRole().equals("ROLE_MASTER")) {
-            if (!masterToken.equals(request.getToken())) {
-                throw new IllegalArgumentException("not MASTER");
-            }
-            role = UserRoleEnum.MASTER;
-        }
-        User user=User.create(username,email,password,phone,role);
+        User user=User.create(username,email,password,phone,request.getRole());
         userRepository.save(user);
     }
 
 
     // 유저 탈퇴 비즈니스 로직
-    public Boolean deleteUser(UUID userId) {
-        User user=userRepository.findById(userId)
+    public Boolean deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user=userRepository.findById(userDetails.getId())
                 .orElseThrow(()->new IllegalArgumentException("User not found"));
         user.changeDeleted(user.getUsername());
         userRepository.save(user);
@@ -113,26 +82,31 @@ public class UserService {
     }
 
 
-    // 유저 목록 조회 비즈니스 로직
-    public List<UserResponseDto> getUserList(User user) {
-        return userRepository.findAll().stream()
-                .map(UserResponseDto::of)
-                .collect(Collectors.toList());
+    // Pageable 파라미터를 받아 페이징을 구성하는 방법
+    public Page<UserResponseDto> getUserList(Pageable pageable) {
+        Page<User> user = userRepository.findByRole(UserRoleEnum.MASTER, pageable);
+        List<UserResponseDto> contents = user.getContent().stream().map(UserResponseDto::of).toList();
+
+        return new PageImpl<>(contents, pageable, user.getSize());
     }
 
     // 유저 수정 비즈니스 로직
     public UserResponseDto updateUser(
-            UUID id,
-            UserRequestDto request,
-            String updatedBy
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            UserRequestDto request
             ) {
         // 기존 유저 조회
-        User user=userRepository.findById(id)
+        User user=userRepository.findById(userDetails.getId())
                 .orElseThrow(()->new IllegalArgumentException("user not found"));
         // 업데이트
-        user.changeUpdated(request,updatedBy);
+        user.changeUpdated(request,userDetails.getUsername());
         // 변경사항 저장
         userRepository.save(user);
         return UserResponseDto.of(user);
     }
+
+
+    // 로그아웃 - 구현안됨
+    public void logout(User user) {}
+
 }

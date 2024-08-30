@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.complain.dto.ComplainListResponseDto;
 import sparta.AIBusinessProject.domain.order.dto.OrderListResponseDto;
@@ -15,6 +17,7 @@ import sparta.AIBusinessProject.domain.order.dto.OrderRequestDto;
 import sparta.AIBusinessProject.domain.order.dto.OrderResponseDto;
 import sparta.AIBusinessProject.domain.order.entity.Order;
 import sparta.AIBusinessProject.domain.order.service.OrderService;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,34 +31,41 @@ public class OrderController {
     private final OrderService orderService;
 
     // 1. 주문 등록
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
-    @PostMapping("/{user_id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
+    @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto,
-                                                        @PathVariable("user_id") UUID userId) {
-        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto, userId); // 생성된 주문 정보를 OrderResponseDto 형태로 반환
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto, userDetails.getUser()); // 생성된 주문 정보를 OrderResponseDto 형태로 반환
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
     // 2. 주문 수정
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @PatchMapping("/{order_id}")
     public ResponseEntity<OrderResponseDto> updateOrder(
-            @PathVariable UUID order_id,
+            @PathVariable("order_id") UUID orderId,
             @RequestBody OrderRequestDto orderRequestDto) {
-        OrderResponseDto updatedOrder = orderService.updateOrder(order_id, orderRequestDto);
+
+//        // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
+//        if (!userDetails.getUser().getUser_id().equals(userDetails.getId())) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
+
+        OrderResponseDto updatedOrder = orderService.updateOrder(orderId, orderRequestDto);
         return ResponseEntity.ok(updatedOrder);
     }
 
     // 3. 주문 취소
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @DeleteMapping("/{order_id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable UUID order_id) {
-        orderService.deleteOrder(order_id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable("order_id") UUID orderId) {
+        orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
     // 4. 주문 목록 조회
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping
     public ResponseEntity<Page<OrderListResponseDto>> getOrderList(
             @RequestParam(defaultValue = "0") int page,         // 기본 페이지 번호 0
@@ -73,7 +83,7 @@ public class OrderController {
     }
 
     // 5. 주문 상세 조회
-    @Secured({"ROLE_MANAGER", "ROLE_OWNER", "ROLE_CUSTOMER"})
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping("/{order_id}")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable UUID order_id) {
         OrderResponseDto order = orderService.getOrder(order_id);
