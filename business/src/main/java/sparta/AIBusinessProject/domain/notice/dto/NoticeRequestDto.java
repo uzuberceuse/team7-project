@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class NoticeRequestDto {
     private String noticeTitle;
