@@ -92,7 +92,7 @@ public class NoticeService {
     @Transactional
     public Page<NoticeListResponseDto> getNoticeList(Pageable pageable) {
         return noticeRepository.findAll(pageable).map(notice -> new NoticeListResponseDto(
-                notice.getNotice_id(),
+                notice.getNoticeId(),
                 notice.getNoticeTitle(),
                 notice.getCreated_at(),
                 notice.getCreated_by()

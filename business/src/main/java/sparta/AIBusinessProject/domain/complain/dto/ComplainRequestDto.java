@@ -12,9 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComplainRequestDto {
 
-    private UUID complain_id;
-    private UUID user_id;
-    private UUID review_id;
+    private UUID complainId;
+    private UUID userId;
+    private UUID reviewId;
     private String ComplainContent;
     private String created_by;
     private String deleted_by;

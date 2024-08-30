@@ -12,7 +12,7 @@ import java.util.UUID;
 public class NoticeListResponseDto {
 
     // 목록조회
-    private UUID notice_id;
+    private UUID noticeId;
     private String noticeTitle;
     private Timestamp create_at;
     private String create_by;

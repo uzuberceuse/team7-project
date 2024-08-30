@@ -25,8 +25,8 @@ public class Report {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @ColumnDefault("random_uuid()")
-    @Column(updatable = false, nullable = false)
-    private UUID report_id;
+    @Column(name = "report_id", updatable = false, nullable = false)
+    private UUID reportId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼

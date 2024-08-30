@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class NoticeResponseDto {
 
-    private UUID notice_id;
+    private UUID noticeId;
     private String noticeTitle;
     private String noticeContent;
     private Timestamp created_at;
@@ -24,7 +24,7 @@ public class NoticeResponseDto {
 
 
     public NoticeResponseDto(Notice notice) {
-        this.notice_id = notice.getNotice_id();
+        this.noticeId = notice.getNoticeId();
         this.noticeTitle = notice.getNoticeTitle();
         this.noticeContent = notice.getNoticeContent();
         this.created_at = notice.getCreated_at();
