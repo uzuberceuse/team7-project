@@ -18,7 +18,7 @@ public class AuthConfig {
                 // CSRF 보호를 비활성화합니다. CSRF 보호는 주로 브라우저 클라이언트를 대상으로 하는 공격을 방지하기 위해 사용됩니다.
                 .csrf(csrf -> csrf.disable())
                 // 요청에 대한 접근 권한을 설정합니다.
-                .authorizeRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize
                         // /api/user/signIn 경로에 대한 접근을 허용합니다. 이 경로는 인증 없이 접근할 수 있습니다.
                         .requestMatchers("/api/user/signIn").permitAll()
                         // 그 외의 모든 요청은 인증이 필요합니다.
