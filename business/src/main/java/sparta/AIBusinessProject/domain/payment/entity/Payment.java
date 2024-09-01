@@ -21,6 +21,7 @@ public class Payment {
     private UUID id;
 
     @OneToMany(mappedBy = "payment")
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
     // 1번의 결제에 여러번 주문이 가능한 상황
     // Order:Payment = 1 : N (일대다 관계)

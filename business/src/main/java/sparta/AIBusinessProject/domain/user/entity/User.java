@@ -59,6 +59,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

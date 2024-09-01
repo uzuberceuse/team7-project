@@ -29,6 +29,7 @@ public class Product {
     private UUID productId;
 
     @OneToMany(mappedBy = "product")
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)
