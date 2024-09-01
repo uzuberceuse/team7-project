@@ -51,7 +51,7 @@ public class CategoryService {
 
     // 카테고리 삭제 비즈니스 로직
     public void deleteCategory(UUID categoryId,String deletedBy) {
-        Category category=categoryRepository.findById(categoryId)
+        Category category= categoryRepository.findByCategoryId(categoryId)
                 .orElseThrow(()->new IllegalArgumentException("Category Not Found"));
 
         category.chanageDeleted(deletedBy);

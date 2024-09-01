@@ -93,7 +93,7 @@ public class ComplainController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        ComplainResponseDto responseDto = complainService.getComplainDetail(user_id);
+        ComplainResponseDto responseDto = complainService.getComplainDetail(userDetails.getUser());
         return ResponseEntity.ok(responseDto);
 
     }

@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
-    Optional<Object> findById(Long categoryId);
+    Optional<Category> findByCategoryId(UUID categoryId);
 }

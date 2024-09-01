@@ -22,11 +22,10 @@ public class Complain {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
-    @Column(updatable = false, nullable = false)
+    @Column(name="complain_id", updatable = false, nullable = false)
     private UUID complain_id; // 신고id
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
     private User user; // 신고자 id
 

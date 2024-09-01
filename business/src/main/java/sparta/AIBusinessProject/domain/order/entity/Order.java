@@ -32,22 +32,22 @@ public class Order {
     @Column(name = "order_id", updatable = false, nullable = false)
     private UUID id;
 
-    @OneToMany (mappedBy = "order")
+    @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
     private List<Product_Order> product_orders = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
     private User user;         // Order는 단일 User 와 다대일 관계
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false) // 외래 키 컬럼
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", nullable = false) // 외래 키 컬럼
     private Payment payment;   // Order는 단일 Payment와 다대일 관계
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false) // 외래 키 컬럼
     private Store store;   // Order는 단일 Payment와 다대일 관계
 

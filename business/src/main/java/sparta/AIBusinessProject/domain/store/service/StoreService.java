@@ -71,8 +71,9 @@ public class StoreService {
 
     // 가게 목록 조회
     // 페이징 적용
-    public Page<StoreListResponseDto> getStores(StoreListResponseDto listResponseDto, Pageable pageable) {
-        return storeRepository.getStores(listResponseDto, pageable);
+    public Page<StoreListResponseDto> getStore(StoreListResponseDto listResponseDto, Pageable pageable) {
+        //return storeRepository.getStore(listResponseDto, pageable);
+        return storeRepository.findByStoreId(listResponseDto.getStoreName(),pageable);
     }
 
     // 가게 상세 조회

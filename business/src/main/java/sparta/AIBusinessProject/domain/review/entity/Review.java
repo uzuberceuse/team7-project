@@ -36,7 +36,7 @@ public class Review {
     private User user;
 
     // REVEIW:ORDER = 1:1관계
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 

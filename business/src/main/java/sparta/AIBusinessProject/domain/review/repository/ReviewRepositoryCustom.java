@@ -8,6 +8,6 @@ import sparta.AIBusinessProject.domain.review.dto.ReviewResponseDto;
 public interface ReviewRepositoryCustom {
 
     // 리뷰 조회 시 페이징 적용
-    Page<ReviewResponseDto> getReviews(ReviewResponseDto responseDto, Pageable pageable);
+    Page<ReviewResponseDto> findByReviewId(ReviewResponseDto responseDto, Pageable pageable);
 }
 

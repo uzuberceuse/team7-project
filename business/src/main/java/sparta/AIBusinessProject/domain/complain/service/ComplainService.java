@@ -49,7 +49,7 @@ public class ComplainService {
     public void deleteComplain(UUID user_id) {
 
         // userId의 사용자의 신고를 조회
-        Complain complain = complainRepository.findByUserId(user_id)
+        Complain complain = complainRepository.findById(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저의 신고가 없습니다."));
 
         complainRepository.delete(complain);
@@ -68,8 +68,8 @@ public class ComplainService {
 
     // 상세조회
     @Transactional
-    public ComplainResponseDto getComplainDetail(UUID userId) {
-        Complain complain = complainRepository.findByUserId(userId)
+    public ComplainResponseDto getComplainDetail(User user) {
+        Complain complain = complainRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저의 신고가 없습니다."));
 
         return new ComplainResponseDto(complain);

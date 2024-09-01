@@ -63,7 +63,7 @@ public class ProductService {
     // 상품 목록 조회
     // 페이징 적용
     public Page<ProductListResponseDto> getProducts(ProductListResponseDto listResponseDto, Pageable pageable){
-        return productRepository.getProducts(listResponseDto, pageable);
+        return productRepository.findByProductId(listResponseDto,pageable);
     }
 
     // 상품 상세 조회
