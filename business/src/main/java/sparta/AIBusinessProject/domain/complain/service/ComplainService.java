@@ -74,6 +74,4 @@ public class ComplainService {
 
         return new ComplainResponseDto(complain);
     }
-
-
 }
