@@ -23,7 +23,7 @@ public class Address {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    @ColumnDefault("uuid_generate_v4()")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private String addressName;
@@ -32,7 +32,7 @@ public class Address {
     // user:address=1:N
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user_id;
+    private User user;
 
     private Boolean isPublic=true;
 

@@ -28,11 +28,11 @@ public class Report {
     @Column(name = "report_id", updatable = false, nullable = false)
     private UUID reportId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 컬럼
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", nullable = false) // 외래 키 컬럼
     private Review review;
 

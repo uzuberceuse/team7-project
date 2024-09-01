@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository <User, UUID>{
-    Optional<Object> findByUserEmail(String email);
+    Optional<Object> findByEmail(String email);
     Optional<Object> findByUsername(String username);
 
     Page<User> findByRole(UserRoleEnum userRoleEnum, Pageable pageable);

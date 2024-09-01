@@ -12,6 +12,7 @@ import java.util.UUID;
 @Builder(access = AccessLevel.PRIVATE)
 public class ProductListResponseDto implements Serializable {
 
+    private UUID productId;
     private String productName;
     private boolean status;
 

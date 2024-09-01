@@ -80,7 +80,7 @@ public class StoreController {
     @GetMapping
     public Page<StoreListResponseDto> getStores(StoreListResponseDto listResponseDto, Pageable pageable) {
 
-        return storeService.getStores(listResponseDto, pageable);
+        return storeService.getStore(listResponseDto, pageable);
     }
 
 

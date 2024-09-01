@@ -54,7 +54,7 @@ public class UserService {
 
         // email 중복확인
         String email=request.getEmail();
-        if(userRepository.findByUserEmail(email).isPresent()){
+        if(userRepository.findByEmail(email).isPresent()){
             throw new IllegalArgumentException("email 중복");
         }
 

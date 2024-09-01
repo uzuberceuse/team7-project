@@ -85,7 +85,7 @@ public class ReviewService {
 
     // 리뷰 조회
     public Page<ReviewResponseDto> getReviews(ReviewResponseDto responseDto, Pageable pageable) {
-        return reviewRepository.getReviews(responseDto, pageable);
+        return reviewRepository.findByReviewId(responseDto, pageable);
     }
 
 }
