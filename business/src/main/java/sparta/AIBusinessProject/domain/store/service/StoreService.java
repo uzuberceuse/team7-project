@@ -1,5 +1,7 @@
 package sparta.AIBusinessProject.domain.store.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 public class StoreService {
 
+
     private final StoreRepository storeRepository;
     private final CategoryRepository categoryRepository;
 
@@ -29,6 +32,7 @@ public class StoreService {
         this.storeRepository = storeRepository;
         this.categoryRepository = categoryRepository;
     }
+
 
     // 가게 등록
     @Transactional
@@ -38,7 +42,6 @@ public class StoreService {
 
         Store store = Store.createStore(requestDto, category, userId);
 
-        // DTO 변환메서드를 엔티티에 놓는 것이 맞는지 헷갈림.
         return StoreResponseDto.toResponseDto(storeRepository.save(store));
     }
 
@@ -71,9 +74,16 @@ public class StoreService {
 
     // 가게 목록 조회
     // 페이징 적용
-    public Page<StoreListResponseDto> getStore(StoreListResponseDto listResponseDto, Pageable pageable) {
-        //return storeRepository.getStore(listResponseDto, pageable);
-        return storeRepository.findByStoreId(listResponseDto.getStoreName(),pageable);
+    public Page<StoreListResponseDto> getStore(StoreListResponseDto listResponseDto, int page, int size, String sortBy, boolean isAsc) {
+
+        // 페이지 정렬
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        // 페이징 처리
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return storeRepository.findAll(pageable).map(StoreListResponseDto::new);
     }
 
     // 가게 상세 조회
@@ -84,6 +94,4 @@ public class StoreService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 가게를 찾을 수 없습니다."));
         return StoreResponseDto.toResponseDto(store);
     }
-
-
 }
