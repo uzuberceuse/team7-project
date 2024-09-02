@@ -14,8 +14,8 @@ public class ComplainRequestDto {
 
     private UUID complainId;
     private UUID userId;
-    private UUID reviewId;
     private String ComplainContent;
+    private String answer;
     private String created_by;
     private String deleted_by;
 

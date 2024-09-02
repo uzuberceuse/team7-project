@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/address")
 @RequiredArgsConstructor
-public class AddressController {
+public class  AddressController {
 
     private final AddressService addressService;
 
@@ -26,7 +26,7 @@ public class AddressController {
     @PostMapping
     public ResponseEntity<AddressResponseDto> createAddress(
             final @RequestBody CreateAddressRequestDto request,
-            @RequestParam String username
+            @RequestParam("username") String username
     ){
         AddressResponseDto address=addressService.createAddress(request,username);
         return ResponseEntity.ok(address);

@@ -13,10 +13,9 @@ public class ComplainResponseDto {
 
     private UUID complainId;
     private UUID userId;
-    private UUID reviewId;
     private String complainContent;
     private String answer;
-    private Timestamp created_at;
+    private Timestamp createdAt;
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;
@@ -29,7 +28,7 @@ public class ComplainResponseDto {
         this.userId = complain.getUser().getUser_id();
         this.complainContent = complain.getComplainContent();
         this.answer = complain.getAnswer();
-        this.created_at = complain.getCreated_at();
+        this.createdAt = complain.getCreatedAt();
         this.created_by = complain.getCreated_by();
         this.updated_at = complain.getUpdated_at();
         this.updated_by = complain.getUpdated_by();
