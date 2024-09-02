@@ -23,9 +23,7 @@ import java.util.UUID;
 public class Review {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="review_id", updatable = false, nullable = false)
     private UUID reviewId;
 

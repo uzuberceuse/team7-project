@@ -21,9 +21,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PRIVATE)
 public class Address {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("uuid_generate_v4()")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private String addressName;
