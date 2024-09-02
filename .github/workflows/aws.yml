@@ -40,6 +40,11 @@ env:
   CONTAINER_NAME: project-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
+  DB_NAME: postgres                          # Set your database name here
+  DB_USERNAME: postgres                    # Set your database username here
+  DB_PASSWORD: 1234                # Set your database password here
+  DB_PORT: 5432   
+  
 permissions:
   contents: read
 
@@ -47,6 +52,22 @@ jobs:
   build:
     name: Build Jar
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        options: >-
+          --health-cmd "pg_isready -U ${{ env.DB_USERNAME }}" 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
 
     steps:
     - name: Checkout
@@ -61,6 +82,21 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        echo "Waiting for PostgreSQL to be ready..."
+        while ! pg_isready -h localhost -U ${{ env.DB_USERNAME }} -d ${{ env.DB_NAME }}; do
+          sleep 1
+        done
+        echo "PostgreSQL is ready!"
+
+    - name: Build with Gradle
+      env:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:${{ env.DB_PORT }}/${{ env.DB_NAME }}
+        SPRING_DATASOURCE_USERNAME: ${{ env.DB_USERNAME }}
+        SPRING_DATASOURCE_PASSWORD: ${{ env.DB_PASSWORD }}
+      run: ./gradlew clean build
+      
     - name: Build with Gradle
       run: ./gradlew clean build
 
