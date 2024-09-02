@@ -47,9 +47,6 @@ public class OrderService {
         Address address = addressRepository.findById(requestDto.getAddressId())
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
-        Payment payment = paymentRepository.findById(requestDto.getPaymentId())
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
-
         Store store = storeRepository.findById(requestDto.getStoreId())
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
@@ -57,19 +54,18 @@ public class OrderService {
         Order order = Order.builder()
                 .user(orderUser)
                 .address(address)
-                .payment(payment)
                 .store(store)
                 .product_id(requestDto.getProductId())
                 .quantity(requestDto.getQuantity())
                 .amount(requestDto.getAmount())
                 .type(requestDto.getType())
                 .created_at(new Timestamp(System.currentTimeMillis()))
-                .created_by(requestDto.getCreatedBy())
+                .created_by(String.valueOf(user.getUser_id()))
                 .build();
 
         Order savedOrder = orderRepository.save(order);   // 주문 저장
 
-        return OrderResponseDto.toResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
+        return OrderResponseDto.beforeResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
     }
 
     // 2. 주문 수정
