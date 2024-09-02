@@ -80,10 +80,10 @@ public class UserController {
     }
 
     // 로그인
-    @GetMapping("/signIn")
-    public SignInResponseDto createAuthenticationToken(@RequestBody SignInRequestDto request){
-        return null;
-    }
+//    @GetMapping("/signIn")
+//    public SignInResponseDto createAuthenticationToken(@RequestBody SignInRequestDto request){
+//        return null;
+//    }
 
     // userId 존재여부 검증 API
     @GetMapping("/verify")
