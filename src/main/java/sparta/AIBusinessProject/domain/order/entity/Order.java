@@ -45,7 +45,7 @@ public class Order {
     private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id", nullable = false) // 외래 키 컬럼
+    @JoinColumn(name = "payment_id") // 외래 키 컬럼
     private Payment payment;   // Order는 단일 Payment와 다대일 관계
 
     @ManyToOne(fetch = FetchType.LAZY)
