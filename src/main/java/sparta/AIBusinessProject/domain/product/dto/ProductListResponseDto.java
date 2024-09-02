@@ -16,10 +16,9 @@ public class ProductListResponseDto implements Serializable {
     private String productName;
     private boolean status;
 
-    public static ProductListResponseDto of(final Product product) {
-        return ProductListResponseDto.builder()
-                .productName(product.getProductName())
-                .status(product.isStatus())
-                .build();
+    public ProductListResponseDto (Product product) {
+        this.productId = product.getProductId();
+        this.productName = product.getProductName();
+        this.status = product.isStatus();
     }
 }

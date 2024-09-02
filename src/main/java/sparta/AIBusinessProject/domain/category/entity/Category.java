@@ -29,6 +29,7 @@ public class Category {
     @Column(unique=true,nullable=false)
     private String categoryName;
 
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

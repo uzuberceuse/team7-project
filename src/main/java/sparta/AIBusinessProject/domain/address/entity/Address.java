@@ -34,6 +34,7 @@ public class Address {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

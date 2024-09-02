@@ -1,7 +1,9 @@
 package sparta.AIBusinessProject.domain.review.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import java.util.UUID;
 
 @Service
 public class ReviewService {
+
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
@@ -84,8 +87,27 @@ public class ReviewService {
     }
 
     // 리뷰 조회
-    public Page<ReviewResponseDto> getReviews(ReviewResponseDto responseDto, Pageable pageable) {
-        return reviewRepository.findByReviewId(responseDto, pageable);
+    public Page<ReviewResponseDto> getReviews(UUID storeId, int page, int size, String sortBy, boolean isAsc){
+
+        // 페이지 정렬
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        // 페이징 처리
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return reviewRepository.findAllByStore_StoreId(storeId, pageable).map(ReviewResponseDto::toResponseDto);
+    }
+
+    public Page<ReviewResponseDto> getMyReviews(User user, int page, int size, String sortBy, boolean isAsc) {
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        // 페이징 처리
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return reviewRepository.findAllByUser(user, pageable).map(ReviewResponseDto::toResponseDto);
     }
 
 }

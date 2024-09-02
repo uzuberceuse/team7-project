@@ -28,9 +28,6 @@ public class ProductController {
         /* 상품 등록
            등록 결과 확인
         */
-        /* 아직 gateway를 확인하지 않아 임시로 코드를 짬
-           기본적으로 로그인한 상태에서 user_id와 role 체크
-         */
         @PostMapping
         public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -65,7 +62,7 @@ public class ProductController {
            삭제 결과는 T/F
         */
         @DeleteMapping("/{product_id}")
-        public Boolean deleteProduct( @AuthenticationPrincipal UserDetailsImpl userDetails,
+        public Boolean deleteProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                      @PathVariable UUID product_id){
 
                 // MASTER, MANAGER, STORE 권한을 가져야만 update 가능
@@ -73,16 +70,20 @@ public class ProductController {
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
                 }
 
-
                 return productService.deleteProduct(product_id, String.valueOf(userDetails.getId()));
 
         }
 
         // 상품 목록 조회
         @GetMapping
-        public Page<ProductListResponseDto> getProducts(ProductListResponseDto listResponseDto, Pageable pageable){
+        public Page<ProductListResponseDto> getProducts(
+                @RequestParam("page") int page,
+                @RequestParam("size") int size,
+                @RequestParam("sortBy") String sortBy,
+                @RequestParam("isAsc") boolean isAsc,
+                ProductListResponseDto listResponseDto){
 
-                return productService.getProducts(listResponseDto, pageable);
+                return productService.getProducts(listResponseDto, page, size, sortBy, isAsc);
         }
 
         // 상품 상세 조회

@@ -29,9 +29,6 @@ public class StoreController {
     /* 가게 등록
        등록 결과 확인
     */
-    /* 아직 gateway를 확인하지 않아 임시로 코드를 짬
-           기본적으로 로그인한 상태에서 user_id와 role 체크
-    */
     @PostMapping
     public StoreResponseDto createStore(@RequestBody StoreRequestDto requestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -39,6 +36,7 @@ public class StoreController {
         if("ROLE_CUSTOMER".equals(userDetails.getUser().getRole())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
+
             return storeService.createStore(requestDto, String.valueOf(userDetails.getId()));
     }
 
@@ -55,7 +53,6 @@ public class StoreController {
         }
 
         return storeService.updateStore(requestDto, store_id, String.valueOf(userDetails.getId()));
-
     }
 
     /* 가게 삭제
@@ -69,18 +66,21 @@ public class StoreController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근이 허용되지 않습니다.");
         }
 
-
         return storeService.deleteStore(store_id, String.valueOf(userDetails.getId()));
-
     }
 
 
     // 가게 목록 조회
     // 가게 목록 조회
     @GetMapping
-    public Page<StoreListResponseDto> getStores(StoreListResponseDto listResponseDto, Pageable pageable) {
+    public Page<StoreListResponseDto> getStores(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc,
+            StoreListResponseDto listResponseDto) {
 
-        return storeService.getStore(listResponseDto, pageable);
+        return storeService.getStore(listResponseDto, page, size, sortBy, isAsc);
     }
 
 

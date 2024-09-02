@@ -1,6 +1,8 @@
 package sparta.AIBusinessProject.domain.product.service;
 
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +15,9 @@ import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 import sparta.AIBusinessProject.domain.product.entity.Product;
 import sparta.AIBusinessProject.domain.product.repository.ProductRepository;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -62,8 +66,18 @@ public class ProductService {
 
     // 상품 목록 조회
     // 페이징 적용
-    public Page<ProductListResponseDto> getProducts(ProductListResponseDto listResponseDto, Pageable pageable){
-        return productRepository.findByProductId(listResponseDto,pageable);
+    // 지연로딩 어노테이션 추가
+    @Transactional(readOnly = true)
+    public Page<ProductListResponseDto> getProducts(ProductListResponseDto listResponseDto, int page, int size, String sortBy, boolean isAsc){
+
+        // 페이지 정렬
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        // 페이징 처리
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return productRepository.findAll(pageable).map(ProductListResponseDto::new);
     }
 
     // 상품 상세 조회
@@ -74,5 +88,4 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
         return ProductResponseDto.toResponseDto(product);
     }
-
 }

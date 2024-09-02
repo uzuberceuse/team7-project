@@ -33,6 +33,7 @@ public class Order {
     private UUID id;
 
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
