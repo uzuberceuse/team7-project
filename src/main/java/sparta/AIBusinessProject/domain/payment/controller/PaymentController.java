@@ -6,14 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.payment.dto.PaymentRequestDto;
 import sparta.AIBusinessProject.domain.payment.dto.PaymentResponseDto;
 import sparta.AIBusinessProject.domain.payment.service.PaymentService;
+import sparta.AIBusinessProject.global.security.UserDetailsImpl;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,10 +25,11 @@ public class PaymentController {
 
     // 1. 결제 생성
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')")
-    @PostMapping("/{order_id}")
+    @PostMapping
     public ResponseEntity<PaymentResponseDto> createPayment(@RequestBody PaymentRequestDto requestDto,
-                                                            @PathVariable("order_id") UUID orderId) {
-        PaymentResponseDto responseDto = paymentService.createPayment(requestDto, orderId);
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        PaymentResponseDto responseDto = paymentService.createPayment(requestDto, userDetails.getId());
         return ResponseEntity.ok(responseDto);
     }
 

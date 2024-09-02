@@ -30,9 +30,14 @@ public class PaymentService {
     private final OrderRepository orderRepository;
 
     // 1. 결제 생성
-    public PaymentResponseDto createPayment(PaymentRequestDto requestDto, UUID order_id) {
+    public PaymentResponseDto createPayment(PaymentRequestDto requestDto, UUID userId) {
+
+        List<Order> orderList = orderRepository.findAllById(requestDto.getOrderIds());
+
         Payment payment = Payment.builder()
-                .created_by(requestDto.getCreatedBy())
+                .orders(orderList)
+                .pgId(requestDto.getPgId())
+                .created_by(String.valueOf(userId))
                 .created_at(new Timestamp(System.currentTimeMillis()))
                 .build();
 

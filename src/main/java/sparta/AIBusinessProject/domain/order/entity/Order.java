@@ -33,7 +33,7 @@ public class Order {
     private UUID id;
 
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
-    //@Builder.Default
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +44,7 @@ public class Order {
     @JoinColumn(name = "address_id", nullable = false) // 외래 키 컬럼
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id") // 외래 키 컬럼
     private Payment payment;   // Order는 단일 Payment와 다대일 관계
 

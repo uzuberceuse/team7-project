@@ -21,15 +21,15 @@ public class Payment {
     private UUID id;
 
     @OneToMany(mappedBy = "payment")
-    //@Builder.Default
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
     // 1번의 결제에 여러번 주문이 가능한 상황
     // Order:Payment = 1 : N (일대다 관계)
 
     private Integer totalAmount;
 
-    @Column(nullable = false)
-    private UUID pg_id; // pg사 결제연동 id
+    @Column(name="pg_id", nullable = false)
+    private String pgId;//private UUID pg_id; // pg사 결제연동 id
 
     private Timestamp created_at;
     private String created_by;

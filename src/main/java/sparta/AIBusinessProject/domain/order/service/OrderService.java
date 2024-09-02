@@ -60,11 +60,13 @@ public class OrderService {
                 .amount(requestDto.getAmount())
                 .type(requestDto.getType())
                 .created_at(new Timestamp(System.currentTimeMillis()))
-                .created_by(requestDto.getCreatedBy())
+                .created_by(String.valueOf(user.getUser_id()))
                 .build();
-
-        Order savedOrder = orderRepository.save(order);   // 주문 저장
-
+        Payment payment = order.getPayment();
+        Order savedOrder=null;
+        if(payment != null) {
+        savedOrder = orderRepository.save(order);   // 주문 저장
+       }
         return OrderResponseDto.preResponseDto(savedOrder);  // 반환할 OrderResponseDto 생성
     }
 

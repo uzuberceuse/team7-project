@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class PaymentRequestDto {
     private List<UUID> orderIds; // 연관된 Order ID 리스트
-
+    private String pgId;
     private Timestamp createdAt;
     private String createdBy;
     private Timestamp updatedAt;
