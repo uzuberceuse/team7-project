@@ -36,7 +36,10 @@ public class UserController {
             BindingResult bindingResult
     ) {
         if(bindingResult.hasErrors()) {
-            log.error(bindingResult.getFieldError().getDefaultMessage());
+            String message=bindingResult.getFieldError().getDefaultMessage();
+            log.error(message);
+            ResponseEntity.ok(message);
+
         }
         userService.signUp(requestDto);
         return ResponseEntity.ok("signUp successfully");
@@ -45,15 +48,16 @@ public class UserController {
 
 
     // 회원수정
-    @DeleteMapping("/{user_id}")
+    @PatchMapping("/{user_id}")
     public ResponseEntity<UserResponseDto> updateUser(
+            @PathVariable("user_id") UUID userId,
             @RequestBody UserRequestDto request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        // 로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
-//        if (!userDetails.getUser().getUser_id().equals(userId)) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//        }
+        //로그인한 사용자의 ID와 수정 요청한 ID가 일치하는지 확인
+        if (!userDetails.getUser().getUser_id().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         UserResponseDto response = userService.updateUser(userDetails,request);
         return ResponseEntity.ok(response);
@@ -63,12 +67,13 @@ public class UserController {
     // 회원 탈퇴
     @DeleteMapping("/{user_id}")
     public ResponseEntity<Void> deleteUser(
+            @PathVariable("user_id") UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 탈퇴 요청한 ID가 일치하는지 확인
-//        if (!userDetails.getUser().getUser_id().equals(user_id)) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//        }
+        if (!userDetails.getUser().getUser_id().equals(user_id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         userService.deleteUser(userDetails);
         return ResponseEntity.noContent().build();

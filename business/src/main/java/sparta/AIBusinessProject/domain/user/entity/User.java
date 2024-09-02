@@ -88,7 +88,7 @@ public class User {
         this.email=request.getEmail();
         this.password=request.getPassword();
         this.phone=request.getPhone();
-        this.addresses=request.getAddress();
+        //this.addresses=request.getAddress();
 
         this.updated_at=new Timestamp(System.currentTimeMillis()); // 현재 시간으로 설정
         this.updated_by=updatedBy;

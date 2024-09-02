@@ -24,10 +24,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setFilterProcessesUrl("/api/user/signIn");
     }
 
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             SignInRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), SignInRequestDto.class);
+            log.info(requestDto.getUsername());
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -45,9 +47,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
+        String role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole().getAuthority();
 
-        String token = jwtUtil.createToken(username, role);
+        String token = jwtUtil.createToken(username, UserRoleEnum.valueOf(role));
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
 

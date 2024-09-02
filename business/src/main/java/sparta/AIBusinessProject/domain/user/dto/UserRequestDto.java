@@ -14,5 +14,5 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String phone;
-    private List<Address> address;
+//    private List<Address> address;
 }
