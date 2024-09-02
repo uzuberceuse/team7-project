@@ -70,6 +70,7 @@ public class Store {
     // 코드 수정 -> 이해가 잘 안가는 부분이 있어서 피드백 받고 수정할 예정
     public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
         return Store.builder()
+                .category(category)
                 .storeName(requestDto.getStoreName())
                 .location(requestDto.getLocation())
                 .phone(requestDto.getPhone())
