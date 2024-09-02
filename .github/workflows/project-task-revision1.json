@@ -1,13 +1,13 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:843073525455:task-definition/project-task:1",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:843073525455:task-definition/projects-task:1",
     "containerDefinitions": [
         {
-            "name": "project-container",
+            "name": "projects-container",
             "image": "843073525455.dkr.ecr.ap-northeast-2.amazonaws.com/uzuberceuse/team7-project",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "project-container-8080-tcp",
+                    "name": "projects-container-8080-tcp",
                     "containerPort": 8080,
                     "hostPort": 8080,
                     "protocol": "tcp",
@@ -23,7 +23,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/project-task",
+                    "awslogs-group": "/ecs/projects-task",
                     "mode": "non-blocking",
                     "awslogs-create-group": "true",
                     "max-buffer-size": "25m",
