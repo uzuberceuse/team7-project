@@ -47,8 +47,8 @@ public class OrderService {
         Address address = addressRepository.findById(requestDto.getAddressId())
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
-        Payment payment = paymentRepository.findById(requestDto.getPaymentId())
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+//        Payment payment = paymentRepository.findById(requestDto.getPaymentId())
+//                .orElseThrow(() -> new RuntimeException("Payment not found"));
 
         Store store = storeRepository.findById(requestDto.getStoreId())
                 .orElseThrow(() -> new RuntimeException("Store not found"));
@@ -57,7 +57,7 @@ public class OrderService {
         Order order = Order.builder()
                 .user(orderUser)
                 .address(address)
-                .payment(payment)
+//                .payment(payment)
                 .store(store)
                 .product_id(requestDto.getProductId())
                 .quantity(requestDto.getQuantity())

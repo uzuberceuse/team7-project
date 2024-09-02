@@ -64,12 +64,15 @@ public class ReportService {
     @Transactional
     public void deleteReport(UUID review_id, UUID user_id) {
         Review review = reviewRepository.findById(review_id).orElseThrow();
-
         User user = userRepository.findById(user_id).orElseThrow();
         List<Report> reports = reportRepository.findByReviewAndUser(review, user);
+
         if (reports.isEmpty()) {
             throw new IllegalArgumentException("신고를 찾을 수 없습니다.");
         }
+
+
+
         reportRepository.deleteAll(reports);
     }
 

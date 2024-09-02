@@ -6,4 +6,8 @@ import sparta.AIBusinessProject.domain.notice.entity.Notice;
 import java.util.UUID;
 
 public interface NoticeRepository extends JpaRepository<Notice, UUID> {
+
+
+
+
 }

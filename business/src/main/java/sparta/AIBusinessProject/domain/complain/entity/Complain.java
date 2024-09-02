@@ -33,7 +33,7 @@ public class Complain {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Timestamp created_at;
+    private Timestamp createdAt;
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;

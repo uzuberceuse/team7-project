@@ -76,6 +76,7 @@ public class Store {
                 .time(requestDto.getTime())
                 .details(requestDto.getDetails())
                 .created_by(userId)
+                .category(category) // 추가
                 .build();
     }
 
