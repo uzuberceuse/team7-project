@@ -78,6 +78,7 @@ public class User {
                 .password(password)
                 .phone(phone)
                 .role(role)
+                .created_by(username)
                 .build();
     }
 
