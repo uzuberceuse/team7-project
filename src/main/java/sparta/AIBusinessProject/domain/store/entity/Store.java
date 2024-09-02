@@ -69,7 +69,6 @@ public class Store {
     // buildup 패턴으로 store 생성
     public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
         return Store.builder()
-                .category(category)
                 .storeName(requestDto.getStoreName())
                 .location(requestDto.getLocation())
                 .phone(requestDto.getPhone())

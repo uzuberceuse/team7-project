@@ -24,7 +24,7 @@ public class Payment {
     //@Builder.Default
     private List<Order> orders = new ArrayList<>();
     // 1번의 결제에 여러번 주문이 가능한 상황
-    // Order:Payment = N : 1 (일대다 관계)
+    // Order:Payment = 1 : N (일대다 관계)
 
     private Integer totalAmount;
 
