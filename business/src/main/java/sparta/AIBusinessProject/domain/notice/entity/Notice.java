@@ -21,8 +21,7 @@ public class Notice {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "notice_id", updatable = false, nullable = false)
     private UUID noticeId;
 

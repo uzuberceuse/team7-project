@@ -22,8 +22,8 @@ import java.util.UUID;
 public class Address {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("uuid_generate_v4()")
+    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    //@ColumnDefault("uuid_generate_v4()")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private String addressName;
@@ -34,7 +34,7 @@ public class Address {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //@Builder.Default
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

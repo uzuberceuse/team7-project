@@ -26,7 +26,7 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="user_id", updatable = false, nullable = false)
     private UUID user_id;
 
@@ -47,19 +47,19 @@ public class User {
     @Enumerated(value=EnumType.STRING)
     private UserRoleEnum role;
 
-    //@Builder.Default
+    @Builder.Default
     @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses=new ArrayList<>();
 
-    //@Builder.Default
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Complain> complains = new ArrayList<>();
 
-    //@Builder.Default
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    //@Builder.Default
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

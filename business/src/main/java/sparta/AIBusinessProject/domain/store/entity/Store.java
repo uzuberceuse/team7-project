@@ -24,8 +24,7 @@ public class Store {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    //@GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false)
     private UUID storeId;
 

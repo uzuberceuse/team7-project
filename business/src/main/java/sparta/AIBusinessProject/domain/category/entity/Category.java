@@ -21,15 +21,14 @@ import java.util.UUID;
 public class Category {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "category_id", updatable = false, nullable = false)
     private UUID categoryId;
 
     @Column(unique=true,nullable=false)
     private String categoryName;
 
-    //@Builder.Default
+    @Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

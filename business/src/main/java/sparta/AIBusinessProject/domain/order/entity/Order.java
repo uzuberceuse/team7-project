@@ -28,12 +28,12 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
     @Column(name = "order_id", updatable = false, nullable = false)
     private UUID id;
 
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
-    //@Builder.Default
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

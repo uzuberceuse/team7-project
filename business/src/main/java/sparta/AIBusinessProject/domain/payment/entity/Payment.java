@@ -16,12 +16,12 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
     @Column(name = "payment_id", updatable = false, nullable = false)
     private UUID id;
 
     @OneToMany(mappedBy = "payment")
-    //@Builder.Default
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
     // 1번의 결제에 여러번 주문이 가능한 상황
     // Order:Payment = 1 : N (일대다 관계)

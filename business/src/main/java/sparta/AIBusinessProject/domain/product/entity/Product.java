@@ -23,13 +23,12 @@ public class Product {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
-    @ColumnDefault("random_uuid()")
+    //GenericGenerator(name="UUID", strategy="org.hibernate.id.UUIDGenerator")
     @Column(name="product_id",updatable = false, nullable = false)
     private UUID productId;
 
     @OneToMany(mappedBy = "product")
-    //@Builder.Default
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)

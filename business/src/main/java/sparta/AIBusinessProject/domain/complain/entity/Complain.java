@@ -21,7 +21,7 @@ public class Complain {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="complain_id", updatable = false, nullable = false)
     private UUID complain_id; // 신고id
 
