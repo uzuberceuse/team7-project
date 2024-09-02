@@ -45,7 +45,7 @@ public class UserController {
 
 
     // 회원수정
-    @DeleteMapping("/{user_id}")
+    @PatchMapping("/{user_id}")
     public ResponseEntity<UserResponseDto> updateUser(
             @RequestBody UserRequestDto request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
