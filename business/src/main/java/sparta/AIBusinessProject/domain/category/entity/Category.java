@@ -20,8 +20,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PRIVATE)
 public class Category {
     @Id
-    @GeneratedValue(generator = "UUID")
-    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy=GenerationType.UUID)
     @Column(name = "category_id", updatable = false, nullable = false)
     private UUID categoryId;
 

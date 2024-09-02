@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Payment {
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue(strategy=GenerationType.UUID)
     @Column(name = "payment_id", updatable = false, nullable = false)
     private UUID id;
 

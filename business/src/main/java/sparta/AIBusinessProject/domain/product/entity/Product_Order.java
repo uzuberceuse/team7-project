@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Product_Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.UUID)
     @Column(name = "product_order_id", updatable = false, nullable = false)
     private UUID id;
 
