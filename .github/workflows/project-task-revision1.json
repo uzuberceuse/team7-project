@@ -35,7 +35,7 @@
             "systemControls": []
         }
     ],
-    "family": "project-task",
+    "family": "projects-task",
     "executionRoleArn": "arn:aws:iam::843073525455:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "revision": 1,
@@ -84,7 +84,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-09-01T08:31:17.577Z",
+    "registeredAt": "2024-09-02T08:48:03.107Z",
     "registeredBy": "arn:aws:iam::843073525455:root",
     "tags": []
 }
