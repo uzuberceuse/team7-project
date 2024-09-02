@@ -67,9 +67,9 @@ public class Store {
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 store 생성
-    // 코드 수정 -> 이해가 잘 안가는 부분이 있어서 피드백 받고 수정할 예정
     public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
         return Store.builder()
+                .category(category)
                 .storeName(requestDto.getStoreName())
                 .location(requestDto.getLocation())
                 .phone(requestDto.getPhone())
@@ -81,7 +81,6 @@ public class Store {
 
     // store 수정
     public void updateStore(String storeName, String location, String phone, String time, String details, String userId){
-
         this.storeName = storeName;
         this.location = location;
         this.phone = phone;
