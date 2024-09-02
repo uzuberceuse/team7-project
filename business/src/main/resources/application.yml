@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: AIBusinessProject
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      username: default
+      password: password
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+key:
+  customer: "01e972f1e51321d24bb3ec68a559eee2aafe9683f786fa9b2dc95b756a843f0d25dee6d7794e347418dae768328bd9fefd7dc0f12977a99fc0c8529bc691f2a8"
+  owner: "61f7907684e816a558c93c7503e6f5015c1a00de97a7c1c9011b417f43e1103ab33c59094397236ddbcb220356c6dce633551a4ed9fe5a34b4ab3d83e839cf63"
+  manager: "972147cf6e94bd093f01b6861aeb2f22ed3618087cd08bc1d86df16c05b483e543537fe98a995e07ce57872cb75587bd77fde509bc171cdd2764a9053c9e5c4f"
+  master: "342ed474625ee2518829bc8e90cf43d187b65073e6e937d2defe2495eea670766130b6af96f6aa264c90561462cccf3386b550a199a9420c121d97fb942f6f2d"
+
+
