@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductResponseDto {
 
+    private UUID storeId;
     private UUID productId;
     private String productName;
     private String details;
@@ -28,6 +29,7 @@ public class ProductResponseDto {
     // ProductResponseDTO 변환 메서드
     public static ProductResponseDto toResponseDto(Product product) {
         return new ProductResponseDto(
+                product.getStore().getStoreId(),
                 product.getProductId(),
                 product.getProductName(),
                 product.getDetails(),

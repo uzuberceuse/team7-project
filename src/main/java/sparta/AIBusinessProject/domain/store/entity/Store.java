@@ -5,11 +5,14 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.category.entity.Category;
+import sparta.AIBusinessProject.domain.product.entity.Product;
 import sparta.AIBusinessProject.domain.store.dto.StoreRequestDto;
 import sparta.AIBusinessProject.domain.store.dto.StoreResponseDto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +34,12 @@ public class Store {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
+
+    // STORE:PRODUCT=1:N 관계
+    @Builder.Default
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
+
 
     @Column(nullable = false, unique = true)
     private String storeName;
@@ -67,7 +76,8 @@ public class Store {
     protected void onUpdate() { updatedAt = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 store 생성
-    public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
+    public static Store createStore(StoreRequestDto requestDto, Category category,
+                                    String userId){
         return Store.builder()
                 .storeName(requestDto.getStoreName())
                 .location(requestDto.getLocation())

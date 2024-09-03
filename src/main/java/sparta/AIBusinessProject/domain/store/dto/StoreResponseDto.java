@@ -4,9 +4,11 @@ package sparta.AIBusinessProject.domain.store.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.AIBusinessProject.domain.product.entity.Product;
 import sparta.AIBusinessProject.domain.store.entity.Store;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class StoreResponseDto {
     private String location;
     private String phone;
     private String details;
+    private List<Product> products;
     private Timestamp createdAt;
     private String createdBy;
     private Timestamp updatedAt;
@@ -35,6 +38,7 @@ public class StoreResponseDto {
                 store.getLocation(),
                 store.getPhone(),
                 store.getDetails(),
+                store.getProducts(),
                 store.getCreatedAt(),
                 store.getCreatedBy(),
                 store.getUpdatedAt(),

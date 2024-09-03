@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
+import sparta.AIBusinessProject.domain.store.entity.Store;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -29,6 +30,10 @@ public class Product {
     @OneToMany(mappedBy = "product")
     @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="store_id")
+    private Store store;
 
     @Column(nullable = false)
     private String productName;
@@ -62,8 +67,9 @@ public class Product {
 
 
     // buildup 패턴으로 product 생성
-    public static Product createProduct(ProductRequestDto requestDto, String user_id) {
+    public static Product createProduct(ProductRequestDto requestDto, Store store, String user_id) {
         return Product.builder()
+                .store(store)
                 .productName(requestDto.getProductName())
                 .price(requestDto.getPrice())
                 .details(requestDto.getDetails())
