@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sparta.AIBusinessProject.domain.address.dto.AddressResponseDto;
 import sparta.AIBusinessProject.domain.address.dto.CreateAddressRequestDto;
@@ -24,6 +25,7 @@ public class  AddressController {
 
     // 배송지 등록
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<AddressResponseDto> createAddress(
             final @RequestBody CreateAddressRequestDto request,
             @RequestParam("username") String username
@@ -32,6 +34,7 @@ public class  AddressController {
         return ResponseEntity.ok(address);
     }
     // 배송지 목록 조회
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping
     public ResponseEntity<Page<AddressResponseDto>>getAddresses(
             @RequestParam(defaultValue = "0") int page,         // 기본 페이지 번호 0
@@ -48,6 +51,7 @@ public class  AddressController {
 
 
     // 배송지 수정
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')")
     @PutMapping("/{address_id}")
     public ResponseEntity<Void> updateAddress(
             @PathVariable UUID address_id,
@@ -59,6 +63,7 @@ public class  AddressController {
     }
 
     // 배송지 삭제
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')")
     @DeleteMapping("/{address_id}/delete")
     public ResponseEntity<String> deleteAddress(@PathVariable UUID address_id,@RequestParam String username){
         addressService.deleteCategory(address_id,username);

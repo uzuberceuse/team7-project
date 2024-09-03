@@ -19,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "category_id", updatable = false, nullable = false)
