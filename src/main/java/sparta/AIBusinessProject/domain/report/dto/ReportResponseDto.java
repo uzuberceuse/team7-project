@@ -16,7 +16,7 @@ public class ReportResponseDto {
     private UUID id;
     private UUID reviewId;
     private UUID userId;
-    private String createBy;
+    private String createdBy;
     private String updatedBy;
     private String deletedBy;
     private Timestamp createdAt;

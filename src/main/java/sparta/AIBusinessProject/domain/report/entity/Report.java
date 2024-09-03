@@ -37,12 +37,12 @@ public class Report {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
     private String reportTitle;
     private String reportContent;
@@ -54,7 +54,7 @@ public class Report {
                 .review(review)
                 .reportTitle(requestDto.getTitle())
                 .reportContent(requestDto.getContent())
-                .created_at(new Timestamp(System.currentTimeMillis()))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 
@@ -64,7 +64,7 @@ public class Report {
                 .review(review)
                 .reportTitle(requestDto.getTitle())
                 .reportContent(requestDto.getContent())
-                .created_at(new Timestamp(System.currentTimeMillis()))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 }

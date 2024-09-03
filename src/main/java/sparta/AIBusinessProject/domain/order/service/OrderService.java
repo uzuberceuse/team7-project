@@ -59,8 +59,8 @@ public class OrderService {
                 .quantity(requestDto.getQuantity())
                 .amount(requestDto.getAmount())
                 .type(requestDto.getType())
-                .created_at(new Timestamp(System.currentTimeMillis()))
-                .created_by(String.valueOf(user.getUser_id()))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .createdBy(String.valueOf(user.getUser_id()))
                 .build();
         Payment payment = order.getPayment();
         Order savedOrder=null;
@@ -94,8 +94,8 @@ public class OrderService {
         existingOrder.setQuantity(orderRequestDto.getQuantity());
         existingOrder.setAmount(orderRequestDto.getAmount());
         existingOrder.setType(orderRequestDto.getType());
-        existingOrder.setUpdated_at(new Timestamp(System.currentTimeMillis()));
-        existingOrder.setUpdated_by(orderRequestDto.getUpdatedBy());
+        existingOrder.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        existingOrder.setUpdatedBy(orderRequestDto.getUpdatedBy());
 
         // 수정된 주문 저장
         Order updatedOrder = orderRepository.save(existingOrder);
@@ -112,7 +112,7 @@ public class OrderService {
 
         // 주문이 생성된 후 5분 이내인지 확인
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        long timeDifference = currentTime.getTime() - order.getCreated_at().getTime();
+        long timeDifference = currentTime.getTime() - order.getCreatedAt().getTime();
 
         // 5분(300,000 밀리초) 이내에만 취소 가능
         // 5분 초과하면 취소 제한
@@ -120,7 +120,7 @@ public class OrderService {
             throw new IllegalStateException("Order can only be canceled within 5 minutes of creation.");
         }
 
-        order.setDeleted_at(currentTime);
+        order.setDeletedAt(currentTime);
 
         orderRepository.delete(order);
     }
@@ -135,8 +135,8 @@ public class OrderService {
                 order.getAmount(),
                 order.getQuantity(),
                 order.getUser().getUser_id(),
-                order.getCreated_at(),
-                order.getCreated_by()
+                order.getCreatedAt(),
+                order.getCreatedBy()
         ));
     }
 
@@ -164,10 +164,10 @@ public class OrderService {
 //                .quantity(order.getQuantity())
 //                .amount(order.getAmount())
 //                .type(order.getType())
-//                .createdAt(order.getCreated_at())
-//                .createdBy(order.getCreated_by())
-//                .updatedAt(order.getUpdated_at())
-//                .updatedBy(order.getUpdated_by())
+//                .createdAt(order.getCreatedAt())
+//                .createdBy(order.getCreatedBy())
+//                .updatedAt(order.getUpdatedAt())
+//                .updatedBy(order.getUpdatedBy())
 //                .build();
 //    }
 }

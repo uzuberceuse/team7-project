@@ -20,7 +20,7 @@ public class OrderListResponseDto {
     private Integer quantity;
 
     private UUID userId;
-    private Timestamp createAt;
+    private Timestamp createdAt;
     private String createdBy;
 
 }

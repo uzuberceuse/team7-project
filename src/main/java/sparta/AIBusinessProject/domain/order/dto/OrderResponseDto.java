@@ -43,10 +43,10 @@ public class OrderResponseDto {
                 .quantity(order.getQuantity())
                 .amount(order.getAmount())
                 .type(order.getType())
-                .createdAt(order.getCreated_at())
-                .createdBy(order.getCreated_by())
-                .updatedAt(order.getUpdated_at())
-                .updatedBy(order.getUpdated_by())
+                .createdAt(order.getCreatedAt())
+                .createdBy(order.getCreatedBy())
+                .updatedAt(order.getUpdatedAt())
+                .updatedBy(order.getUpdatedBy())
                 .build();
     }
 
@@ -59,10 +59,10 @@ public class OrderResponseDto {
                 .quantity(order.getQuantity())
                 .amount(order.getAmount())
                 .type(order.getType())
-                .createdAt(order.getCreated_at())
-                .createdBy(order.getCreated_by())
-                .updatedAt(order.getUpdated_at())
-                .updatedBy(order.getUpdated_by())
+                .createdAt(order.getCreatedAt())
+                .createdBy(order.getCreatedBy())
+                .updatedAt(order.getUpdatedAt())
+                .updatedBy(order.getUpdatedBy())
                 .build();
     }
 }

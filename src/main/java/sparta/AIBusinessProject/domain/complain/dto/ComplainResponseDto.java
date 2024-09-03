@@ -16,11 +16,11 @@ public class ComplainResponseDto {
     private String complainContent;
     private String answer;
     private Timestamp createdAt;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
 
     public ComplainResponseDto(Complain complain) {
@@ -29,10 +29,10 @@ public class ComplainResponseDto {
         this.complainContent = complain.getComplainContent();
         this.answer = complain.getAnswer();
         this.createdAt = complain.getCreatedAt();
-        this.created_by = complain.getCreated_by();
-        this.updated_at = complain.getUpdated_at();
-        this.updated_by = complain.getUpdated_by();
-        this.deleted_at = complain.getDeleted_at();
-        this.deleted_by = complain.getDeleted_by();
+        this.createdBy = complain.getCreatedBy();
+        this.updatedAt = complain.getUpdatedAt();
+        this.updatedBy = complain.getUpdatedBy();
+        this.deletedAt = complain.getDeletedAt();
+        this.deletedBy = complain.getDeletedBy();
     }
 }

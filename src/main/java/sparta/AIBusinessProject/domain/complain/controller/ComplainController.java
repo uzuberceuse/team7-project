@@ -38,9 +38,9 @@ public class ComplainController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        String createBy = userDetails.getUsername();
+        String createdBy = userDetails.getUsername();
 
-        ComplainResponseDto responseDto = complainService.createComplain(user_id, requestDto,createBy);
+        ComplainResponseDto responseDto = complainService.createComplain(user_id, requestDto,createdBy);
         return ResponseEntity.ok(responseDto);
     }
 

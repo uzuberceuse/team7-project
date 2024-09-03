@@ -15,13 +15,13 @@ public class NoticeListResponseDto {
     private UUID noticeId;
     private String noticeTitle;
     private Timestamp createdAt;
-    private String created_by;
+    private String createdBy;
 
     public NoticeListResponseDto(Notice notice) {
         this.noticeId = notice.getNoticeId();
         this.noticeTitle = notice.getNoticeTitle();
         this.createdAt = notice.getCreatedAt(); // 필드 이름 변경 반영
-        this.created_by = notice.getCreated_by();
+        this.createdBy = notice.getCreatedBy();
     }
 
 

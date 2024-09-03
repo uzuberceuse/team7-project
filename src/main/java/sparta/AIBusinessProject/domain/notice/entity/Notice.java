@@ -32,19 +32,19 @@ public class Notice {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
     // NoticeRequestDto를 받아 빌더를 통해 Notice 객체를 생성
     public static Notice from(NoticeRequestDto requestDto) {
         return Notice.builder()
                 .noticeTitle(requestDto.getNoticeTitle())
                 .noticeContent(requestDto.getNoticeContent())
-                .created_by(requestDto.getCreated_by())
-                .updated_by(requestDto.getUpdate_by())
+                .createdBy(requestDto.getCreatedBy())
+                .updatedBy(requestDto.getUpdate_by())
                 .build();
     }
 

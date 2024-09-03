@@ -31,10 +31,10 @@ public class Payment {
     @Column(name="pg_id", nullable = false)
     private String pgId;//private UUID pg_id; // pg사 결제연동 id
 
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 }

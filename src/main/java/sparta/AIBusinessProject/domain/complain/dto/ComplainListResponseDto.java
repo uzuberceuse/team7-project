@@ -13,6 +13,6 @@ public class ComplainListResponseDto {
     private UUID complainId;
     private UUID userId;
     private Timestamp createdAt;
-    private String created_by;
+    private String createdBy;
 
 }

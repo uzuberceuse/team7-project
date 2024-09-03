@@ -48,23 +48,23 @@ public class Store {
     @Column(nullable = false)
     private String details;
 
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
-    private Timestamp updated_at;
-    private String updated_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
 
 
 
     // 가게 생성 시 생성 일자를 현재 시간으로
     @PrePersist
     protected void onCreate() {
-        created_at = Timestamp.valueOf(LocalDateTime.now());
+        createdAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
     @PreUpdate
-    protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
+    protected void onUpdate() { updatedAt = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 store 생성
     public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
@@ -74,7 +74,7 @@ public class Store {
                 .phone(requestDto.getPhone())
                 .time(requestDto.getTime())
                 .details(requestDto.getDetails())
-                .created_by(userId)
+                .createdBy(userId)
                 .category(category) // 추가
                 .build();
     }
@@ -86,11 +86,11 @@ public class Store {
         this.phone = phone;
         this.time = time;
         this.details = details;
-        this.updated_by = userId;
+        this.updatedBy = userId;
     }
 
     public void deleteStore(String userId){
-        this.deleted_by = userId;
-        this.deleted_at = Timestamp.valueOf(LocalDateTime.now());
+        this.deletedBy = userId;
+        this.deletedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 }

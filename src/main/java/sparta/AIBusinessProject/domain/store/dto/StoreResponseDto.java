@@ -19,12 +19,12 @@ public class StoreResponseDto {
     private String location;
     private String phone;
     private String details;
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
 
     public static StoreResponseDto toResponseDto(Store store) {
@@ -35,12 +35,12 @@ public class StoreResponseDto {
                 store.getLocation(),
                 store.getPhone(),
                 store.getDetails(),
-                store.getCreated_at(),
-                store.getCreated_by(),
-                store.getUpdated_at(),
-                store.getUpdated_by(),
-                store.getDeleted_at(),
-                store.getDeleted_by()
+                store.getCreatedAt(),
+                store.getCreatedBy(),
+                store.getUpdatedAt(),
+                store.getUpdatedBy(),
+                store.getDeletedAt(),
+                store.getDeletedBy()
         );
     }
 }

@@ -18,12 +18,12 @@ public class ProductResponseDto {
     private String details;
     private Integer price;
     private boolean status;
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
     // ProductResponseDTO 변환 메서드
     public static ProductResponseDto toResponseDto(Product product) {
@@ -33,12 +33,12 @@ public class ProductResponseDto {
                 product.getDetails(),
                 product.getPrice(),
                 product.isStatus(),
-                product.getCreated_at(),
-                product.getCreated_by(),
-                product.getUpdated_at(),
-                product.getUpdated_by(),
-                product.getDeleted_at(),
-                product.getDeleted_by()
+                product.getCreatedAt(),
+                product.getCreatedBy(),
+                product.getUpdatedAt(),
+                product.getUpdatedBy(),
+                product.getCreatedAt(),
+                product.getDeletedBy()
         );
     }
 }

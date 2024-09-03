@@ -16,11 +16,11 @@ public class NoticeResponseDto {
     private String noticeTitle;
     private String noticeContent;
     private Timestamp createdAt;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
 
     public NoticeResponseDto(Notice notice) {
@@ -28,11 +28,11 @@ public class NoticeResponseDto {
         this.noticeTitle = notice.getNoticeTitle();
         this.noticeContent = notice.getNoticeContent();
         this.createdAt = notice.getCreatedAt();
-        this.created_by = notice.getCreated_by();
-        this.updated_at = notice.getUpdated_at();
-        this.updated_by = notice.getUpdated_by();
-        this.deleted_at = notice.getDeleted_at();
-        this.deleted_by = notice.getDeleted_by();
+        this.createdBy = notice.getCreatedBy();
+        this.updatedAt = notice.getUpdatedAt();
+        this.updatedBy = notice.getUpdatedBy();
+        this.deletedAt = notice.getDeletedAt();
+        this.deletedBy = notice.getDeletedBy();
     }
 
 }

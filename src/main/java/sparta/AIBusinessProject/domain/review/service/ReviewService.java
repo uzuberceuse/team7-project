@@ -62,7 +62,7 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDto updateReview(ReviewRequestDto requestDto, UUID reviewId) {
             Review review = reviewRepository.findById(reviewId)
-                    .filter(p -> p.getUpdated_at() == null)
+                    .filter(p -> p.getUpdatedAt() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없거나 이미 삭제된 상태입니다."));
 
             review.updateReview(review.getContent(), review.getRating(), String.valueOf(review.getUser().getUser_id()));
@@ -78,7 +78,7 @@ public class ReviewService {
     public Boolean deleteReview(UUID reviewId, String userId) {
         try {
             Review review = reviewRepository.findById(reviewId)
-                    .filter(p -> p.getDeleted_at() == null)
+                    .filter(p -> p.getDeletedAt() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없거나 이미 삭제된 상태입니다."));
 
             review.deleteReview(userId);

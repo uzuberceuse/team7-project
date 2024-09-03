@@ -49,7 +49,7 @@ public class StoreService {
     @Transactional
     public StoreResponseDto updateStore(StoreRequestDto requestDto, UUID storeId, String  userId) {
         Store store = storeRepository.findById(storeId)
-                .filter(p -> p.getDeleted_at() == null)
+                .filter(p -> p.getDeletedAt() == null)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 가게를 찾을 수 없습니다."));
 
         store.updateStore(requestDto.getStoreName(), requestDto.getLocation(), requestDto.getPhone(), requestDto.getTime(), requestDto.getDetails(), userId);
@@ -64,7 +64,7 @@ public class StoreService {
     public boolean deleteStore(UUID storeId, String userId) {
         try {
             Store store = storeRepository.findById(storeId)
-                    .filter(p -> p.getDeleted_at() == null)
+                    .filter(p -> p.getDeletedAt() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 가게를 찾을 수 없습니다."));
 
             store.deleteStore(userId);
@@ -90,7 +90,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreResponseDto getStoreById(UUID storeId){
         Store store = storeRepository.findById(storeId)
-                .filter(p -> p.getDeleted_at() == null)
+                .filter(p -> p.getDeletedAt() == null)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 가게를 찾을 수 없습니다."));
         return StoreResponseDto.toResponseDto(store);
     }

@@ -34,8 +34,8 @@ public class NoticeController {
     @PostMapping
     public ResponseEntity<NoticeResponseDto> createNotice(@RequestBody NoticeRequestDto requestDto,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String createBy = userDetails.getUsername();
-        NoticeResponseDto responseDto = noticeService.createNotice(requestDto,createBy);
+        String createdBy = userDetails.getUsername();
+        NoticeResponseDto responseDto = noticeService.createNotice(requestDto,createdBy);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -59,8 +59,8 @@ public class NoticeController {
     public ResponseEntity<Void> deleteNotice(
             @PathVariable UUID notice_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String deleteBy = userDetails.getUsername();  // 인증된 사용자 이름 가져오기
-        noticeService.deleteNotice(notice_id, deleteBy);
+        String deletedBy = userDetails.getUsername();  // 인증된 사용자 이름 가져오기
+        noticeService.deleteNotice(notice_id, deletedBy);
         return ResponseEntity.noContent().build();
     }
 

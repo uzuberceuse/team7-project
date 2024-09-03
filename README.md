@@ -123,7 +123,7 @@
      • 데이터베이스 설계
         - 테이블 명명 규칙: 모든 테이블에 p_ 접두사 사용
         - UUID 사용: 모든 주요 엔티티의 식별자는 UUID를 사용
-        - Audit 필드: 모든 테이블에 created_at, created_by, updated_at, updated_by, deleted_at, deleted_by 필드를 추가하여 데이터 감사 로그 기록
+        - Audit 필드: 모든 테이블에 createdAt, createdBy, updatedAt, updatedBy, deletedAt, deletedBy 필드를 추가하여 데이터 감사 로그 기록
         - ERD 설계: 엔티티 간의 관계를 명확히 하는 ERD(Entity-Relationship Diagram) 작성
 
      • 보안

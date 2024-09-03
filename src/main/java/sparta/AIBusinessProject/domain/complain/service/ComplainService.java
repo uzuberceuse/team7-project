@@ -30,7 +30,7 @@ public class ComplainService {
 
     // 신고접수
     @Transactional
-    public ComplainResponseDto createComplain(UUID user_id, ComplainRequestDto requestDto, String createBy) {
+    public ComplainResponseDto createComplain(UUID user_id, ComplainRequestDto requestDto, String createdBy) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 user를 찾을 수 없습니다."));
 
@@ -38,7 +38,7 @@ public class ComplainService {
         Complain complain = Complain.builder()
                 .user(user)
                 .complainContent(requestDto.getComplainContent())
-                .created_by(createBy)
+                .createdBy(createdBy)
                 .build();
 
         // 신고를 저장
@@ -56,8 +56,8 @@ public class ComplainService {
         Complain complain = complainRepository.findById(complain_id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));
 
-        complain.setDeleted_by(deletedBy);
-        complain.setDeleted_at(new Timestamp(System.currentTimeMillis()));
+        complain.setDeletedBy(deletedBy);
+        complain.setDeletedAt(new Timestamp(System.currentTimeMillis()));
         complainRepository.save(complain);
 
         return ResponseEntity.noContent().build();
@@ -72,7 +72,7 @@ public class ComplainService {
                 complain.getComplain_id(),
                 complain.getUser().getUser_id(),
                 complain.getCreatedAt(),
-                complain.getCreated_by()
+                complain.getCreatedBy()
         ));
     }
 
@@ -107,8 +107,8 @@ public class ComplainService {
         if (optionalComplain.isPresent()) {
             Complain complain = optionalComplain.get();
             complain.setAnswer(requestDto.getAnswer());
-            complain.setUpdated_at(new Timestamp(System.currentTimeMillis()));
-            complain.setUpdated_by(updatedBy);
+            complain.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            complain.setUpdatedBy(updatedBy);
             Complain updatedComplain = complainRepository.save(complain);
 
             return new ComplainResponseDto(updatedComplain);

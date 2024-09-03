@@ -29,7 +29,7 @@ public class ReportService {
 
     // 리뷰후기 신고등록(작성)
     @Transactional
-    public Report createReport(UUID review_id, UUID userId, ReportRequestDto requestDto,String createBy) {
+    public Report createReport(UUID review_id, UUID userId, ReportRequestDto requestDto,String createdBy) {
              User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 User를 찾을 수 없습니다."));
 
@@ -37,7 +37,7 @@ public class ReportService {
                     .orElseThrow(()-> new IllegalArgumentException("해당 리뷰를 찾을 수 없습니다."));
             Report report = Report.from(requestDto, user, review);
 
-            report.setCreated_by(createBy);
+            report.setCreatedBy(createdBy);
 
         return reportRepository.save(report);
     }
@@ -57,7 +57,7 @@ public class ReportService {
                         .reviewId(report.getReview().getReviewId())
                         .userId(report.getUser().getUser_id())
                         .title(report.getReportTitle())
-                        .createdAt(report.getCreated_at())
+                        .createdAt(report.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -74,7 +74,7 @@ public class ReportService {
         }
         // 각 Report에 deletedBy 설정
         for (Report report : reports) {
-            report.setDeleted_by(deletedBy);
+            report.setDeletedBy(deletedBy);
 //            report.setDeleted_at(new Timestamp(System.currentTimeMillis()));
         }
 

@@ -37,8 +37,8 @@ public class PaymentService {
         Payment payment = Payment.builder()
                 .orders(orderList)
                 .pgId(requestDto.getPgId())
-                .created_by(String.valueOf(userId))
-                .created_at(new Timestamp(System.currentTimeMillis()))
+                .createdBy(String.valueOf(userId))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
 
         payment = paymentRepository.save(payment);
@@ -79,10 +79,10 @@ public class PaymentService {
                 payment.getId(),
                 payment.getOrders().stream().map(PaymentResponseDto::toOrderListResponseDto).collect(Collectors.toList()),
                 payment.getTotalAmount(),
-                payment.getCreated_at(),
-                payment.getCreated_by(),
-                payment.getDeleted_at(),
-                payment.getDeleted_by()
+                payment.getCreatedAt(),
+                payment.getCreatedBy(),
+                payment.getDeletedAt(),
+                payment.getDeletedBy()
         ));
     }
 
@@ -95,9 +95,9 @@ public class PaymentService {
 //                .orders(payment.getOrders().stream()
 //                        .map(this::toOrderListResponseDto)
 //                        .collect(Collectors.toList()))
-//                .createdAt(payment.getCreated_at())
-//                .createdBy(payment.getCreated_by())
-//                .deletedAt(payment.getDeleted_at())
+//                .createdAt(payment.getCreatedAt())
+//                .createdBy(payment.getCreatedBy())
+//                .deletedAt(payment.getDeletedAt())
 //                .deletedBy(payment.getDeleted_by())
 //                .build();
 //    }
@@ -105,8 +105,8 @@ public class PaymentService {
 //    private PaymentListResponseDto toListResponseDto(Payment payment) {
 //        return PaymentListResponseDto.builder()
 //                .id(payment.getId())
-//                .createdAt(payment.getCreated_at())
-//                .createdBy(payment.getCreated_by())
+//                .createdAt(payment.getCreatedAt())
+//                .createdBy(payment.getCreatedBy())
 //                .totalAmount(payment.getOrders().stream()
 //                        .mapToInt(Order::getAmount)
 //                        .sum())
