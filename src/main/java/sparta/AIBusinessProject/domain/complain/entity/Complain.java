@@ -34,10 +34,10 @@ public class Complain {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Timestamp createdAt;
-    private String created_by;
-    private Timestamp updated_at;
-    private String updated_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
+    private String createdBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
 }

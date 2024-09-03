@@ -39,8 +39,8 @@ public class ReportController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        String createBy = userDetails.getUsername();
-        Report report = reportService.createReport(review_id, user_id, requestDto, createBy);
+        String createdBy = userDetails.getUsername();
+        Report report = reportService.createReport(review_id, user_id, requestDto, createdBy);
         return ResponseEntity.ok(report);
     }
 

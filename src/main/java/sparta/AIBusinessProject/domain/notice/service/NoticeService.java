@@ -28,7 +28,7 @@ public class NoticeService {
     @Transactional
     public NoticeResponseDto createNotice(NoticeRequestDto requestDto, String createdBy) {
         Notice notice = Notice.from(requestDto);
-        notice.setCreated_by(createdBy);
+        notice.setCreatedBy(createdBy);
         notice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         notice = noticeRepository.save(notice);
         return new NoticeResponseDto(notice);
@@ -59,14 +59,14 @@ public class NoticeService {
         }
 
         if(StringUtils.hasText(requestDto.getUpdate_by())){
-            notice.setUpdated_by(requestDto.getUpdate_by());
+            notice.setUpdatedBy(requestDto.getUpdate_by());
         }
 
         // 수정시간 변경
-         notice.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+         notice.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        notice.setUpdated_by(updatedBy);
-        notice.setCreated_by(updatedBy);
+        notice.setUpdatedBy(updatedBy);
+        notice.setCreatedBy(updatedBy);
 
         // 수정된 공지사항 정보 dto 반환
         return new NoticeResponseDto(notice);
@@ -75,14 +75,14 @@ public class NoticeService {
     }
 
     // 공지사항 삭제
-    public ResponseEntity<Void> deleteNotice(UUID notice_id, String deleteBy) {
+    public ResponseEntity<Void> deleteNotice(UUID notice_id, String deletedBy) {
 
         Notice notice = noticeRepository.findById(notice_id)
                 .orElseThrow(()-> new RuntimeException("해당 공지사항은 존재하지 않습니다."));
 
         // 삭제한 시간, 삭제한 사람 확인
-        notice.setDeleted_by(deleteBy);
-        notice.setDeleted_at(new Timestamp(System.currentTimeMillis()));
+        notice.setDeletedBy(deletedBy);
+        notice.setDeletedAt(new Timestamp(System.currentTimeMillis()));
         noticeRepository.save(notice);
 
         return ResponseEntity.noContent().build();

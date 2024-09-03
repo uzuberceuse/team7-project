@@ -34,10 +34,10 @@ public class PaymentResponseDto {
                 .orders(payment.getOrders().stream()
                         .map(PaymentResponseDto::toOrderListResponseDto)
                         .collect(Collectors.toList()))
-                .createdAt(payment.getCreated_at())
-                .createdBy(payment.getCreated_by())
-                .deletedAt(payment.getDeleted_at())
-                .deletedBy(payment.getDeleted_by())
+                .createdAt(payment.getCreatedAt())
+                .createdBy(payment.getCreatedBy())
+                .deletedAt(payment.getDeletedAt())
+                .deletedBy(payment.getDeletedBy())
                 .build();
     }
 

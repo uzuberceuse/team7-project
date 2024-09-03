@@ -27,7 +27,7 @@ public class Product {
     private UUID productId;
 
     @OneToMany(mappedBy = "product")
-    //@Builder.Default
+    @Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)
@@ -42,23 +42,23 @@ public class Product {
     @Column(nullable = false)
     private boolean status;
 
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
-    private Timestamp updated_at;
-    private String updated_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
 
 
 
     // 상품 생성 시 생성 일자를 현재 시간으로
     @PrePersist
     protected void onCreate() {
-        created_at = Timestamp.valueOf(LocalDateTime.now());
+        createdAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
     @PreUpdate
-    protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now());}
+    protected void onUpdate() { updatedAt = Timestamp.valueOf(LocalDateTime.now());}
 
 
     // buildup 패턴으로 product 생성
@@ -68,7 +68,7 @@ public class Product {
                 .price(requestDto.getPrice())
                 .details(requestDto.getDetails())
                 .status(requestDto.isStatus())
-                .created_by(user_id)
+                .createdBy(user_id)
                 .build();
     }
 
@@ -78,11 +78,11 @@ public class Product {
             this.details = details;
             this.price = price;
             this.status = status;
-            this.updated_by = userId;
+            this.updatedBy = userId;
     }
 
     public void deleteProduct(String userId) {
-        this.deleted_by = userId;
-        deleted_at = Timestamp.valueOf(LocalDateTime.now());
+        this.deletedBy = userId;
+        deletedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 }

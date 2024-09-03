@@ -41,7 +41,7 @@ public class ProductService {
     @Transactional
     public ProductResponseDto updateProduct(ProductRequestDto requestDto, UUID productId, String  userId){
         Product product = productRepository.findById(productId)
-                .filter(p -> p.getDeleted_at() == null)
+                .filter(p -> p.getDeletedAt() == null)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
 
         product.updateProduct(requestDto.getProductName(), requestDto.getDetails(), requestDto.getPrice(), requestDto.isStatus(), userId);
@@ -56,7 +56,7 @@ public class ProductService {
     public Boolean deleteProduct(UUID productId, String  userId) {
         try {
             Product product = productRepository.findById(productId)
-                    .filter(p -> p.getDeleted_at() == null)
+                    .filter(p -> p.getDeletedAt() == null)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
 
             product.deleteProduct(userId);
@@ -84,7 +84,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductResponseDto getProductById(UUID productId) {
         Product product = productRepository.findById(productId)
-                .filter(p -> p.getDeleted_at() == null)
+                .filter(p -> p.getDeletedAt() == null)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없거나 이미 삭제된 상태입니다."));
         return ProductResponseDto.toResponseDto(product);
     }

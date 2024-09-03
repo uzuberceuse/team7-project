@@ -51,23 +51,23 @@ public class Review {
     @Enumerated(EnumType.STRING)
     private ReviewRatingTypeEnum rating;
 
-    private Timestamp created_at;
-    private String created_by;
-    private Timestamp deleted_at;
-    private String deleted_by;
-    private Timestamp updated_at;
-    private String updated_by;
+    private Timestamp createdAt;
+    private String createdBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
+    private Timestamp updatedAt;
+    private String updatedBy;
 
 
     // 리뷰 생성 시 생성 일자를 현재 시간으로
     @PrePersist
     protected void onCreate() {
-        created_at = Timestamp.valueOf(LocalDateTime.now());
+        createdAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updated_at = Timestamp.valueOf(LocalDateTime.now());
+        updatedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
 
@@ -79,7 +79,7 @@ public class Review {
                 .store(store)
                 .content(requestDto.getContent())
                 .rating(requestDto.getRating())
-                .created_by(String.valueOf(user.getUser_id()))
+                .createdBy(String.valueOf(user.getUser_id()))
                 .build();
     }
 
@@ -87,12 +87,12 @@ public class Review {
     public void updateReview(String content, ReviewRatingTypeEnum rating, String userId) {
         this.content = content;
         this.rating = rating;
-        this.updated_by = userId;
+        this.updatedBy = userId;
     }
 
     // review 삭제
     public void deleteReview(String userId) {
-        this.deleted_by = userId;
-        deleted_at = Timestamp.valueOf(LocalDateTime.now());
+        this.deletedBy = userId;
+        deletedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 }
