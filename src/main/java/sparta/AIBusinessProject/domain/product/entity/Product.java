@@ -22,12 +22,12 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="product_id",updatable = false, nullable = false)
     private UUID productId;
 
     @OneToMany(mappedBy = "product")
-    @Builder.Default
+    //@Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @Column(nullable = false)

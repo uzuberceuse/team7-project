@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Complain {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="complain_id", updatable = false, nullable = false)
     private UUID complain_id; // 신고id
 
@@ -33,7 +33,7 @@ public class Complain {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Timestamp created_at;
+    private Timestamp createdAt;
     private String created_by;
     private Timestamp updated_at;
     private String updated_by;

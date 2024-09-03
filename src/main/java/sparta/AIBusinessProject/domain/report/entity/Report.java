@@ -22,7 +22,7 @@ import java.util.UUID;
 public class Report {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "report_id", updatable = false, nullable = false)
     private UUID reportId;
 

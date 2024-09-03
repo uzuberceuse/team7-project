@@ -21,7 +21,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PRIVATE)
 public class Address {
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private String addressName;
@@ -32,7 +32,7 @@ public class Address {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Builder.Default
+    //@Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)

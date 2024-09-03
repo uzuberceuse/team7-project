@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Payment {
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "payment_id", updatable = false, nullable = false)
     private UUID id;
 
@@ -28,8 +28,8 @@ public class Payment {
 
     private Integer totalAmount;
 
-    @Column(nullable = false)
-    private UUID pg_id; // pg사 결제연동 id
+    @Column(name="pg_id", nullable = false)
+    private String pgId;//private UUID pg_id; // pg사 결제연동 id
 
     private Timestamp created_at;
     private String created_by;

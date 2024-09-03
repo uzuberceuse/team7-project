@@ -38,23 +38,27 @@ public class ComplainController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        ComplainResponseDto responseDto = complainService.createComplain(user_id, requestDto);
+        String createBy = userDetails.getUsername();
+
+        ComplainResponseDto responseDto = complainService.createComplain(user_id, requestDto,createBy);
         return ResponseEntity.ok(responseDto);
     }
 
     // 고객센터 신고 삭제 role을 관리자 고객만
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')")
-    @DeleteMapping("/{user_id}")
+    @DeleteMapping("/{complain_id}")
     public ResponseEntity<Void> deleteComplain(
-            @PathVariable("user_id") UUID user_id,
+            @PathVariable UUID complain_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getId().equals(user_id)) {
+        if (!userDetails.getId().equals(userDetails.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        complainService.deleteComplain(user_id);
+        String deletedBy = userDetails.getUsername();
+
+        complainService.deleteComplain(complain_id, deletedBy);
         return ResponseEntity.noContent().build();
     }
 
@@ -69,10 +73,10 @@ public class ComplainController {
              @AuthenticationPrincipal UserDetailsImpl userDetails
               ) {
 
-        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getId().equals(userDetails.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+//        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
+//        if (!userDetails.getId().equals(userDetails.getId())) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
         // 페이지 요청 생성
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
@@ -83,8 +87,9 @@ public class ComplainController {
     
     // 고객센터 신고 상세조회 role : 관리자 가게주인 고객
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
-    @GetMapping("/{user_id}")
+    @GetMapping("/{complain_id}/{user_id}")
     public ResponseEntity<ComplainResponseDto> getComplainDetail(
+            @PathVariable UUID complain_id,
             @PathVariable UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
@@ -93,7 +98,20 @@ public class ComplainController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        ComplainResponseDto responseDto = complainService.getComplainDetail(userDetails.getUser());
+        ComplainResponseDto responseDto = complainService.getComplainDetail(complain_id, user_id);
+        return ResponseEntity.ok(responseDto);
+
+    }
+
+    //  고객센터 답변 달아주기
+    @PatchMapping("/{complain_id}/answer")
+    public ResponseEntity<ComplainResponseDto> answerComplain(
+            @PathVariable UUID complain_id,
+            @RequestBody ComplainRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        String updatedBy = userDetails.getUsername(); // 답변한 사람
+        ComplainResponseDto responseDto = complainService.answerComplain(complain_id, requestDto, updatedBy);
         return ResponseEntity.ok(responseDto);
 
     }

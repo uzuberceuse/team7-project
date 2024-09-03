@@ -23,7 +23,7 @@ import java.util.UUID;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="review_id", updatable = false, nullable = false)
     private UUID reviewId;
 

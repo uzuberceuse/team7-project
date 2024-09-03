@@ -23,7 +23,7 @@ public class Store {
 
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID storeId;
 
@@ -67,7 +67,6 @@ public class Store {
     protected void onUpdate() { updated_at = Timestamp.valueOf(LocalDateTime.now()); }
 
     // buildup 패턴으로 store 생성
-    // 코드 수정 -> 이해가 잘 안가는 부분이 있어서 피드백 받고 수정할 예정
     public static Store createStore(StoreRequestDto requestDto, Category category, String userId){
         return Store.builder()
                 .storeName(requestDto.getStoreName())
@@ -76,12 +75,12 @@ public class Store {
                 .time(requestDto.getTime())
                 .details(requestDto.getDetails())
                 .created_by(userId)
+                .category(category) // 추가
                 .build();
     }
 
     // store 수정
     public void updateStore(String storeName, String location, String phone, String time, String details, String userId){
-
         this.storeName = storeName;
         this.location = location;
         this.phone = phone;

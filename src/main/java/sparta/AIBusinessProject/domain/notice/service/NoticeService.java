@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +15,7 @@ import sparta.AIBusinessProject.domain.notice.entity.Notice;
 import sparta.AIBusinessProject.domain.notice.repository.NoticeRepository;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,9 +25,11 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     // 공지사항 등록 (C)
-    public NoticeResponseDto createNotice(NoticeRequestDto requestDto) {
+    @Transactional
+    public NoticeResponseDto createNotice(NoticeRequestDto requestDto, String createdBy) {
         Notice notice = Notice.from(requestDto);
-        notice.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        notice.setCreated_by(createdBy);
+        notice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         notice = noticeRepository.save(notice);
         return new NoticeResponseDto(notice);
     }
@@ -38,7 +42,7 @@ public class NoticeService {
 
     // 수정 공지사항 (U)
     @Transactional
-    public NoticeResponseDto updateNotice(UUID notice_id, NoticeRequestDto requestDto){
+    public NoticeResponseDto updateNotice(UUID notice_id, NoticeRequestDto requestDto, String updatedBy){
 
         // 공지사항id로 공지사항 유무 확인
         Notice notice = noticeRepository.findById(notice_id)
@@ -60,6 +64,9 @@ public class NoticeService {
 
         // 수정시간 변경
          notice.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+
+        notice.setUpdated_by(updatedBy);
+        notice.setCreated_by(updatedBy);
 
         // 수정된 공지사항 정보 dto 반환
         return new NoticeResponseDto(notice);
@@ -91,12 +98,7 @@ public class NoticeService {
     // 공지사항 목록조회
     @Transactional
     public Page<NoticeListResponseDto> getNoticeList(Pageable pageable) {
-        return noticeRepository.findAll(pageable).map(notice -> new NoticeListResponseDto(
-                notice.getNoticeId(),
-                notice.getNoticeTitle(),
-                notice.getCreated_at(),
-                notice.getCreated_by()
-        ));
+        return noticeRepository.findAll(pageable)
+                .map(notice -> new NoticeListResponseDto(notice));
     }
-
 }

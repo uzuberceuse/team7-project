@@ -39,24 +39,24 @@ public class ReportController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        Report report = reportService.createReport(review_id, user_id, requestDto);
+        String createBy = userDetails.getUsername();
+        Report report = reportService.createReport(review_id, user_id, requestDto, createBy);
         return ResponseEntity.ok(report);
     }
 
     // 리뷰후기 신고조회 (Role : 관리자 가게주인 고객)
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER') or hasRole('ROLE_CUSTOMER')")
     @GetMapping("/{review_id}/{user_id}")
-    public ResponseEntity<List<ReportListResponseDto>> getReportList(
+    public ResponseEntity<List<ReportListResponseDto>> getReportDetail(
             @PathVariable("review_id") UUID review_id,
-            @PathVariable("user_id") UUID user_id,
-            @AuthenticationPrincipal UserDetailsImpl userDetails){
+            @PathVariable("user_id") UUID user_id){
 
-        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getId().equals(user_id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+//        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
+//        if (!userDetails.getId().equals(user_id)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
 
-        List<ReportListResponseDto> reportList = reportService.getReportList(review_id, user_id);
+        List<ReportListResponseDto> reportList = reportService.getReportDetail(review_id, user_id);
         return ResponseEntity.ok(reportList);
     }
 
@@ -68,11 +68,13 @@ public class ReportController {
             @PathVariable("user_id") UUID user_id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
-        if (!userDetails.getId().equals(user_id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        reportService.deleteReport(review_id, user_id);
+//        // 로그인한 사용자의 ID와 요청한 ID가 일치하는지 확인
+//        if (!userDetails.getId().equals(user_id)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
+
+        String deletedBy = userDetails.getUsername();
+        reportService.deleteReport(review_id, user_id, deletedBy);
         return ResponseEntity.noContent().build();
     }
 }

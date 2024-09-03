@@ -28,12 +28,12 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PUBLIC)
 public class Order {
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "order_id", updatable = false, nullable = false)
     private UUID id;
 
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
-    @Builder.Default
+    //@Builder.Default
     private List<Product_Order> product_orders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class Order {
     private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id", nullable = false) // 외래 키 컬럼
+    @JoinColumn(name = "payment_id", nullable = true) // 외래 키 컬럼
     private Payment payment;   // Order는 단일 Payment와 다대일 관계
 
     @ManyToOne(fetch = FetchType.LAZY)

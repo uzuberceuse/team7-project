@@ -19,16 +19,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder(access= AccessLevel.PRIVATE)
 public class Category {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    //@GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+
+    @GeneratedValue(strategy = GenerationType.UUID)
+
     @Column(name = "category_id", updatable = false, nullable = false)
     private UUID categoryId;
 
     @Column(unique=true,nullable=false)
     private String categoryName;
 
-    @Builder.Default
+    //@Builder.Default
     private Boolean isPublic=true;
 
     @Column(nullable = false, updatable = false)
