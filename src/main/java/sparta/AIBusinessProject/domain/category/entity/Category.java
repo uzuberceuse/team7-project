@@ -20,8 +20,8 @@ import java.util.UUID;
 @Builder(access= AccessLevel.PRIVATE)
 public class Category {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-
     @Column(name = "category_id", updatable = false, nullable = false)
     private UUID categoryId;
 
