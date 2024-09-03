@@ -75,16 +75,14 @@ public class ReportService {
         // 각 Report에 deletedBy 설정
         for (Report report : reports) {
             report.setDeletedBy(deletedBy);
-//            report.setDeleted_at(new Timestamp(System.currentTimeMillis()));
+        //  report.setDeleted_at(new Timestamp(System.currentTimeMillis()));
         }
 
         reportRepository.saveAll(reports);  // 변경된 상태 저장
 
         reportRepository.deleteAll(reports);  // 신고 삭제
     }
-
-
-    }
+}
 
 
 

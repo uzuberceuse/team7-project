@@ -14,6 +14,8 @@ import sparta.AIBusinessProject.domain.product.dto.ProductRequestDto;
 import sparta.AIBusinessProject.domain.product.dto.ProductResponseDto;
 import sparta.AIBusinessProject.domain.product.entity.Product;
 import sparta.AIBusinessProject.domain.product.repository.ProductRepository;
+import sparta.AIBusinessProject.domain.store.entity.Store;
+import sparta.AIBusinessProject.domain.store.repository.StoreRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,16 +25,24 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final StoreRepository storeRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, StoreRepository storeRepository) {
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
 
     // 상품 등록
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto, String userId){
-        Product product = Product.createProduct(requestDto, userId);
+
+
+        Store store = storeRepository.findById(requestDto.getStoreId())
+                .filter(p -> p.getDeletedAt() == null)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 가게를 찾을 수 없거나 이미 삭제된 상태입니다."));
+        Product product = Product.createProduct(requestDto, store, userId);
+
         return ProductResponseDto.toResponseDto(productRepository.save(product));
     }
 
